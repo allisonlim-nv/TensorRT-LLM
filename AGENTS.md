@@ -175,6 +175,16 @@ For a full list of up-to-date bot commands, post `/bot help` as a PR comment and
 
 - Use `TLLM_LOG_LEVEL_BY_MODULE` to enable per-module log filtering (e.g., `"debug:_torch,runtime;info:serve"`); see [Module-Level Logging](docs/source/developer-guide/overview.md#module-level-logging) for details.
 
+## Agent Context Docs
+
+Compact orientation docs for AI agents and new contributors (not a substitute for source-of-truth docs below):
+
+| Doc | What it covers |
+|-----|---------------|
+| `docs/codebase-map.md` | Folder/package responsibilities, "where to start" by task |
+| `docs/architecture.md` | Components, request flow, backends, config hierarchy, external deps |
+| `docs/domain-glossary.md` | Key terms: KV cache, speculative decoding, parallelism, quantization, serving, disaggregation/NIXL, scaffolding |
+
 ## Key Documentation
 
 | Topic | Path |
