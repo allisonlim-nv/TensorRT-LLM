@@ -38,10 +38,20 @@ def _run_eagle3_arm(enable_block_reuse):
             max_stats_len=-1,
             enable_iter_perf_stats=True,
     ) as llm:
-        params = SamplingParams(temperature=0, max_tokens=128)
+        params = SamplingParams(temperature=0,
+                                max_tokens=128,
+                                return_perf_metrics=True)
+        tokens_per_block = kv_cache_config.tokens_per_block
         all_iters = []
         for i in range(10):
-            llm.generate(_PROMPT, sampling_params=params, use_tqdm=False)
+            out = llm.generate(_PROMPT, sampling_params=params, use_tqdm=False)
+            kv = out.outputs[0].request_perf_metrics.kv_cache_metrics
+            reused_tokens = kv.num_reused_blocks * tokens_per_block
+            print(f"  req {i:2d}: prompt={len(out.prompt_token_ids):4d}"
+                  f"  reused_blocks={kv.num_reused_blocks:3d}"
+                  f"  (~{reused_tokens} tokens)"
+                  f"  missed_blocks={kv.num_missed_blocks:3d}"
+                  f"  hit_rate={kv.kv_cache_hit_rate:.3f}")
             raw = llm.get_stats(timeout=3)
             req_iters = [
                 s['specDecodingStats'] for s in raw
