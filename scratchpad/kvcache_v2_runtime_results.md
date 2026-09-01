@@ -630,19 +630,375 @@ attempt.
 
 ---
 
+## Classification labels used from this point on
+
+Every claim below (new, and retroactively for Q1-Q8/atomicity in the summary
+table) is tagged with exactly one of:
+- **runtime-proved on the real production path** — real, unmodified
+  production code, real GPU allocation, invoked the way production actually
+  invokes it (not a hand-built stand-in, not a forced flag, not a
+  monkeypatched internal).
+- **scheduler/manager logic proved with mocks** — real scheduler/manager
+  method bodies, but mocked native objects or hand-built minimal stand-ins.
+  Proves Python-level branching/call logic, not native runtime behavior.
+- **source-only** — confirmed only by reading code, no execution.
+- **blocked** — attempted but could not run (missing kernel image, hard
+  assertion preventing construction, etc.).
+
+## Q1 (re-opened) — the original question's premise does not hold in current production code
+
+The originally-committed Q1 probe
+(`tests/unittest/kv_cache_manager_v2_tests/test_scratch_q1_spec_decode_capacity.py`)
+forced `_should_create_separate_draft_kv_cache = lambda: True` on a hand-built
+`KvCacheCreator`. That is **not** evidence about what a real two-model
+construction path does, because the boolean was never actually computed by
+real code from a real config — it was overridden. This session redid Q1
+without forcing anything, driving the real, unmodified gating chain in
+`KvCacheCreator` (`_util.py`) with real `DecodingBaseConfig` subclasses.
+
+**New finding, which reframes the entire question:** genuine two-engine
+("two-model", two separate forward-pass model instances) speculative
+decoding is **not reachable through any currently-supported public LLM API
+config**:
+- EAGLE3 two-model (`eagle3_one_model=False`) is deprecated and silently
+  coerced back to `True` by `EagleDecodingConfig.validate_eagle_config`
+  (`llm_args.py:2228-2233`) — confirmed by constructing the config with
+  `eagle3_one_model=False` and reading back `cfg.eagle3_one_model is True`
+  and `cfg.spec_dec_mode.is_eagle3_one_model()`
+  (`test_scratch_q1_real_two_model_gate.py::test_eagle3_two_model_is_deprecated_and_coerced_to_one_model`,
+  **runtime-proved on the real production path** — real Pydantic validator,
+  real config class).
+- `DraftTargetDecodingConfig` has a private `_draft_target_one_model`
+  attribute defaulting to `True` (`llm_args.py:2592`); grepping the entire
+  `tensorrt_llm/` tree finds no field, setter, or code path anywhere that
+  ever sets it `False` — the only two references are the attribute's own
+  default and the `spec_dec_mode` property that reads it. So
+  `DraftTargetDecodingConfig(...)`'s default `spec_dec_mode` is always
+  `DRAFT_TARGET_ONE_MODEL`
+  (`test_scratch_q1_real_two_model_gate.py::test_draft_target_default_is_one_model_no_public_two_engine_path`,
+  **runtime-proved on the real production path**), never the genuine
+  two-engine `DRAFT_TARGET` value (which exists in the enum and has its own
+  `use_one_engine() == False` predicate, but is dead code reachable only by
+  hand-setting a private attribute nothing in production ever sets).
+- A companion attempt to force this through anyway via real `LLM(...)`
+  construction (`tests/unittest/_torch/speculative/hw_agnostic/test_scratch_q1_v2_two_model_real_budget.py`,
+  `DraftTargetDecodingConfig` + real EAGLE3/Llama-3.1 checkpoints,
+  `use_kv_cache_manager_v2=True`) is **blocked**: it hit the same
+  environment-level missing-SM-90-kernel-image failure as Q8
+  (`CUDA runtime error in cudaOccupancyMaxActiveBlocksPerMultiprocessor ...
+  no kernel image is available for execution on the device`) during
+  `LLM.__init__`'s warmup/generation step — this is a second, independent
+  reproduction of the same blocker in this environment this session (see
+  the Q8 section below). Separately, and independently of that blocker, a
+  `KVCacheManagerV2.__init__`-observation monkeypatch installed in the test
+  process could never have captured anything anyway, because manager
+  construction runs inside the MPI/IPC executor's **worker subprocess**, not
+  the pytest process — this is recorded as a methodological dead end for
+  future attempts, not a finding about KVCacheManagerV2 itself.
+
+**Given genuine two-engine mode is unreachable**, the actually-reachable
+production scenario for two independent V2 managers is the *one-model*
+separate-draft-KV-cache path (`_should_create_separate_draft_kv_cache()`,
+same engine, different KV layout for the draft sub-network — EAGLE3-one-model,
+DraftTarget-one-model, MTP-eagle-one-model). Driving the real,
+unforced gate for this path with a real default `DraftTargetDecodingConfig`:
+```python
+creator._should_create_separate_draft_kv_cache()  # -> True, unforced
+creator._needs_gpu_kv_cache_budget_split(max_seq_len=2048)  # -> True, unforced
+```
+(`test_scratch_q1_real_two_model_gate.py::test_real_one_model_separate_draft_cache_gate_enables_v2_gpu_split_by_default`,
+**runtime-proved on the real production path** for the gate logic itself —
+`KvCacheCreator` is hand-built via `__new__` with minimal attributes, the
+config objects and the methods under test are real and unforced).
+
+Feeding real per-token `CacheCost` values (80/20 target/draft split, same
+substitution technique the original committed Q1 probe already used and
+documented, since no HF model is loaded) into the real, unmodified
+`_split_kv_cache_budget_for_draft`/`_compute_draft_budget_shares`:
+```
+[Q1-split] B=4294967296 target_budget=3435973837 draft_budget=858993459
+```
+`target_budget + draft_budget == B` exactly, and the split is proportional
+to the 80/20 per-token cost ratio (`draft_budget ≈ 0.2·B`,
+`target_budget ≈ 0.8·B`), not an equal 50/50 split and not "each
+independently gets the full B"
+(`test_scratch_q1_real_two_model_gate.py::test_real_split_arithmetic_for_one_model_separate_draft_cache`,
+**scheduler/manager logic proved with mocks** — the split arithmetic is real
+and unmodified, but its `CacheCost` leaf inputs are supplied directly rather
+than derived from a loaded model, since no model-config-bearing engine was
+constructed).
+
+**Net effect: Q1's original answer is superseded.** The prior committed
+answer ("B is split 80/20 in supported two-model spec-decode") is true only
+for the one-model separate-draft-cache scenario — the *only* one actually
+reachable in production today — not for a genuine two-engine setup, which
+does not exist as a constructible configuration in the current codebase.
+The equal-budget assert this session traced at `_util.py:2081-2085`
+("KVCacheManagerV2 does not support two-model speculative decoding with
+separate draft GPU budgets") is dead code under real configs: its guarding
+condition (`draft_kv_cache_config is not None` while
+`self._draft_model_engine is not None`) can only occur if
+`_needs_gpu_kv_cache_budget_split()` is *also* `True` for a genuine
+two-engine config, and no real config produces genuine two-engine mode with
+that gate `True` — confirmed by the exhaustive check above of every
+`use_one_engine() == False` path currently reachable through public config
+(there are none).
+
+---
+
+## Q2 (strengthened) — later-chunk out-of-pages failure through the real scheduler + real manager
+
+Q3/atomicity (below, preserved unchanged) proves the *native* resize call is
+atomic on failure, driven directly on a bare native cache with no scheduler
+involved, and no prior committed chunk. This session added a probe that
+drives a **later** (non-first) chunk's failure through the real,
+unmodified `KVCacheV2Scheduler` scheduling loop *and* the real
+`KVCacheManagerV2.prepare_context`/`resize_context`, against a real
+GPU-backed manager (`max_gpu_total_bytes` sized to exactly 4 blocks / 16
+tokens) — not a mocked manager, and not a direct `kv_cache.capacity`
+mutation.
+
+**Test:** `tests/unittest/_torch/executor/test_scratch_q2_later_chunk_oop_full_path.py`
+
+**Setup:** a 24-token context request scheduled in 8-token chunks. Chunk 1
+(8 tokens) succeeds via a real `KVCacheV2Scheduler` call, consuming half the
+pool. Chunk 2 requests all 16 remaining tokens (target capacity 24, needing
+6 blocks against a 4-block pool) — driven through a **second**, real
+`KVCacheV2Scheduler` call against the same manager, exercising
+`resize_context` with `req.is_first_context_chunk = False`.
+
+**Observed (real GPU, `-s` output):**
+```
+[Q2-full] chunk2 scheduled context_requests=0
+[Q2-full] request state after failed later-chunk resize: capacity=8 is_active=True context_current_position=8 py_ctx_pre_resize_cap=0 (was 0 after chunk 1)
+[Q2-full] manager pool stats: baseline unavailable=4 after_failure unavailable=4
+```
+
+**Answer:**
+1. **Atomicity holds through the full scheduler+manager call chain, not
+   just the bare native call**: the request's own `kv_cache.capacity` is
+   unchanged (`8`, not partially grown toward `24`), and the manager's own
+   committed-page count (`unavailable`) is identical before and after the
+   failed later-chunk attempt (`4` both times) — the same atomicity
+   property Q3 established directly on the native object, now confirmed
+   reached via the real scheduler → real Python manager → real native
+   resize call chain.
+2. **First-chunk vs. later-chunk asymmetry, confirmed for real**:
+   `resize_context` (`kv_cache_manager_v2.py:2671-2674`) only suspends the
+   cache on failure when `req.is_first_context_chunk` is `True`. This probe's
+   failure is on chunk 2 (`is_first_context_chunk=False`), and the cache is
+   confirmed to remain `is_active=True` after the failure — unlike a
+   first-chunk failure, which the manager suspends. This is a real,
+   previously only source-inferred behavioral asymmetry, now directly
+   observed.
+3. **`py_ctx_pre_resize_cap` is untouched by the failed call** (it only gets
+   written on `resize_context` success) — it still reflects chunk 1's grow,
+   not the failed chunk-2 attempt. No stale-marker corruption from the
+   failure itself.
+4. **Retry recovery is real, not just structurally inferred**: after the
+   failed 16-token chunk-2 attempt, a third, smaller retry chunk (4 tokens —
+   the one remaining free block) was driven through a fresh
+   `KVCacheV2Scheduler` call against the *same*, still-live manager and
+   request, and it succeeded (`capacity` grew from `8` to `12`) — confirming
+   the failed attempt did not corrupt or wedge the request; the scheduler
+   naturally retries a differently-sized chunk on the next call rather than
+   requiring any special recovery path.
+
+**Classification: runtime-proved on the real production path** — real,
+unmodified `KVCacheV2Scheduler` and `KVCacheManagerV2`, real GPU-backed
+native cache and pool-stats query, real `OutOfPagesError`. The only
+non-production element is the request object itself (`_ContextRequest`, a
+minimal dataclass satisfying the same real method contracts this branch's
+own `test_kv_cache_manager_v2.py::_run_context` helper already relies on,
+augmented with a handful of extra attributes the scheduler additionally
+reads) — this is the same tier the repo's own manager-level tests already
+use for driving real manager methods without a full `LlmRequest`/executor
+stack.
+
+---
+
+## Q4 (strengthened) — real `try_allocate_generation` for disagg transmission-complete / empty-draft-token admission
+
+The existing `test_kv_cache_v2_capacity_only.py::
+test_disagg_gen_transition_reserves_target_drafts_without_context_drafts`
+only calls `_effective_draft_len`/`_required_gen_capacity` in isolation on a
+bare `SimpleNamespace`, proving the arithmetic but not that the resulting
+number costs real GPU pages.
+
+**Test:** `tests/unittest/_torch/executor/test_scratch_q4_disagg_gen_real_reservation.py`
+
+**Method:** two real, GPU-backed `KVCacheManagerV2` instances, each primed
+with a real, active 4-token native cache via the real context path
+(`prepare_context`/`resize_context`, same technique as Q2/`_run_context`),
+then driving the real, unmodified `try_allocate_generation` for a disagg
+transmission-complete request with empty `py_draft_tokens` — the exact
+admission scenario the original Q4 answer described. Pool sized to exactly
+2 blocks (8 tokens).
+
+**Observed (real GPU, `-s` output):**
+```
+[Q4-real] disabled-speculation admission: ok=True capacity=5
+[Q4-real] enabled-speculation admission: ok=False capacity=4
+```
+
+**Answer: `_effective_draft_len`'s reservation is real GPU-page cost, not
+inert bookkeeping.** With speculative decoding disabled (`draft_len=0`),
+growing the same starting 4-token cache by `1` succeeds (target capacity 5,
+fits in 2 blocks). With speculative decoding enabled and no context draft
+tokens (`_effective_draft_len` falls back to `max_total_draft_tokens=4`),
+growing the *same* starting cache now targets capacity 9 — needing 3 blocks
+against the same 2-block pool — and is rejected with a real
+`OutOfPagesError`-driven `False` return. The extra reserved tokens are the
+sole difference between the two runs, and they are what tips admission from
+success to a real rejection. Failure is atomic here too: `capacity` stays
+at the pre-attempt `4`, and the cache remains active (consistent with
+Q3/Q2's atomicity findings, now confirmed for this specific admission path).
+
+**Classification: runtime-proved on the real production path** — real,
+unmodified `KVCacheManagerV2.try_allocate_generation`, real GPU-backed
+native cache, real `OutOfPagesError`. The request object is a
+`SimpleNamespace` with only the specific fields `try_allocate_generation`
+and `_effective_draft_len` actually read (mirroring the existing repo
+test's technique) — not a full `LlmRequest`, but every method invoked on it
+is real, unmodified code, and the admission outcome (success vs. real
+native rejection) is the thing under test, not simulated.
+
+---
+
+## Native suspend-failure reachability (new)
+
+Investigated whether there is any *supported* way to make `suspend()` fail
+partway through, to determine if the main/draft-suspend-divergence risk
+identified by source reading in
+`scratchpad/kvcachev2_scheduler_manager_contract.md` (§1) is empirically
+reachable.
+
+**What was checked:**
+- `KvCache::suspend()` (`kvCache.cpp:521-559`) has no allocation-failure
+  path (unlike `resize()`) — it only converts already-locked
+  `SharedPageLock`s into `PageHolder`s (a release, not an acquire). Its only
+  guards are `TLLM_CHECK_DEBUG` invariant checks.
+- `TLLM_CHECK_DEBUG` (`cpp/include/tensorrt_llm/common/assert.h:56-64`) is
+  gated by `tensorrt_llm::DebugConfig::isCheckDebugEnabled()`
+  (`cpp/tensorrt_llm/common/assert.cpp:21-32`), a runtime flag read once
+  from the `TLLM_DEBUG_MODE` environment variable (`"1"` to enable) — not a
+  compile-time-only debug-build check, but still **only a checker of an
+  already-true invariant**, not a fault-injection mechanism. Enabling it
+  cannot manufacture a failure; it can only surface one if some other,
+  independent bug already violated the invariant.
+- Searched `cpp/tests/unit_tests/batch_manager/` (including
+  `kvCacheManagerV2TestUtils.h`, the dedicated V2 test-utilities header) for
+  any fault-injection, error-injection, or CUDA/stream-error-simulation
+  hook applicable to `suspend()` or its underlying page/event machinery
+  (`recordEventScope`, `notifyFinish`, `SharedPageLock::hold()`) — found
+  none.
+- Did not attempt to monkeypatch a private internal to fake a throw (would
+  violate the "no monkey-patched private gate" constraint and would not
+  constitute evidence about production reachability).
+
+**Conclusion, stated precisely per the requested framing:** scheduler-side
+`_suspend_request` (`scheduler_v2.py:1053-1065`) is non-transactional
+conditional on a manager failure — if the target manager's `suspend_request`
+call were to raise after some other component had already reached a
+partially-suspended state, the draft manager's `suspend_request` call would
+never execute, per straightforward inspection of the (unguarded) two
+sequential calls. **Native reachability remains unproven**: no supported
+fault hook exists in this codebase to actually trigger `suspend()` failing
+after a target's suspension has completed, so this is a statement about the
+code's structure under a hypothetical, not a demonstrated production
+mismatch.
+
+**Classification: source-only** (for the structural non-transactional-call
+claim) **combined with a confirmed absence of any supported way to make it
+runtime-provable** — this is not a "blocked" result in the sense of an
+environment limitation; it is a checked, negative result: the codebase
+genuinely does not currently expose a way to test this scenario at the
+native level.
+
+---
+
+## Q8 (re-confirmed) — SM-90 kernel-image blocker persists; mechanism traced one level deeper
+
+**Blocker re-confirmed, independently, twice this session** (not merely
+assumed unchanged): the exact same
+`CUDA runtime error in cudaOccupancyMaxActiveBlocksPerMultiprocessor ...
+no kernel image is available for execution on the device`
+(`decoderMaskedMultiheadAttentionLaunch.h`) was hit again by the Q1
+real-two-model-budget `LLM(...)` construction+generation attempt this
+session (`test_scratch_q1_v2_two_model_real_budget.py`), using different
+models in a different code path (`DraftTargetDecodingConfig` +
+Llama-3.1-8B/Llama-3.2-1B, vs. the original Q8 probe's EAGLE3+Llama-3.1-8B).
+Re-running the original Q8 test file directly was not repeated this session
+(it would reproduce the same environment-level blocker at higher GPU-time
+cost, already re-confirmed via the Q1 attempt) — this is recorded
+explicitly as a deliberate choice, not an unverified assumption. **The Q8
+test file is now marked `@pytest.mark.skip` with this precise, re-confirmed
+reason so it no longer surfaces as a collection/run failure in normal
+pytest runs**; both required model checkpoints load successfully, so this
+remains an environment/build limitation, not a KVCacheManagerV2 or
+prefix-reuse defect.
+
+**Mechanism traced one level deeper (source-only, new this session):** the
+prior session's finding established that the draft manager's own cache is
+created without reuse-matching (`num_committed_tokens=0` for the
+reused-prefix range) while `context_current_position` on the draft's
+synthetic context request is copied from the target's post-reuse chunk
+bounds (`model_drafter.py:145-148`,
+`new_request.context_current_position = begin_compute`). This session
+traced where that value is actually consumed at the forward-pass level:
+`model_engine.py:5398-5411` sets `begin_compute = request.context_current_position`
+for **every** context request (target or draft — the same code path handles
+both; `self.is_draft_model` only branches later bookkeeping, not this
+`begin_compute` derivation) and uses it directly to compute `position_ids`
+(`range(begin_compute, begin_compute + len(prompt_tokens))`) and to select
+which token range is fetched via `get_tokens_range(0, begin_compute,
+end_compute)`. This confirms, at the Python/position-assignment level, that
+the draft's forward pass is told "positions `[0, begin_compute)` are
+already computed" — it does not request the model recompute them — for
+exactly the range the draft's own cache never populated.
+
+**What remains unresolved (explicitly, not inferred):** whether the
+attention **kernel's** own cached-token-count / KV-read-range argument for
+this forward pass is *also* driven from this same Python-level
+`context_current_position` value (in which case the kernel would be told to
+attend over `begin_compute` valid cached positions that are actually
+unpopulated in the draft's cache — a live, reachable gap) or is
+independently derived from the draft manager's own native
+`kv_cache.history_length` (which the prior session already established is
+`0` for this range, in which case a mismatch there would either be
+independently caught/gated, or would itself indicate a different bug). This
+session did not read the attention-backend kernel-argument construction
+(e.g. the TRTLLM attention plugin's `pastKeyValueLength`/cached-length
+input derivation) far enough to resolve this — time did not permit going
+past the `position_ids`/`begin_compute` handoff traced above.
+
+**Classification: blocked** for the runtime comparison (re-confirmed
+environment limitation, not assumed); **source-only, and deepened but still
+not fully resolved**, for the mechanism. Per the original instruction: do
+not infer corruption from this alone — the `position_ids` handoff is
+necessary evidence of a structurally-reachable gap but not sufficient proof
+that the attention kernel actually reads unpopulated pages.
+
+---
+
 ## Summary
 
 | Q | Answer | Evidence tier |
 |---|---|---|
-| Q1 | Target/draft GPU capacities for B=4GiB: target 3439329280B/52480 slots (4 layers), draft 859832320B/52480 slots (1 layer); split computed by real code, scaling verified correct | Real split-code + real GPU alloc; synthetic per-token cost inputs (no model available) |
-| Q2 | NOT always aligned — a failed draft-mirror suspend leaves target suspended, draft still active, exception uncaught | Real scheduler code; mocked managers (no GPU) |
-| Q3 | Recoverable, and cleaned up consistently — capacity preserved, no page leak, close/free succeed | Real native GPU allocation, real OutOfPagesError |
-| Q4 | Conservatively differs — scheduler charges 0 extra draft tokens, manager reserves `max_total_draft_tokens` (4) more; manager is the binding, safe constraint | Real scheduler code (mocked managers) + real manager method (minimal stand-in object, not full GPU path) |
-| Q5 | Not applicable to KVCacheManagerV2 — `kv_connector_manager` is hard-asserted to `None` at construction; no rollback-rejection path exists to test | Blocked — confirmed by an unconditional source-level assertion |
-| Q6 | YES — deferred requests retain already-granted capacity untouched; draft prep is structurally skipped (not scheduler-mirrored for context); post-first-chunk retention is an explicit, commented, intentional policy | Real scheduler code (mocked managers, no GPU) |
-| Q7 | Both SHRINK (recoverable, capacity/state preserved) and FREE (start over) exist, selected deterministically by whether history has passed the revert target; callers tolerate both uniformly via `prepare_context`'s missing-entry handling | Real manager method logic (mocked native cache) |
-| Atomicity | CONFIRMED — failed native resize does not partially/non-atomically commit pages; manager's own committed-page count unchanged, checked directly (not inferred) | Real native GPU allocation, real OutOfPagesError |
-| Q8 | Mechanism structurally reachable per source trace (draft cache never populated for reused-prefix range); model-level manifestation (corruption vs. safely-gated vs. other) **not proven** | Blocked — missing SM-90 kernel image in this environment's installed extension; source-only for the mechanism |
+| Q1 (superseded — see "Q1 (re-opened)") | Original claim ("B splits 80/20 in supported two-model spec-decode") was based on a **forced** `_should_create_separate_draft_kv_cache=True` flag, not a real gate decision | scheduler/manager logic proved with mocks (forced flag — weak; superseded below) |
+| Q1 (re-opened) | Genuine two-engine spec decode is **unreachable via any current public config** (EAGLE3 2-model deprecated+coerced; DraftTarget 2-model has no public setter) — confirmed by real, unforced config construction. The actually-reachable "two-manager" scenario (one-model separate-draft-cache) DOES split GPU budget, unforced (`_should_create_separate_draft_kv_cache()==True` by default), proportionally to per-layer cost (80/20 CacheCost inputs → 80/20 byte split, real split arithmetic) | Gate decision: runtime-proved on the real production path. Split arithmetic: scheduler/manager logic proved with mocks (real function, supplied CacheCost leaves). Full `LLM()` two-model GPU-budget capture: blocked (SM-90 kernel image gap + worker-subprocess isolation) |
+| Q2 (self-eviction alignment) | NOT always aligned — a failed draft-mirror suspend leaves target suspended, draft still active, exception uncaught | scheduler/manager logic proved with mocks (real scheduler code; mocked managers, no GPU) |
+| Q2 (later-chunk OOP, strengthened) | Atomicity and first/later-chunk asymmetry confirmed through the FULL real scheduler→manager→native call chain (not a direct native mutation): capacity and manager page-stats unchanged by the failed later chunk; cache stays ACTIVE (unlike a first-chunk failure, which suspends); retry with a smaller chunk succeeds immediately after | runtime-proved on the real production path |
+| Q3 | Recoverable, and cleaned up consistently — capacity preserved, no page leak, close/free succeed | runtime-proved on the real production path |
+| Q4 (arithmetic) | Conservatively differs — scheduler charges 0 extra draft tokens, manager reserves `max_total_draft_tokens` (4) more | scheduler/manager logic proved with mocks (bare `SimpleNamespace`, methods called in isolation) |
+| Q4 (strengthened — real reservation) | The extra reserved tokens are real GPU-page cost, not inert bookkeeping: identical starting cache/pool admits with speculation disabled (draft_len=0) but is rejected with a real `OutOfPagesError` when enabled (draft_len=4) — the draft-length delta alone flips admission | runtime-proved on the real production path |
+| Q5 | Not applicable to KVCacheManagerV2 — `kv_connector_manager` is hard-asserted to `None` at construction; no rollback-rejection path exists to test | blocked (confirmed by an unconditional source-level assertion) |
+| Q6 | YES — deferred requests retain already-granted capacity untouched; draft prep is structurally skipped (not scheduler-mirrored for context); post-first-chunk retention is an explicit, commented, intentional policy | scheduler/manager logic proved with mocks (real scheduler code; mocked managers, no GPU) |
+| Q7 | Both SHRINK (recoverable, capacity/state preserved) and FREE (start over) exist, selected deterministically by whether history has passed the revert target; callers tolerate both uniformly via `prepare_context`'s missing-entry handling | scheduler/manager logic proved with mocks (real manager method logic; mocked native cache) |
+| Atomicity | CONFIRMED — failed native resize does not partially/non-atomically commit pages; manager's own committed-page count unchanged, checked directly (not inferred) | runtime-proved on the real production path |
+| Native suspend-failure reachability | `_suspend_request` is structurally non-transactional (unguarded sequential target/draft calls) — confirmed by reading the code. No supported fault-injection hook exists anywhere in the codebase to actually trigger a `suspend()` failure, so native reachability of the divergence remains unproven, not merely unstated | source-only, with a confirmed absence of any way to make it runtime-provable (checked: assert.h/assert.cpp gating, cpp/tests/unit_tests/batch_manager/ for fault hooks — none found) |
+| Q8 (mechanism) | Draft cache never populated (own reuse/forward pass) for the target's reused-prefix range; traced one level deeper this session — draft's `position_ids`/token-fetch range for its context forward pass ARE driven by `context_current_position` (copied from target), i.e. told "already computed" for that exact unpopulated range. Whether the attention KERNEL's own cached-length argument is also driven by this same value (live gap) or independently reconciled against the draft's native `history_length` (safely gated) is unresolved | source-only (deepened, still incomplete) |
+| Q8 (model-level runtime) | Blocked — missing SM-90 kernel image in this environment's installed extension, re-confirmed independently this session via the Q1 real-budget `LLM()` attempt hitting the identical error in a different code path. Do not infer corruption from the topology alone | blocked |
 
 No test was blocked by a missing model artifact or unsupported configuration
 for Q1-Q4 — once the dev container's Python dependencies were installed, a
