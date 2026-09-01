@@ -268,6 +268,368 @@ residual gap — out of scope for this pass given time constraints).
 
 ---
 
+## Q5 — Connector-rejection rollback: does rollback free/revert both target and draft, not just target?
+
+**Test:** none written — **blocked by a hard source-level assertion**, no test can exercise this.
+
+**Command:** N/A.
+
+**Result:** N/A (not runnable).
+
+**Observed:** `KVCacheManagerV2.__init__` (`kv_cache_manager_v2.py:832-834`):
+```python
+assert kv_connector_manager is None, (
+    "kv_connector_manager is not supported for KVCacheManagerV2"
+)
+```
+This is unconditional — there is no code path, flag, or configuration that
+constructs a `KVCacheManagerV2` (target or draft) with a non-`None`
+`kv_connector_manager`. This exact item was already flagged as **Out of
+scope** by the prior `coverage_closure.md` audit (§1: *"`kv_connector_manager`
+support (V2 does not support it) — Explicitly unsupported by hard assert"*),
+and this session's direct re-read of the source confirms that finding still
+holds on the current checkout: attempting to pass any KV connector (rejecting,
+mock, or otherwise) to a V2 manager raises `AssertionError` at construction
+time, before any request-level rollback logic could ever run.
+
+**Answer: The question as posed does not apply to KVCacheManagerV2.**
+KV-connector-triggered rollback (of the kind V1's `KvCacheConnectorManager`
+integration supports) has no V2 equivalent to test — not "untested," but
+**structurally absent**. Whatever rollback-symmetry guarantees exist for a
+connector-initiated rejection are entirely a V1 concern; for V2 the only
+rollback paths that exist are the ones already covered by Q2 (scheduler
+eviction/suspension, mirrored to both managers, not always aligned) and Q7
+(context capacity revert).
+
+**Proves runtime behavior vs. confirms configuration:** **Blocked — confirmed
+only by source (an unconditional assertion, not runtime behavior).** No
+runtime evidence is possible or needed here: the assertion is unconditional,
+so there is no configuration or code path under which this scenario could
+occur on the current V2 implementation. If a future refactor adds V2
+connector support, this question would need to be re-opened from scratch —
+today's finding does not generalize to that hypothetical.
+
+---
+
+## Q6 — Deferred-request capacity: retained, draft skipped, and is this intentional?
+
+**Test:** `tests/unittest/_torch/executor/test_scratch_q6_deferred_request_capacity.py` (3 tests: `test_never_started_request_defers_before_any_allocation`, `test_partially_started_request_retains_capacity_across_deferred_iteration`, `test_deferred_context_request_never_touches_draft_manager`)
+
+**Command:**
+```
+docker exec -w /code/tensorrt_llm tensorrt_llm-devel-allim python3 -m pytest \
+  tests/unittest/_torch/executor/test_scratch_q6_deferred_request_capacity.py -q
+```
+
+**Result:** 3/3 PASS
+
+**Observed:** Two distinct defer paths exist in
+`KVCacheV2Scheduler._try_schedule_context_chunked` (`scheduler_v2.py`):
+1. **Budget/min-chunk defer before any allocation** (`no_budget or
+   fcfs_under_min` → `SKIP`, before `prepare_context` is even called). A
+   request that has never received any capacity this call has nothing to
+   retain — confirmed by asserting zero `prepare_context`/`resize_context`
+   calls.
+2. **Post-first-chunk defer** (`chunk_size <= 0` → `SKIP`, *after* an earlier
+   call's `resize_context` already succeeded and granted real capacity). The
+   exact source comment at this line states the design intent explicitly:
+   > *"TODO: consider suspending first-chunk KVCache to release GPU pages.
+   > Currently we skip without suspend to avoid pathological suspend/resume
+   > cycles. suspend_request is only called from eviction
+   > (`_try_evict_for_gen`)."*
+
+   Running a real `KVCacheV2Scheduler` twice against the same mocked manager
+   (first call: generous budget, first chunk succeeds and calls
+   `resize_context` once; second call: budget below `chunk_unit_size`,
+   forcing a defer) confirmed **zero** additional `resize_context` or
+   `suspend_request` calls on the second, deferred call — the capacity
+   granted by the first chunk is left completely untouched.
+3. **Draft-manager isolation**: constructing a real `KVCacheV2Scheduler` with
+   a `Mock()` draft manager and driving a deferred (never-started) context
+   request through it recorded **zero** method calls of any kind
+   (`draft_mgr.method_calls == []`) on the draft manager. This is not a
+   special-cased defer-aware branch — `KVCacheV2Scheduler` simply has no
+   context-scheduling code path that touches `draft_kv_cache_manager` at all
+   (draft KV prep for context happens only via
+   `KVCacheManagerV2._prepare_draft_resources`, dispatched at the
+   `py_executor.py` level from `resource_manager.prepare_resources()`, only
+   for requests present in that iteration's `ScheduledRequests` — a deferred
+   request is absent from that set by construction).
+
+**Answer: YES — a deferred request's already-granted target-manager capacity
+is retained untouched, draft preparation is trivially skipped (a structural
+consequence of the request not being scheduled that iteration, not a
+special-cased decision), and the retention on the post-first-chunk path is an
+explicit, source-commented, intentional bounded policy** (avoid
+suspend/resume thrashing) — not accidental leftover state that happens to
+survive because nothing touched it.
+
+**Proves runtime behavior vs. confirms configuration:** **Proves real
+scheduler-decision logic.** Same tier as Q2/Q4: real, unmodified
+`KVCacheV2Scheduler` (imported and driven directly, not reimplemented),
+mocked target/draft managers (no GPU). This proves the scheduler's own
+call/no-call decisions precisely; it does not additionally prove what the
+*native* manager does with a capacity that sits untouched across many
+deferred iterations (e.g., whether it becomes evictable, or interacts with
+`can_evict` in some multi-iteration native scenario) — that would require a
+longer-running native/GPU scenario, out of scope for this pass.
+
+---
+
+## Q7 — Context rollback semantics: shrink or free, and do callers tolerate it?
+
+**Test:** `tests/unittest/_torch/executor/test_scratch_q7_context_rollback_semantics.py` (4 tests)
+
+**Command:**
+```
+docker exec -w /code/tensorrt_llm tensorrt_llm-devel-allim python3 -m pytest \
+  tests/unittest/_torch/executor/test_scratch_q7_context_rollback_semantics.py -q
+```
+
+**Result:** 4/4 PASS
+
+**Observed:** `KVCacheManagerV2.revert_allocate_context` (`kv_cache_manager_v2.py:2525-2547`, real, unmodified) branches on the live cache's *current* `history_length` relative to the pre-iteration capacity (`pre_cap`) being reverted to:
+```python
+if kv_cache.history_length > pre_cap:
+    self.free_resources(req)   # FREE: history already advanced past pre_cap
+    return
+history_length = min(kv_cache.history_length, pre_cap)
+kv_cache.resize(pre_cap, history_length)   # SHRINK: request stays alive
+if pre_cap > 0:
+    kv_cache.suspend()
+```
+Driving this real method body (mocked native `_KVCache`, same technique as the
+repo's own `test_kv_cache_v2_capacity_only.py`) against both conditions
+confirmed:
+- **SHRINK branch** (`history_length <= pre_cap`): `resize(pre_cap,
+  history_length)` + `suspend()` called; the `kv_cache_map` entry is left in
+  place (same object, still active) — the request is recoverable at its
+  pre-iteration capacity.
+- **FREE branch** (`history_length > pre_cap`): `free_resources(req)` called
+  instead; no resize/suspend.
+- The `py_ctx_pre_resize_cap` marker is cleared **unconditionally**
+  (`kv_cache_manager_v2.py:2530`, before either branch, and even before the
+  `kv_cache is None or not kv_cache.is_active` early-return) — a second
+  revert call on the same request is always a guaranteed no-op regardless of
+  which branch the first call took, or whether the cache was already
+  inactive.
+- No growth to undo (`pre_cap >= kv_cache.capacity`) and already-inactive
+  cache are both confirmed no-ops (no resize/suspend/free_resources calls).
+
+The only production caller, `py_executor.py`'s `_revert_ctx_alloc`
+(`py_executor.py:3474-3477`, invoked from
+`_revert_deferred_disagg_gen_init_alloc` for disagg-transfer-admission
+candidates that lost the admission race, `py_executor.py:3567-3586`), is a
+blind for-loop calling `revert_allocate_context(req)` once per dropped
+request — it does not branch on, or even inspect, which outcome occurred.
+
+**Answer: Both outcomes exist and are selected deterministically by whether
+committed history has already advanced past the target capacity — SHRINK
+(recoverable, capacity/state preserved) when it hasn't, FREE (start over)
+when it has. The caller tolerates both uniformly**: it doesn't need to know
+which happened, because the *next* scheduling attempt for that same request
+re-enters `prepare_context`, whose real precondition already handles a
+missing `kv_cache_map` entry (triggers a fresh `_create_kv_cache`, per the
+Create-path evidence already established by the prior `manager.md` audit) —
+so the FREE outcome is not a caller-side crash risk, only a "lose reuse
+credit, start the context from scratch" cost relative to SHRINK.
+
+**Proves runtime behavior vs. confirms configuration:** **Proves real manager
+method logic.** Real, unmodified `revert_allocate_context` method body
+(constructed via `KVCacheManagerV2.__new__`, the same "real method / minimal
+attribute set / mocked native cache" technique the repo's own
+`test_kv_cache_v2_capacity_only.py` already uses for the adjacent
+`update_resources` method), with a `MagicMock` standing in for the native
+`_KVCache`. This proves the Python-level branching logic and its caller
+contract precisely. It does not additionally prove the *native* `resize()`
+call actually succeeds/behaves this way against real GPU pages in the SHRINK
+branch (Q3 already establishes that ordinary native resizes, including
+shrinks, work against a real native cache; this probe does not re-combine
+that with the revert-specific `resize(pre_cap, history_length)` two-argument
+call signature on a real native object — a residual gap, low-risk given Q3's
+adjacent coverage, but not closed here).
+
+---
+
+## Atomicity re-verification — failed native resize leaves no orphaned pages
+
+**Test:** `tests/unittest/kv_cache_manager_v2_tests/test_scratch_atomicity_failed_resize_page_accounting.py::test_failed_resize_leaves_no_orphaned_pages_in_manager_pool_stats`
+
+**Command:**
+```
+docker exec -w /code/tensorrt_llm tensorrt_llm-devel-allim python3 -m pytest \
+  tests/unittest/kv_cache_manager_v2_tests/test_scratch_atomicity_failed_resize_page_accounting.py -q -s
+```
+
+**Result:** PASS
+
+**Observed (real GPU allocation, 8 MiB quota, 32 tokens/block, 1 layer):**
+```
+[Atomicity] baseline before failed resize: available=512 unavailable=2 evictable=0
+[Atomicity] immediately after failed resize: available=510 unavailable=2 evictable=0
+```
+This strengthens Q3's original atomicity evidence (which only showed the
+request's own `capacity` counter unchanged, and inferred leak-freedom
+indirectly via a *later*, post-`close()` fresh sequence reaching full quota).
+Here, the manager's own real GPU-backed pool statistics
+(`KVCacheManager.get_and_reset_iteration_peak_block_stats`, the same native
+binding surface backing production `KVCacheManagerV2.get_kv_cache_stats()`)
+are queried **immediately after the failure, before any `close()`** of the
+still-live request. The `unavailable` (currently committed/held block) count
+is identical (2) before and after the failed `OutOfPagesError` resize, and a
+further immediate no-op query confirms no delayed/async change either.
+
+One methodological note recorded in the test itself: the `available` field
+of this stats API is a **peak** (high-water-mark) statistic over the interval
+since the last reset, not an instantaneous snapshot — confirmed empirically
+when the very first (baseline) query reported `available=512` even though
+only 510 blocks were actually free at that instant, because 512 was the peak
+free-block count observed earlier in that same window (before the first
+chunk was allocated). Only `unavailable` was used as the atomicity signal for
+this reason.
+
+**Answer: CONFIRMED — a failed native resize does not partially or
+non-atomically commit any pages before discovering it cannot satisfy the
+request.** The manager's real-time committed-page accounting is unchanged by
+a failed resize attempt, checked directly (not inferred from a later
+allocation).
+
+**Proves runtime behavior vs. confirms configuration:** **Proves real native
+runtime behavior**, same tier as Q3 (real GPU-backed `KVCacheManager`/
+`_KVCache`, real `OutOfPagesError`, `KV_CACHE_MANAGER_V2_BACKEND=cpp` default
+backend) — strictly stronger than Q3's original evidence because it queries
+the manager's own committed-page accounting directly rather than inferring
+leak-freedom from a subsequent fresh allocation.
+
+---
+
+## Q8 — Prefix reuse with separate target/draft caches: is draft history explicitly prepared/validated?
+
+See the dedicated "Q8" subsection below for the full runtime-test result;
+the mechanism itself was already traced from source by
+`scratchpad/kvcachev2_context/topology_and_prefix_reuse.md` (Task 2) prior to
+this session and is summarized here rather than re-derived.
+
+**Source-level mechanism (from `topology_and_prefix_reuse.md`, re-verified
+this session by direct re-read of the cited lines, not re-traced from
+scratch):** For two-model (Variant A) and one-model-separate-layout (Variant
+B) topologies, the draft manager's own `_KVCache` is created via
+`_prepare_draft_resources` with `input_tokens=None` **unconditionally**
+(`kv_cache_manager_v2.py:2789-2797` — not gated on `self.enable_block_reuse`
+the way the target's is), meaning the draft's own reuse-matching is never
+attempted and `num_committed_tokens` starts at `0`. Separately, the draft's
+`resize(capacity)` call (`kv_cache_manager_v2.py:2810-2821`) passes only one
+argument — no `history_length` — unlike `prepare_disagg_gen_init`'s two-arg
+`resize(capacity, prompt_len)` call. Meanwhile the draft's
+`context_current_position`/`context_chunk_size` bookkeeping is copied
+(two-model, via `model_drafter.py:140-149`) or *shared* (one-model, same
+`req` object) from the **target's** post-reuse chunk bounds — i.e., the
+draft engine's one-shot context forward pass is told to skip computing
+exactly the range the target's reuse match skipped, without the draft
+manager's own cache ever having populated that range via its own reuse or
+its own forward pass.
+
+Whether this is actually consulted safely (native `history_length`/attention
+metadata gating the draft's effective KV span to what its own cache
+actually holds) or is a live correctness gap (draft attention reading
+unpopulated/stale pages for the reused-prefix range) was **explicitly left
+as an open question** by that source-only audit — it required either reading
+native `.cpp` `resize()`/`historyLength` semantics (not read), or a
+model-level runtime test (not previously run). This session attempted the
+latter.
+
+**Test attempted:** `tests/unittest/_torch/speculative/hw_agnostic/test_scratch_q8_v2_prefix_reuse_draft_correctness.py::test_v2_two_model_spec_decode_prefix_reuse_output_matches_no_reuse`
+
+**Command:**
+```
+docker exec -w /code/tensorrt_llm tensorrt_llm-devel-allim python3 -m pytest \
+  tests/unittest/_torch/speculative/hw_agnostic/test_scratch_q8_v2_prefix_reuse_draft_correctness.py -q -s
+```
+(Modeled directly on the repo's existing
+`tests/unittest/_torch/speculative/hw_agnostic/test_kv_cache_reuse.py`, which
+already exercises this exact target/draft model pair —
+`EAGLE3-LLaMA3.1-Instruct-8B` + `llama-3.1-model/Llama-3.1-8B-Instruct`,
+`eagle3_one_model=False` i.e. Variant A two-model topology — but against the
+*default* KV cache manager; this probe adds `use_kv_cache_manager_v2=True`
+explicitly and a reuse-disabled control run for direct output comparison,
+neither of which the existing test does.) Both model checkpoints are present
+under this environment's `LLM_MODELS_ROOT`
+(`/home/scratch.trt_llm_data_ci/llm-models`), and the H200 has 150 GB of GPU
+memory, well above the existing test's own 35 GB gate.
+
+**Result: BLOCKED — environment limitation, not a KVCacheV2/prefix-reuse
+finding.** Model loading succeeded (both checkpoints loaded, weights
+resolved), but the first generation step failed with:
+```
+[TensorRT-LLM][ERROR] CUDA runtime error in
+cudaOccupancyMaxActiveBlocksPerMultiprocessor(...
+mmha::masked_multihead_attention_kernel<...>...): no kernel image is
+available for execution on the device
+(.../decoderMaskedMultiheadAttentionLaunch.h:276)
+```
+This is the generation-phase masked multi-head attention kernel reporting
+that the **currently-installed** native extension in this dev container has
+no compiled kernel image for this GPU's SM architecture (H200, SM 90) for
+this kernel instantiation — i.e. the installed `.so` predates or otherwise
+excludes an SM-90 build of this particular generation attention kernel path.
+This is unrelated to KVCacheManagerV2, target/draft prefix reuse, or
+anything under investigation in this session; it is a pre-existing state of
+the installed binary in this container, not something introduced by this
+investigation (no production code or build artifacts were modified this
+session — see the note below on an aborted rebuild attempt). Rebuilding the
+extension to add SM-90 kernel images was explicitly out of scope
+("do not rebuild the full project"), so this could not be worked around.
+
+**Note on an aborted rebuild attempt:** partway through this session, an
+earlier attempt to run these probes via the `trtllm-dev test` wrapper
+(instead of raw `docker exec ... python3 -m pytest`, per the coordinator's
+mid-task redirect) was found to trigger `trtllm-dev`'s default
+auto-build/staleness-check path, which invoked a full
+`scripts/build_wheel.py` C++/CUDA rebuild — several redundant instances of
+which ran briefly in parallel before being identified and killed (via `kill`
+on each PID, both on the host and inside the container) once the violation
+of the "do not rebuild the full project" constraint was noticed. The
+in-progress compiles were terminated before any object files were linked
+into the installed extension or any output installed over the pre-existing
+`.so` — confirmed by successfully re-importing `tensorrt_llm.bindings` and
+re-running the already-passing Q1-Q4 suite (6/6 still pass) immediately
+afterward, and by `git status` showing no changes outside this session's own
+new test/report files. All subsequent test execution in this session (Q6,
+Q7, atomicity, and this Q8 attempt) used the original, unmodified
+`docker exec -w /code/tensorrt_llm tensorrt_llm-devel-allim python3 -m
+pytest ...` invocation instead. The SM-90 MMHA kernel-image gap encountered
+here is therefore a **pre-existing** limitation of the container's installed
+extension, not a side effect of the aborted rebuild.
+
+**Answer: Q8's model-level correctness claim remains unproven at runtime in
+this environment**, exactly as the original task instructions anticipated
+for the "no model artifact available" case — except here the blocker was a
+missing SM-90 kernel image in the pre-built extension, not a missing model
+artifact (the models themselves were available and loaded correctly). Per
+the source-only trace above (carried over from
+`topology_and_prefix_reuse.md`, re-verified by direct re-read this session):
+the mechanism for a draft-manager KV state gap under target prefix reuse is
+**structurally reachable** (draft manager's own cache is never populated for
+the reused-prefix range, either by its own reuse-matching or by its own
+forward pass, while its chunk bookkeeping is copied/shared from the target's
+post-reuse position) — but **whether this manifests as silent
+corruption, a safely-gated reduced-context draft, or something else
+entirely is not proven by any runtime evidence gathered in this session.**
+Do not infer a corruption bug from the separate-caches topology alone.
+
+**Proves runtime behavior vs. confirms configuration:** **Blocked.** The
+precise blocker is: this container's currently-installed
+`tensorrt_llm.bindings` native extension lacks a compiled generation-phase
+MMHA kernel image for SM 90 (H200) for the code path exercised by two-model
+EAGLE3 speculative decoding generation. Resolving this requires either a
+full or targeted extension rebuild (explicitly out of scope for this
+investigation) or access to a container/environment with a more complete
+SM-90 kernel build. The mechanism-level finding remains
+**confirmed only by source**, exactly as it was before this session's
+attempt.
+
+---
+
 ## Summary
 
 | Q | Answer | Evidence tier |
@@ -276,10 +638,94 @@ residual gap — out of scope for this pass given time constraints).
 | Q2 | NOT always aligned — a failed draft-mirror suspend leaves target suspended, draft still active, exception uncaught | Real scheduler code; mocked managers (no GPU) |
 | Q3 | Recoverable, and cleaned up consistently — capacity preserved, no page leak, close/free succeed | Real native GPU allocation, real OutOfPagesError |
 | Q4 | Conservatively differs — scheduler charges 0 extra draft tokens, manager reserves `max_total_draft_tokens` (4) more; manager is the binding, safe constraint | Real scheduler code (mocked managers) + real manager method (minimal stand-in object, not full GPU path) |
+| Q5 | Not applicable to KVCacheManagerV2 — `kv_connector_manager` is hard-asserted to `None` at construction; no rollback-rejection path exists to test | Blocked — confirmed by an unconditional source-level assertion |
+| Q6 | YES — deferred requests retain already-granted capacity untouched; draft prep is structurally skipped (not scheduler-mirrored for context); post-first-chunk retention is an explicit, commented, intentional policy | Real scheduler code (mocked managers, no GPU) |
+| Q7 | Both SHRINK (recoverable, capacity/state preserved) and FREE (start over) exist, selected deterministically by whether history has passed the revert target; callers tolerate both uniformly via `prepare_context`'s missing-entry handling | Real manager method logic (mocked native cache) |
+| Atomicity | CONFIRMED — failed native resize does not partially/non-atomically commit pages; manager's own committed-page count unchanged, checked directly (not inferred) | Real native GPU allocation, real OutOfPagesError |
+| Q8 | Mechanism structurally reachable per source trace (draft cache never populated for reused-prefix range); model-level manifestation (corruption vs. safely-gated vs. other) **not proven** | Blocked — missing SM-90 kernel image in this environment's installed extension; source-only for the mechanism |
 
 No test was blocked by a missing model artifact or unsupported configuration
-— once the dev container's Python dependencies were installed, a single
-H200 GPU was sufficient for all four questions, since none require loading an
-actual HF model (per-layer KV costs were supplied directly as `CacheCost`
-values for Q1, matching the existing repo test convention for that same
-function).
+for Q1-Q4 — once the dev container's Python dependencies were installed, a
+single H200 GPU was sufficient, since none require loading an actual HF
+model (per-layer KV costs were supplied directly as `CacheCost` values for
+Q1, matching the existing repo test convention for that same function). Q5
+is blocked by an unconditional source-level assertion (not an environment
+limitation). Q8 is blocked by a pre-existing SM-90 kernel-image gap in this
+container's installed extension, despite both required model checkpoints
+being available under `LLM_MODELS_ROOT` and ample GPU memory (150 GB on the
+H200).
+
+---
+
+## Implications for the proposed shared-manager / separate-pools refactor
+
+Claims below are marked **[runtime]** where directly supported by this
+session's or the prior session's runtime evidence, and **[source-only]**
+where they rest on source reading without runtime confirmation.
+
+1. **[runtime]** Target and draft managers are already fully independent
+   native objects (separate `impl`, separate `IndexMapper`, separate pools) —
+   Q1 confirms both construct and allocate real GPU memory independently
+   under a shared byte-budget split. A refactor to one manager with separate
+   memory pools would need to either preserve this independence internally
+   (two pool groups under one Python object) or explicitly decide to
+   *change* the isolation properties currently relied upon by callers.
+
+2. **[runtime]** The mirrored-call contract between scheduler and the two
+   managers (suspend/free) is **not currently atomic or rollback-safe**
+   (Q2): a failure in the second (draft) call of a sequential pair leaves
+   the two managers in different states, uncaught. A shared-manager refactor
+   that folds target/draft into one object would **structurally eliminate
+   this entire class of divergence** (Q2's finding), since there would be
+   only one call, not two — this is a concrete correctness argument in favor
+   of the refactor, not just a simplification.
+
+3. **[runtime]** Q4's scheduler/manager accounting divergence (disagg
+   transmission-complete window) is manager-arithmetic, not a target/draft
+   split issue per se — it would likely persist in a shared-manager design
+   unless the accounting formula itself is revisited, since it stems from
+   `BudgetTracker` vs. `_effective_draft_len` disagreeing, not from having
+   two manager objects.
+
+4. **[runtime]** Q6 and Q7's capacity-retention and revert-shrink-vs-free
+   behaviors are properties of a *single* `KVCacheManagerV2` instance's own
+   internal bookkeeping (`py_ctx_pre_resize_cap`, `kv_cache_map`) — a
+   shared-manager refactor would not need to change this logic, only ensure
+   it is applied consistently whether draft layers live in the same pool
+   group or a separate one within the unified object.
+
+5. **[runtime]** The atomicity re-verification confirms failed native
+   resizes are clean at the page-accounting level for the *existing*
+   per-manager pools — this is a property of the native `KvCache`/pool
+   implementation, not of how many manager objects wrap it, so it should
+   carry over unchanged to a shared-manager design with separate pools
+   internally.
+
+6. **[source-only]** Q5's finding that `kv_connector_manager` is entirely
+   unsupported for V2 means connector-rejection rollback symmetry is not a
+   constraint the refactor needs to satisfy today — but if a future V2
+   connector integration is added (to either the current two-manager or a
+   future shared-manager design), this question would need to be re-opened,
+   since nothing in the current source establishes what a correct
+   two-manager (or shared-manager) rollback contract should look like there.
+
+7. **[source-only, unproven at runtime]** Q8's traced mechanism — the draft
+   manager's own KV state is never populated for a target-reused prefix
+   range, while its chunk bookkeeping is copied/shared from the target's
+   post-reuse position — is the single strongest *a priori* argument for a
+   shared-manager design specifically for the **two-model / one-model-
+   separate-layout topologies** (Variants A/B in
+   `topology_and_prefix_reuse.md`): a shared manager with one `_KVCache` per
+   request (Variant C's existing folded topology) is **already established
+   by source trace to be structurally immune** to this exact gap, because
+   reuse is resolved once for all layer groups sharing that one cache. If
+   the refactor's goal is one manager with separate *memory pools* per
+   layer group but still one `_KVCache`/reuse-resolution per request
+   (closer to Variant C's model than Variants A/B's), this would mechanically
+   close the Q8 gap as a side effect. **This is not confirmed by any runtime
+   evidence in this session** — no model-level test succeeded in either
+   demonstrating or ruling out actual output corruption from this mechanism,
+   due to the SM-90 kernel-image blocker. Do not treat this as a proven bug;
+   treat it as the most concrete, source-cited motivation this investigation
+   found for prioritizing the refactor, pending a runtime-capable
+   environment to actually confirm or rule out model-level impact.
