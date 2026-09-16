@@ -2303,6 +2303,10 @@ class LayerwiseBenchmarksConfig(StrictBaseModel):
 
 class EagleDecodingConfig(DecodingBaseConfig):
     decoding_type: Literal["Eagle"] = Field(default="Eagle")
+    # One-model EAGLE layers append their own KV slots to the target manager
+    # in both aggregated and disaggregated serving.
+    _allow_separate_draft_kv_cache: bool = PrivateAttr(False)
+
     eagle_choices: Optional[List[List[int]]] = Field(
         default=None,
         description=
@@ -2734,6 +2738,10 @@ class DraftTargetDecodingConfig(DecodingBaseConfig):
 
 class MTPDecodingConfig(DecodingBaseConfig):
     decoding_type: Literal["MTP"] = Field(default="MTP")
+    # Native MTP layers use the target cache layout and append their own KV
+    # slots to its manager in both aggregated and disaggregated serving.
+    _allow_separate_draft_kv_cache: bool = PrivateAttr(False)
+
     use_relaxed_acceptance_for_thinking: bool = Field(
         default=False,
         description=
