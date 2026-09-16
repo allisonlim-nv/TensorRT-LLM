@@ -78,3 +78,12 @@ TestStep3p7SpeculativeDecoding::test_step3p7_mtp:
 TestKimiK3DSpark::test_gsm8k_tep8:
   ref_al: 4.323
   min_al: 4.0
+disagg::TestNemotron3Super120B::test_auto_dtype:
+  ref_al: 3.542334313074808
+  min_al: 3.3652175974210676
+disagg::TestGPTOSS::test_eagle3[overlap_scheduler=True]:
+  ref_al: null
+  min_al: null
+disagg::TestGPTOSS::test_eagle3[overlap_scheduler=False]:
+  ref_al: null
+  min_al: null

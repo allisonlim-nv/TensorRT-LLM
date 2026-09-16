@@ -1229,6 +1229,10 @@ class TestGPTOSS(LlmapiAccuracyTestHarness):
         gen_server_config = {
             "disable_overlap_scheduler": not overlap_scheduler,
             "speculative_config": speculative_decoding_config,
+            "enable_iter_perf_stats": True,
+            # Keep the full workload in the engine and server stats buffers.
+            "max_stats_len": -1,
+            "iter_stats_max_iterations": -1,
             "cache_transceiver_config": {
                 "backend": "NIXL",
                 "transceiver_runtime": "PYTHON",
@@ -1263,6 +1267,12 @@ class TestGPTOSS(LlmapiAccuracyTestHarness):
                 model_name,
                 test_sets=["GSM8K"],
                 extra_evaluator_kwargs={GSM8K: self.extra_evaluator_kwargs})
+            test_key = ("disagg::TestGPTOSS::test_eagle3"
+                        f"[overlap_scheduler={overlap_scheduler}]")
+            acceptance_length = compute_disagg_acceptance_length(llm.serve_url)
+            print(f"[AL] {test_key} "
+                  f"acceptance_length = {acceptance_length:.6f}")
+            assert_acceptance_length(test_key, acceptance_length)
 
 
 @pytest.mark.timeout(DEFAULT_TEST_TIMEOUT)
@@ -1928,6 +1938,9 @@ class TestNemotron3Super120B(LlmapiAccuracyTestHarness):
             spec = {"decoding_type": "MTP", "max_draft_len": mtp_nextn}
             ctx_cfg["speculative_config"] = spec
             gen_cfg["speculative_config"] = spec
+            gen_cfg["enable_iter_perf_stats"] = True
+            gen_cfg["max_stats_len"] = -1
+            gen_cfg["iter_stats_max_iterations"] = -1
         if block_reuse:
             ctx_cfg["kv_cache_config"]["enable_block_reuse"] = True
             gen_cfg["kv_cache_config"]["enable_block_reuse"] = True
@@ -1940,6 +1953,13 @@ class TestNemotron3Super120B(LlmapiAccuracyTestHarness):
         with launch_disaggregated_llm(disagg_cfg, ctx_cfg, gen_cfg,
                                       self.MODEL_PATH) as llm:
             run_accuracy_test(llm, self.MODEL_NAME, ["GSM8K"])
+            if mtp_nextn > 0:
+                test_key = "disagg::TestNemotron3Super120B::test_auto_dtype"
+                acceptance_length = compute_disagg_acceptance_length(
+                    llm.serve_url)
+                print(f"[AL] {test_key} "
+                      f"acceptance_length = {acceptance_length:.6f}")
+                assert_acceptance_length(test_key, acceptance_length)
 
     @pytest.mark.skip_less_device(8)
     def test_ctx_dp2_gen_tp4(self):
