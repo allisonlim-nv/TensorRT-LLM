@@ -1,0 +1,74 @@
+# Copyright (c) 2026, NVIDIA CORPORATION. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Paths are relative to --models-root or LLM_MODELS_ROOT.
+# Each case starts one context worker and one generation worker on disjoint GPUs.
+# Per-worker TP/EP settings match dspark_acceptance.yaml; total GPUs are doubled.
+# The runner applies DSpark only to the generation worker.
+# This matrix targets eight B200 GPUs; the 16-GPU Pro recipes are excluded.
+defaults:
+  common_options:
+    max_batch_size: 8
+    max_seq_len: 8192
+    max_num_tokens: 8192
+    cuda_graph_config: null
+    enable_chunked_prefill: false
+    disable_overlap_scheduler: true
+    kv_cache_config:
+      enable_block_reuse: false
+    cache_transceiver_config:
+      backend: NIXL
+      transceiver_runtime: PYTHON
+      max_tokens_in_buffer: 8192
+  chat_template_kwargs:
+    enable_thinking: false
+
+cases:
+  qwen3-8b:
+    model: Qwen3/Qwen3-8B
+    drafter: dspark/dspark_qwen3_8b_block7
+    max_draft_len: 7
+    common_options:
+      tensor_parallel_size: 1
+      moe_expert_parallel_size: 1
+      enable_attention_dp: false
+      kv_cache_config:
+        free_gpu_memory_fraction: 0.6
+    spec_options:
+      attention_backend: VANILLA
+    notes: >-
+      Experimental disaggregated counterpart of TestQwen3_8B.test_dspark.
+      Requires 1 context GPU plus 1 generation GPU. Use chat prompts with
+      thinking disabled. The standalone GQA drafter does not receive the
+      target's prefill hidden-state history across the disaggregation boundary.
+
+  deepseek-v4-flash-nvfp4:
+    model: DeepSeek-V4-Flash-nvfp4-DSpark
+    drafter: DeepSeek-V4-Flash-nvfp4-DSpark
+    max_draft_len: 5
+    common_options:
+      attn_backend: TRTLLM
+      tensor_parallel_size: 4
+      moe_expert_parallel_size: 4
+      enable_attention_dp: true
+      custom_tokenizer: deepseek_v4
+      moe_config:
+        backend: MEGAMOE_CUTEDSL
+      kv_cache_config:
+        free_gpu_memory_fraction: 0.5
+    notes: >-
+      Based on TestDeepSeekV4FlashDSpark.test_gsm8k_1p1d_dep4, with the
+      aggregate measurement's eager execution, batch size, and sequence/token
+      limits. Requires 4 context GPUs plus 4 generation GPUs. This runner
+      and its adjusted measurement settings still require GPU validation.
