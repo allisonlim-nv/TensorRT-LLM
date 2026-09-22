@@ -73,7 +73,7 @@ def _parse_arguments() -> argparse.Namespace:
     )
     parser.add_argument("--prompt-format", choices=("chat", "raw"), default="chat")
     parser.add_argument("--warmup-prompts", type=int, default=2)
-    parser.add_argument("--concurrency", type=_positive_int, default=8)
+    parser.add_argument("--concurrency", type=_positive_int, default=1)
     parser.add_argument("--startup-timeout", type=_positive_int, default=3600)
     parser.add_argument("--request-timeout", type=_positive_int, default=1800)
     parser.add_argument(
