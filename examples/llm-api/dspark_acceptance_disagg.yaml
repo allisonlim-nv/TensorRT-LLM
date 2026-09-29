@@ -14,19 +14,22 @@
 
 # Paths are relative to --models-root or LLM_MODELS_ROOT.
 # Each case starts one context worker and one generation worker on disjoint GPUs.
-# Per-worker TP/EP settings match dspark_acceptance.yaml; total GPUs are doubled.
+# Each aggregate_case names its CP1 reference in dspark_acceptance.yaml.
 # The runner applies the same DSpark configuration to both workers.
 # This matrix targets eight B200 GPUs; the 16-GPU Pro recipes are excluded.
 defaults:
   common_options:
     max_batch_size: 1
     max_seq_len: 8192
-    max_num_tokens: 8192
-    cuda_graph_config: null
-    enable_chunked_prefill: false
-    disable_overlap_scheduler: true
+    max_num_tokens: 128
+    cuda_graph_config:
+      batch_sizes: [1]
+      max_batch_size: 1
+    enable_chunked_prefill: true
+    disable_overlap_scheduler: false
+    print_iter_log: true
     kv_cache_config:
-      enable_block_reuse: false
+      enable_block_reuse: true
     cache_transceiver_config:
       backend: NIXL
       transceiver_runtime: PYTHON
@@ -35,15 +38,15 @@ defaults:
     enable_thinking: false
 
 cases:
-  qwen3-8b:
+  qwen3-8b: &qwen
     model: Qwen3/Qwen3-8B
     drafter: dspark/dspark_qwen3_8b_block7
     max_draft_len: 7
-    common_options:
+    common_options: &qwen_options
       tensor_parallel_size: 1
       moe_expert_parallel_size: 1
       enable_attention_dp: false
-      kv_cache_config:
+      kv_cache_config: &qwen_cache
         free_gpu_memory_fraction: 0.6
         use_kv_cache_manager_v2: true
     spec_options:
@@ -54,11 +57,11 @@ cases:
       thinking disabled. DSpark is enabled on both context and generation;
       reported AL uses generation-side verification counters only.
 
-  deepseek-v4-flash-nvfp4:
+  deepseek-v4-flash-nvfp4: &dsv4
     model: DeepSeek-V4-Flash-nvfp4-DSpark
     drafter: DeepSeek-V4-Flash-nvfp4-DSpark
     max_draft_len: 5
-    common_options:
+    common_options: &dsv4_options
       attn_backend: TRTLLM
       tensor_parallel_size: 4
       moe_expert_parallel_size: 4
@@ -66,13 +69,41 @@ cases:
       custom_tokenizer: deepseek_v4
       moe_config:
         backend: MEGAMOE_CUTEDSL
-      kv_cache_config:
+      kv_cache_config: &dsv4_cache
         free_gpu_memory_fraction: 0.5
-        # Unified draft prefill uses ordinary pages; window eviction remains enabled.
-        enable_swa_scratch_reuse: false
+        # Target prefill shares scratch pages; draft history keeps ordinary pages.
+        enable_swa_scratch_reuse: true
     notes: >-
       Based on TestDeepSeekV4FlashDSpark.test_gsm8k_1p1d_dep4, with the
-      aggregate measurement's eager execution, batch size, and sequence/token
+      aggregate measurement's CUDA graphs, batch size, and sequence/token
       limits, and DSpark enabled on both context and generation. Requires
       4 context GPUs plus 4 generation GPUs. This runner and its adjusted
       measurement settings still require GPU validation.
+
+  qwen3-8b-explicit-pools:
+    <<: *qwen
+    common_options:
+      <<: *qwen_options
+      kv_cache_config:
+        <<: *qwen_cache
+        pool_ratio: [1.0]
+    notes: Full-feature Qwen recipe with explicit target pool sizing.
+
+  deepseek-v4-flash-nvfp4-explicit-pools: &dsv4_explicit
+    <<: *dsv4
+    common_options: &dsv4_explicit_options
+      <<: *dsv4_options
+      kv_cache_config: &dsv4_explicit_cache
+        <<: *dsv4_cache
+        # Target groups: SWA, full compressed history, short compressor state.
+        pool_ratio: [0.2, 0.7, 0.1]
+    notes: Full-feature DSV4 recipe with explicit target pool sizing and SWA scratch.
+
+  deepseek-v4-flash-nvfp4-explicit-pools-no-scratch:
+    <<: *dsv4_explicit
+    common_options:
+      <<: *dsv4_explicit_options
+      kv_cache_config:
+        <<: *dsv4_explicit_cache
+        enable_swa_scratch_reuse: false
+    notes: Scratch-off control for the explicit-pool DSV4 recipe.

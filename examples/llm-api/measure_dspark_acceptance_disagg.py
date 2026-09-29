@@ -77,6 +77,16 @@ def _parse_arguments() -> argparse.Namespace:
     parser.add_argument("--startup-timeout", type=_positive_int, default=3600)
     parser.add_argument("--request-timeout", type=_positive_int, default=1800)
     parser.add_argument(
+        "--aggregate-results",
+        type=Path,
+        help="Fresh aggregate output directory to compare with each case's aggregate_case reference",
+    )
+    parser.add_argument(
+        "--max-al-difference",
+        type=float,
+        help="Optional absolute agg/disagg AL difference gate; requires --aggregate-results",
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Print resolved recipes and GPU allocation; do not start servers.",
@@ -86,7 +96,15 @@ def _parse_arguments() -> argparse.Namespace:
         parser.error("set LLM_MODELS_ROOT or pass --models-root")
     if args.warmup_prompts < 0:
         parser.error("--warmup-prompts must be nonnegative")
-    for field in ("config", "models_root", "output_dir", "prompt_file"):
+    if args.max_al_difference is not None and (
+        not args.aggregate_results
+        or not math.isfinite(args.max_al_difference)
+        or args.max_al_difference < 0
+    ):
+        parser.error(
+            "--max-al-difference requires --aggregate-results and a finite nonnegative value"
+        )
+    for field in ("config", "models_root", "output_dir", "prompt_file", "aggregate_results"):
         value = getattr(args, field)
         if value is not None:
             setattr(args, field, value.expanduser().resolve())
@@ -126,6 +144,7 @@ def _load_cases(args: argparse.Namespace) -> dict[str, dict]:
         if not re.fullmatch(r"[a-zA-Z0-9_-]+", name) or name not in config["cases"]:
             raise ValueError(f"Unknown case {name}; choices: {', '.join(config['cases'])}")
         case = _merge(config.get("defaults", {}), config["cases"][name])
+        case.setdefault("aggregate_case", name)
         for key in ("model", "drafter"):
             case[key] = str((args.models_root / case[key]).resolve())
         draft_len = case["max_draft_len"]
@@ -273,10 +292,10 @@ def _tokenize(args: argparse.Namespace, case: dict, prompts: list[str]) -> list[
     longest = max(map(len, tokens))
     for role in ("context", "generation"):
         limits = case[f"{role}_options"]
-        if longest + args.max_tokens > limits["max_seq_len"] or longest > limits["max_num_tokens"]:
-            raise ValueError(
-                f"Prompt/output exceeds the {role} sequence or unchunked prefill budget"
-            )
+        if longest + args.max_tokens > limits["max_seq_len"]:
+            raise ValueError(f"Prompt/output exceeds the {role} sequence budget")
+        if not limits.get("enable_chunked_prefill", False) and longest > limits["max_num_tokens"]:
+            raise ValueError(f"Prompt exceeds the {role} unchunked prefill budget")
     return tokens
 
 
@@ -646,6 +665,7 @@ def _run_case(
     directory.mkdir()
     tokens = _tokenize(args, case, prompts)
     _write_json(directory / "prompt_token_ids.json", tokens)
+    reference = _aggregate_reference(args, case, prompts, tokens)
     with _launch_servers(args, case, devices, directory) as (
         router,
         context,
@@ -688,8 +708,99 @@ def _run_case(
             "requests": requests,
             **summary,
         }
+        if reference is not None:
+            difference = result["acceptance_length"] - reference["acceptance_length"]
+            tolerance = getattr(args, "max_al_difference", None)
+            result.update(
+                aggregate_case=case["aggregate_case"],
+                aggregate_al=reference["acceptance_length"],
+                al_difference=difference,
+                comparison_status="measured" if tolerance is None else "passed",
+            )
+            if tolerance is not None and abs(difference) > tolerance:
+                result.update(
+                    status="failed",
+                    comparison_status="failed",
+                    error=f"Absolute AL difference {abs(difference):.6f} exceeds {tolerance}",
+                )
         _write_json(args.output_dir / f"{name}.json", result)
         return result
+
+
+def _aggregate_reference(
+    args: argparse.Namespace, case: dict, prompts: list[str], tokens: list[list[int]]
+) -> dict | None:
+    directory = getattr(args, "aggregate_results", None)
+    if directory is None:
+        return None
+    name = case["aggregate_case"]
+    if not re.fullmatch(r"[a-zA-Z0-9_-]+", name):
+        raise ValueError(f"Invalid aggregate_case: {name!r}")
+    manifest = json.loads((directory / "manifest.json").read_text())
+    corpus = "".join(json.dumps({"prompt": prompt}) + "\n" for prompt in prompts)
+    expected = {
+        "mode": "agg",
+        "num_prompts": len(prompts),
+        "prompt_sha256": hashlib.sha256(corpus.encode()).hexdigest(),
+        "prompt_format": args.prompt_format,
+        "max_tokens": args.max_tokens,
+        "warmup_prompts": args.warmup_prompts,
+    }
+    for key, value in expected.items():
+        if manifest.get(key) != value:
+            raise ValueError(f"Aggregate reference {key} differs; regather matched baselines")
+    reference = json.loads((directory / f"{name}.json").read_text())
+    if reference.get("status") != "ok" or not math.isfinite(reference["acceptance_length"]):
+        raise ValueError(f"Aggregate reference {name} did not succeed")
+    if (
+        reference.get("prompt_token_ids_sha256")
+        != hashlib.sha256(json.dumps(tokens).encode()).hexdigest()
+    ):
+        raise ValueError("Aggregate and disaggregate tokenized prompts differ")
+    recipe = reference["recipe"]
+    for key in ("model", "drafter", "max_draft_len", "system_prompt", "chat_template_kwargs"):
+        if recipe.get(key) != case.get(key):
+            raise ValueError(f"Aggregate and disaggregate {key} differ")
+    expected_spec = _merge(
+        case.get("spec_options", {}),
+        {
+            "decoding_type": "DSpark",
+            "speculative_model": case["drafter"],
+            "max_draft_len": case["max_draft_len"],
+        },
+    )
+    if recipe["spec_options"] != expected_spec:
+        raise ValueError("Aggregate and disaggregate speculative settings differ")
+    normalized = {}
+    for role, source in (
+        ("aggregate", recipe["llm_options"]),
+        ("context", case["context_options"]),
+        ("generation", case["generation_options"]),
+    ):
+        options = copy.deepcopy(source)
+        for key in (
+            "cache_transceiver_config",
+            "num_serve_frontends",
+            "return_perf_metrics",
+            "speculative_config",
+        ):
+            options.pop(key, None)
+        options.setdefault("kv_cache_config", {}).setdefault("use_kv_cache_manager_v2", True)
+        cp = options.pop("context_parallel_size", 1)
+        cp_config = options.pop("cp_config", None)
+        if cp > 1 and (
+            role != "generation"
+            or not cp_config
+            or cp_config.get("cp_type", "").upper() != "HELIX"
+            or cp_config.get("tokens_per_block")
+            != options["kv_cache_config"].get("tokens_per_block")
+        ):
+            raise ValueError("Aggregate comparison supports only generation-side Helix CP")
+        options["tensor_parallel_size"] = options.get("tensor_parallel_size", 1) * cp
+        normalized[role] = options
+    if not normalized["aggregate"] == normalized["context"] == normalized["generation"]:
+        raise ValueError("Aggregate reference and disaggregate engine settings differ")
+    return reference
 
 
 def _write_summary(output_dir: Path, rows: list[dict], total_cases: int) -> None:
@@ -706,6 +817,10 @@ def _write_summary(output_dir: Path, rows: list[dict], total_cases: int) -> None
         "status",
         "required_gpus",
         "acceptance_length",
+        "aggregate_case",
+        "aggregate_al",
+        "al_difference",
+        "comparison_status",
         "acceptance_rate",
         "verification_steps",
         "accepted_draft_tokens",
@@ -757,6 +872,10 @@ def _run_cases(args: argparse.Namespace, cases: dict[str, dict], devices: list[s
             "max_tokens": args.max_tokens,
             "concurrency": args.concurrency,
             "warmup_prompts": args.warmup_prompts,
+            "aggregate_results": str(args.aggregate_results)
+            if getattr(args, "aggregate_results", None)
+            else None,
+            "max_al_difference": getattr(args, "max_al_difference", None),
         },
     )
     rows = []

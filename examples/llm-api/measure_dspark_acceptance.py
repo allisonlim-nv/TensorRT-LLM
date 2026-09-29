@@ -264,6 +264,7 @@ def _run_worker(args: argparse.Namespace, name: str, case: dict) -> None:
         model=case["model"], speculative_config=case["spec_options"], **case["llm_options"]
     ) as llm:
         tokenized = _format_prompts(llm, prompts, case, args.prompt_format)
+        _write_json(args.output_dir / f"{name}.prompt_token_ids.json", {"tokens": tokenized})
         longest = max(map(len, tokenized))
         if longest + args.max_tokens > llm.args.max_seq_len:
             raise ValueError(
@@ -291,6 +292,7 @@ def _run_worker(args: argparse.Namespace, name: str, case: dict) -> None:
         "prompt_format": args.prompt_format,
         "max_tokens": args.max_tokens,
         "warmup_requests": min(args.warmup_prompts, len(prompts)),
+        "prompt_token_ids_sha256": hashlib.sha256(json.dumps(tokenized).encode()).hexdigest(),
         "elapsed_seconds": elapsed,
         "al_definition": "1 + sum(accepted_draft_tokens) / sum(verification_steps)",
         **summary,
@@ -376,6 +378,7 @@ def _run_cases(args: argparse.Namespace, cases: dict[str, dict]) -> int:
             "prompt_sha256": hashlib.sha256(corpus.encode("utf-8")).hexdigest(),
             "prompt_format": args.prompt_format,
             "max_tokens": args.max_tokens,
+            "warmup_prompts": args.warmup_prompts,
             "launcher": args.launcher,
         },
     )
@@ -431,6 +434,7 @@ def _run_cases(args: argparse.Namespace, cases: dict[str, dict]) -> int:
 
 
 def _main() -> int:
+    os.environ.setdefault("TLLM_LOG_LEVEL", "info")
     args = _parse_arguments()
     cases = _load_cases(args)
     if args.worker:
