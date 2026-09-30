@@ -57,6 +57,29 @@ cases:
       thinking disabled. DSpark is enabled on both context and generation;
       reported AL uses generation-side verification counters only.
 
+  qwen3-8-27b-tp2:
+    model: Qwen3.8-27B
+    drafter: Qwen3.8-27B-DSpark
+    max_draft_len: 7
+    common_options:
+      tensor_parallel_size: 2
+      moe_expert_parallel_size: 1
+      enable_attention_dp: false
+      max_num_tokens: 512
+      kv_cache_config:
+        free_gpu_memory_fraction: 0.6
+        enable_block_reuse: false
+        use_kv_cache_manager_v2: true
+    spec_options:
+      attention_backend: VANILLA
+    aggregate_case: qwen3-8-27b-tp2
+    notes: >-
+      Wrapped Qwen3_5VLModel target with a standalone DSpark drafter. Exercises
+      history snapshots on prefill and history restoration plus VANILLA staging
+      on generation through the inner-model lookup. Compare acceptance against
+      the matched aggregate case using identical prompts. TP2 per worker,
+      four B200s total; unvalidated.
+
   deepseek-v4-flash-nvfp4: &dsv4
     model: DeepSeek-V4-Flash-nvfp4-DSpark
     drafter: DeepSeek-V4-Flash-nvfp4-DSpark

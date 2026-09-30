@@ -49,6 +49,26 @@ cases:
       Standalone GQA drafter from TestQwen3_8B.test_dspark. Use chat prompts
       with thinking disabled for the intended drafter training distribution.
 
+  qwen3-8-27b-tp2:
+    model: Qwen3.8-27B
+    drafter: Qwen3.8-27B-DSpark
+    max_draft_len: 7
+    llm_options:
+      tensor_parallel_size: 2
+      moe_expert_parallel_size: 1
+      enable_attention_dp: false
+      max_num_tokens: 512
+      kv_cache_config:
+        free_gpu_memory_fraction: 0.6
+        enable_block_reuse: false
+    spec_options:
+      attention_backend: VANILLA
+    notes: >-
+      Wrapped-target coverage: this checkpoint uses Qwen3_5ForConditionalGeneration,
+      with the DSpark worker inside Qwen3_5VLModel.language_model. Exercises
+      managed-cache preparation and history snapshots through the inner-model
+      lookup with CUDA graphs and VANILLA staging. TP2, two B200s; unvalidated.
+
   deepseek-v4-flash-nvfp4: &dsv4
     model: DeepSeek-V4-Flash-nvfp4-DSpark
     drafter: DeepSeek-V4-Flash-nvfp4-DSpark
