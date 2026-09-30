@@ -140,8 +140,9 @@ cases:
       moe_expert_parallel_size: 1
       moe_config:
         backend: CUTLASS
+        disable_finalize_fusion: true
     notes: >-
       BF16 hybrid MoE target with approximately 250 GB of checkpoint tensors,
       sharded across four B200s. Batch size one and 8192-token sequence cap
       leave room for draft weights, KV, staging, and runtime workspaces.
-      Memory fit is estimated; this recipe has not been run.
+      Uses deterministic CUTLASS MoE finalization for acceptance comparisons.

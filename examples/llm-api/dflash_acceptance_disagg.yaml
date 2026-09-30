@@ -153,8 +153,9 @@ cases:
       moe_expert_parallel_size: 1
       moe_config:
         backend: CUTLASS
+        disable_finalize_fusion: true
     aggregate_case: qwen3-5-122b-a10b-tp4
     notes: >-
       Four B200s per worker, eight total. Each worker loads its own TP4 target
       and drafter; the two groups transfer hybrid state and target/draft KV.
-      Memory fit is estimated; this recipe has not been run.
+      Uses deterministic CUTLASS MoE finalization for acceptance comparisons.
