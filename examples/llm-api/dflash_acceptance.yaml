@@ -1,0 +1,147 @@
+# Copyright (c) 2026, NVIDIA CORPORATION. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Paths are relative to --models-root or LLM_MODELS_ROOT.
+# B200 recipes run sequentially, using at most four GPUs per aggregate engine.
+# Matching disagg recipes use at most eight GPUs (four per worker).
+defaults:
+  llm_options:
+    max_batch_size: 1
+    max_seq_len: 8192
+    max_num_tokens: 128
+    tensor_parallel_size: 1
+    cuda_graph_config:
+      batch_sizes: [1]
+      max_batch_size: 1
+    enable_chunked_prefill: true
+    disable_overlap_scheduler: false
+    print_iter_log: true
+    kv_cache_config:
+      enable_block_reuse: false
+      free_gpu_memory_fraction: 0.6
+      use_kv_cache_manager_v2: true
+  chat_template_kwargs:
+    enable_thinking: false
+
+cases:
+  qwen3-8b:
+    model: Qwen3/Qwen3-8B
+    drafter: Qwen3-8B-DFlash-b16
+    # The checkpoint's block_size is 16: one seed plus 15 draft tokens.
+    max_draft_len: 15
+    spec_options:
+      attention_backend: VANILLA
+    notes: >-
+      Qwen3-8B with the Qwen3-8B-DFlash-b16 drafter. Chat prompts use thinking
+      disabled. Prefix-cache reuse is disabled, matching the DFlash accuracy
+      test; hidden-state context must be collected during prefill.
+
+  qwen3-8b-trtllm:
+    model: Qwen3/Qwen3-8B
+    drafter: Qwen3-8B-DFlash-b16
+    max_draft_len: 15
+    spec_options:
+      attention_backend: TRTLLM
+    notes: >-
+      B200 paged draft attention using manager-owned KV directly, without
+      VANILLA's dense staging buffers. TP1, one GPU.
+
+  qwen3-8b-tp2:
+    model: Qwen3/Qwen3-8B
+    drafter: Qwen3-8B-DFlash-b16
+    max_draft_len: 15
+    spec_options:
+      attention_backend: VANILLA
+    llm_options:
+      tensor_parallel_size: 2
+    notes: >-
+      Two-GPU coverage of sharded target and draft KV with VANILLA staging.
+
+  qwen3-4b:
+    model: Qwen3/Qwen3-4B
+    drafter: Qwen3-4B-DFlash-b16
+    max_draft_len: 15
+    spec_options:
+      attention_backend: VANILLA
+    notes: >-
+      Smaller dense target with a five-layer drafter and block size 16.
+      TP1, one B200.
+
+  llama3-1-8b:
+    model: llama-3.1-model/Llama-3.1-8B-Instruct
+    drafter: LLaMA3.1-8B-Instruct-DFlash-UltraChat
+    # This checkpoint uses block size 10, including the seed token.
+    max_draft_len: 9
+    spec_options:
+      attention_backend: VANILLA
+    notes: >-
+      Llama target with its UltraChat DFlash drafter. Exercises a different
+      tokenizer and nine draft positions. TP1, one B200.
+
+  qwen3-5-4b:
+    model: Qwen3.5-4B
+    drafter: Qwen3.5-4B-DFlash
+    max_draft_len: 15
+    spec_options:
+      attention_backend: VANILLA
+    llm_options:
+      max_num_tokens: 512
+    notes: >-
+      Hybrid GDN/attention target with a dense DFlash drafter. TP1, one B200.
+      Uses 512-token chunks with the V2 hybrid cache manager.
+
+  qwen3-5-27b-tp2:
+    model: Qwen3.5-27B
+    drafter: Qwen3.5-27B-DFlash
+    max_draft_len: 15
+    spec_options:
+      attention_backend: VANILLA
+    llm_options:
+      max_num_tokens: 512
+      tensor_parallel_size: 2
+    notes: >-
+      Larger hybrid target and five-layer drafter sharded across two B200s.
+      Exercises hybrid state plus target and draft KV under TP2.
+
+  qwen3-5-35b-a3b-fp8:
+    model: Qwen3.5-35B-A3B-FP8
+    drafter: Qwen3.5-35B-A3B-DFlash
+    max_draft_len: 15
+    spec_options:
+      attention_backend: VANILLA
+    llm_options:
+      max_num_tokens: 512
+      moe_config:
+        backend: DEEPGEMM
+    notes: >-
+      FP8 hybrid MoE target with a BF16 DFlash drafter. Uses the Blackwell
+      DEEPGEMM MoE backend. TP1, one B200.
+
+  qwen3-5-122b-a10b-tp4:
+    model: Qwen3.5-122B-A10B
+    drafter: Qwen3.5-122B-A10B-DFlash
+    max_draft_len: 15
+    spec_options:
+      attention_backend: VANILLA
+    llm_options:
+      max_num_tokens: 512
+      tensor_parallel_size: 4
+      moe_expert_parallel_size: 1
+      moe_config:
+        backend: CUTLASS
+    notes: >-
+      BF16 hybrid MoE target with approximately 250 GB of checkpoint tensors,
+      sharded across four B200s. Batch size one and 8192-token sequence cap
+      leave room for draft weights, KV, staging, and runtime workspaces.
+      Memory fit is estimated; this recipe has not been run.
