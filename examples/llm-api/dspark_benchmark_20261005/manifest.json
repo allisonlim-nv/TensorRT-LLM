@@ -1,0 +1,3552 @@
+{
+  "archive": "artifacts.tar.gz",
+  "archive_sha256": "7e8c1300c197813a61ee269919871ce5d2571659a23402b394979b072ee1399f",
+  "archive_bytes": 9970840,
+  "base_revision": "234ee16411a0ced12cbeb242f2fd1eb5390e4d61",
+  "measured_revisions": {
+    "current": "ff47bcd68987adb4d148b7110a39cd7797f6ee51",
+    "main": "d27e97f6dece43028c40fb602cb77bb5ab28132d",
+    "ec4ef266": "ec4ef2666d05ef60012c834a43dca62c75509aec"
+  },
+  "external_dependencies": [
+    "Existing TRT-LLM development container and compatible native build",
+    "Qwen3/Qwen3-8B weights and tokenizer",
+    "dspark/dspark_qwen3_8b_block7 weights",
+    "ghcr.io/mlcommons/endpoints:89904fb (digest recorded in run identity.json)"
+  ],
+  "files": [
+    {
+      "path": "examples/llm-api/measure_dspark_endpoints.py",
+      "original_sha256": "2ec9fde61350067b9578aae2bdeda4a8178008b9fd884aa71aa725ad01bb3485",
+      "published_sha256": "2ec9fde61350067b9578aae2bdeda4a8178008b9fd884aa71aa725ad01bb3485",
+      "bytes": 18194,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/audit_reports.py",
+      "original_sha256": "60a98dc0f71cf95830a9e7be102c25210e074bbc65133351819e9372e2822f59",
+      "published_sha256": "60a98dc0f71cf95830a9e7be102c25210e074bbc65133351819e9372e2822f59",
+      "bytes": 4395,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/checkpoint/CMakeCache.txt",
+      "original_sha256": "ab4f8e6f8b65e92cfca12b30d88d91d972fd28861c1bd0d7af6803cdd32cb644",
+      "published_sha256": "ab4f8e6f8b65e92cfca12b30d88d91d972fd28861c1bd0d7af6803cdd32cb644",
+      "bytes": 69746,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/checkpoint/checkpoint.json",
+      "original_sha256": "9a040edbc993d24f20b1ad13496990b70aac0577df8c3dc76143883897361262",
+      "published_sha256": "9a040edbc993d24f20b1ad13496990b70aac0577df8c3dc76143883897361262",
+      "bytes": 2521,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/checkpoint/compile_commands.json",
+      "original_sha256": "2b71f19adba6dd61a54d4361dd09ba33b586234debfbaa14927feef9cb243a46",
+      "published_sha256": "2b71f19adba6dd61a54d4361dd09ba33b586234debfbaa14927feef9cb243a46",
+      "bytes": 2892874,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/checkpoint/index.patch",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/checkpoint/status.txt",
+      "original_sha256": "8d785de2e7577b5dd535a3403b49976120ea6cf4c733642af58b4906fd845598",
+      "published_sha256": "8d785de2e7577b5dd535a3403b49976120ea6cf4c733642af58b4906fd845598",
+      "bytes": 60,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/checkpoint/tracked.patch",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/checkpoint/untracked-paths.txt",
+      "original_sha256": "9611ac916ea21443de55d4fe15e937e17af51c4d668bc4a9b6ffe641ea896c40",
+      "published_sha256": "9611ac916ea21443de55d4fe15e937e17af51c4d668bc4a9b6ffe641ea896c40",
+      "bytes": 17100,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/checkpoint/untracked-source.tar",
+      "original_sha256": "8c479786bff13218b275516ec5fc42d9c1868f07eca76eac93979c745c389844",
+      "published_sha256": "8c479786bff13218b275516ec5fc42d9c1868f07eca76eac93979c745c389844",
+      "bytes": 30720,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/client-image-source-verification.json",
+      "original_sha256": "f9e99a1969849b0da6dc957093c9627527f5a6bdec4fc0658e83ff7cbc64bb9f",
+      "published_sha256": "f9e99a1969849b0da6dc957093c9627527f5a6bdec4fc0658e83ff7cbc64bb9f",
+      "bytes": 309,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/client-source-hashes.json",
+      "original_sha256": "ec476e1879240b4443ddc9a5ce8a4fc4d03eca844e96807dc78b0aaf7bab50c2",
+      "published_sha256": "ec476e1879240b4443ddc9a5ce8a4fc4d03eca844e96807dc78b0aaf7bab50c2",
+      "bytes": 619,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/comparison.json",
+      "original_sha256": "1470656d01d5eecdc1b21849b7db3240e3c02845d99cdc3375328e847591612c",
+      "published_sha256": "1470656d01d5eecdc1b21849b7db3240e3c02845d99cdc3375328e847591612c",
+      "bytes": 9325,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/audit.log",
+      "original_sha256": "d735342cb6ab60dcb12ed60a1e6bb4b89e7a80734aecf62bc877eb3cdf4a5082",
+      "published_sha256": "d735342cb6ab60dcb12ed60a1e6bb4b89e7a80734aecf62bc877eb3cdf4a5082",
+      "bytes": 751,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/collector.py",
+      "original_sha256": "2ec9fde61350067b9578aae2bdeda4a8178008b9fd884aa71aa725ad01bb3485",
+      "published_sha256": "2ec9fde61350067b9578aae2bdeda4a8178008b9fd884aa71aa725ad01bb3485",
+      "bytes": 18194,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/STOP",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/after.done",
+      "original_sha256": "1771bfba6d4a77621f78efbd0dfb5a5b9aa421451ea3cc154702fadaf93960ea",
+      "published_sha256": "1771bfba6d4a77621f78efbd0dfb5a5b9aa421451ea3cc154702fadaf93960ea",
+      "bytes": 493,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/after.request",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/audit.json",
+      "original_sha256": "b4eb53115586f50e0f4d633b540cc3f0b30918eba8d23612f18334385c826ecd",
+      "published_sha256": "b4eb53115586f50e0f4d633b540cc3f0b30918eba8d23612f18334385c826ecd",
+      "bytes": 427,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/before.done",
+      "original_sha256": "7d29a1672081af72de8e7056ecfd690ddddace3bc46180093c7f93606d5d8c9c",
+      "published_sha256": "7d29a1672081af72de8e7056ecfd690ddddace3bc46180093c7f93606d5d8c9c",
+      "bytes": 426,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/before.request",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/context-after.prom",
+      "original_sha256": "f6ee3034eadd27b0084e4a328c26eee08767574308048e810d3020fcdcb421a8",
+      "published_sha256": "f6ee3034eadd27b0084e4a328c26eee08767574308048e810d3020fcdcb421a8",
+      "bytes": 16847,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/context-before.prom",
+      "original_sha256": "771cefcdb7191668ab96871256b463351ba8846c9b7e1a7bf4427ab3d6d62843",
+      "published_sha256": "771cefcdb7191668ab96871256b463351ba8846c9b7e1a7bf4427ab3d6d62843",
+      "bytes": 16488,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/context-diagnostic.prom",
+      "original_sha256": "f6ee3034eadd27b0084e4a328c26eee08767574308048e810d3020fcdcb421a8",
+      "published_sha256": "f6ee3034eadd27b0084e4a328c26eee08767574308048e810d3020fcdcb421a8",
+      "bytes": 16847,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/counters.json",
+      "original_sha256": "cbe61d6ebb635fc0ea455ed76732471373b7892b2b53ce14a6f777ce57dbc1e4",
+      "published_sha256": "cbe61d6ebb635fc0ea455ed76732471373b7892b2b53ce14a6f777ce57dbc1e4",
+      "bytes": 771,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/diagnostic.done",
+      "original_sha256": "1771bfba6d4a77621f78efbd0dfb5a5b9aa421451ea3cc154702fadaf93960ea",
+      "published_sha256": "1771bfba6d4a77621f78efbd0dfb5a5b9aa421451ea3cc154702fadaf93960ea",
+      "bytes": 493,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/diagnostic.request",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/generation-after.prom",
+      "original_sha256": "f1f3082819d78e6d2873dd6d93d7b8cb9c9f7830ea128628c6f9d29a886c232c",
+      "published_sha256": "f1f3082819d78e6d2873dd6d93d7b8cb9c9f7830ea128628c6f9d29a886c232c",
+      "bytes": 23935,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/generation-before.prom",
+      "original_sha256": "7d00ffe9f7790b94544e6f4e031be54957b45c871b2fef775efaeff93cfd9df1",
+      "published_sha256": "7d00ffe9f7790b94544e6f4e031be54957b45c871b2fef775efaeff93cfd9df1",
+      "bytes": 23347,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/generation-diagnostic.prom",
+      "original_sha256": "f1f3082819d78e6d2873dd6d93d7b8cb9c9f7830ea128628c6f9d29a886c232c",
+      "published_sha256": "f1f3082819d78e6d2873dd6d93d7b8cb9c9f7830ea128628c6f9d29a886c232c",
+      "bytes": 23935,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/launcher.log",
+      "original_sha256": "4ef794428d542f68a59d4321952b086318f25e60e026d4a5159b68c8e0f50eed",
+      "published_sha256": "4ef794428d542f68a59d4321952b086318f25e60e026d4a5159b68c8e0f50eed",
+      "bytes": 849,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/measured-client.log",
+      "original_sha256": "f5ca16e5352de681312b1f86d31097a457ba3d3cbffa85b50b966bf4fe07b038",
+      "published_sha256": "f5ca16e5352de681312b1f86d31097a457ba3d3cbffa85b50b966bf4fe07b038",
+      "bytes": 187862,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/measured-client.yaml",
+      "original_sha256": "90a3125a599a6bb6566b641c86438f2ff70a0c12dc95362cce7b7e563dd9db80",
+      "published_sha256": "90a3125a599a6bb6566b641c86438f2ff70a0c12dc95362cce7b7e563dd9db80",
+      "bytes": 1415,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/measured-command.json",
+      "original_sha256": "13ed808283055ae6a066ddd42173966b7f80fb4e8535f07e974e79b75fe32171",
+      "published_sha256": "13ed808283055ae6a066ddd42173966b7f80fb4e8535f07e974e79b75fe32171",
+      "bytes": 576,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/measured-report/config.yaml",
+      "original_sha256": "248f654095eb7de74e10725855b87ae3406a2887d5ac0d941a11f4e763bfa0e3",
+      "published_sha256": "248f654095eb7de74e10725855b87ae3406a2887d5ac0d941a11f4e763bfa0e3",
+      "bytes": 1934,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/measured-report/events.jsonl",
+      "original_sha256": "19fe9262d82a0ef7ea1d647a8946e622ce01d345f459415212a119c64ee46d22",
+      "published_sha256": "19fe9262d82a0ef7ea1d647a8946e622ce01d345f459415212a119c64ee46d22",
+      "bytes": 2299345,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/measured-report/metrics/.ready",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/measured-report/metrics/final_snapshot.json",
+      "original_sha256": "6cff2d8cc4450098a0636e46e3991a92f8e49d7da7575d2c091384e7ab64ac55",
+      "published_sha256": "6cff2d8cc4450098a0636e46e3991a92f8e49d7da7575d2c091384e7ab64ac55",
+      "bytes": 23106,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/measured-report/performance/result_summary.json",
+      "original_sha256": "02039dfdb3a25b5b93b350b74bdb54e515c82c5ce05557e63ad8cb96dc09d617",
+      "published_sha256": "02039dfdb3a25b5b93b350b74bdb54e515c82c5ce05557e63ad8cb96dc09d617",
+      "bytes": 21259,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/measured-report/report.txt",
+      "original_sha256": "f4906b9569ddcbfb012496d45005265cbc4ab580c0d789964627c997a01af25a",
+      "published_sha256": "f4906b9569ddcbfb012496d45005265cbc4ab580c0d789964627c997a01af25a",
+      "bytes": 9041,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/measured-report/sample_idx_map.json",
+      "original_sha256": "fca30fbb5616322bcca77b47100046f642be6143248c38318b91b7c8ec993761",
+      "published_sha256": "fca30fbb5616322bcca77b47100046f642be6143248c38318b91b7c8ec993761",
+      "bytes": 59589,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/measured.jsonl",
+      "original_sha256": "a8440421a6ecb992060a7d9bfe3865fe362853e4cfb7fe26c5401fde1b927912",
+      "published_sha256": "a8440421a6ecb992060a7d9bfe3865fe362853e4cfb7fe26c5401fde1b927912",
+      "bytes": 901151,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/ready.json",
+      "original_sha256": "b260c7b48d1da33e66882c0bc9de7840e1b89730b64618280f493a7179a7bcce",
+      "published_sha256": "b260c7b48d1da33e66882c0bc9de7840e1b89730b64618280f493a7179a7bcce",
+      "bytes": 247,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/recipe.json",
+      "original_sha256": "ce78ac32519d1753683bf67de15ef2bacdbc242faa66da3ede7147aaf721da33",
+      "published_sha256": "ce78ac32519d1753683bf67de15ef2bacdbc242faa66da3ede7147aaf721da33",
+      "bytes": 3481,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/request-audit.csv",
+      "original_sha256": "f583ca60dd82c3907eb05f4cbf25fa5b3f9a845a4c1ae924ab45226208e4b7c7",
+      "published_sha256": "f583ca60dd82c3907eb05f4cbf25fa5b3f9a845a4c1ae924ab45226208e4b7c7",
+      "bytes": 113177,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/server/cluster.json",
+      "original_sha256": "d6f1aad6d78775401ed0c3892c5c564dfe942916ff0e94b74f93db24cf0c8b35",
+      "published_sha256": "d6f1aad6d78775401ed0c3892c5c564dfe942916ff0e94b74f93db24cf0c8b35",
+      "bytes": 647,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/server/context.log",
+      "original_sha256": "c23f253b8b5ba6395523744dcac6fe81fdceadec580f8565a5722b58089f8ea9",
+      "published_sha256": "c23f253b8b5ba6395523744dcac6fe81fdceadec580f8565a5722b58089f8ea9",
+      "bytes": 1512215,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/server/context.yaml",
+      "original_sha256": "b7c857b2cac68efdb9932496eca275a568624c002842d620136295f4e7f26ef8",
+      "published_sha256": "536a605588d2121debb5e9a05c1e0545349a2e63c66cc7dd513deaf9dbfe5f9e",
+      "bytes": 1059,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/server/generation.log",
+      "original_sha256": "6380cdad29252fe5dcdfb36e07d1f397b3e6c994372919000db99a6727b037a9",
+      "published_sha256": "6380cdad29252fe5dcdfb36e07d1f397b3e6c994372919000db99a6727b037a9",
+      "bytes": 30523722,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/server/generation.yaml",
+      "original_sha256": "b7c857b2cac68efdb9932496eca275a568624c002842d620136295f4e7f26ef8",
+      "published_sha256": "536a605588d2121debb5e9a05c1e0545349a2e63c66cc7dd513deaf9dbfe5f9e",
+      "bytes": 1059,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/server/router.addr",
+      "original_sha256": "e36e6f482637c1e40e2315b1e570793cf76251f1bb1612bd2f6b70111b642039",
+      "published_sha256": "e36e6f482637c1e40e2315b1e570793cf76251f1bb1612bd2f6b70111b642039",
+      "bytes": 16,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/server/router.log",
+      "original_sha256": "8b432055cb4371ad52e22fdfb418d890a188e889280917673c6f51b3f01c002d",
+      "published_sha256": "8b432055cb4371ad52e22fdfb418d890a188e889280917673c6f51b3f01c002d",
+      "bytes": 126046,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/server/router.yaml",
+      "original_sha256": "6a8fbff4fef9a13d873f738cf653b139252274c1539403a8912ae1d15b35cd82",
+      "published_sha256": "107348488207a86ecf3e60974a86928be1a11315bee8c9fee5a87e67cf6d2607",
+      "bytes": 392,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/summary.json",
+      "original_sha256": "69159c69d0e05a210e565bb8fc0d779ab7227832653a15a0c312dd61a027c9e4",
+      "published_sha256": "69159c69d0e05a210e565bb8fc0d779ab7227832653a15a0c312dd61a027c9e4",
+      "bytes": 547,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/validation.json",
+      "original_sha256": "e6aee50a1dc29626683aa6be6fe628ad6dbf7b14b4df2d6a5f57abde58123fd3",
+      "published_sha256": "e6aee50a1dc29626683aa6be6fe628ad6dbf7b14b4df2d6a5f57abde58123fd3",
+      "bytes": 388,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/warmup-client.log",
+      "original_sha256": "5a9f071601af3d204cdc60c0fd402066f5276faa55a594bc9dce99b3e06c1c6b",
+      "published_sha256": "5a9f071601af3d204cdc60c0fd402066f5276faa55a594bc9dce99b3e06c1c6b",
+      "bytes": 7487,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/warmup-client.yaml",
+      "original_sha256": "8a209f2ab815bee61f386b7c8d4c6c532738708745a249f520a09cdb1a48e5f5",
+      "published_sha256": "8a209f2ab815bee61f386b7c8d4c6c532738708745a249f520a09cdb1a48e5f5",
+      "bytes": 1403,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/warmup-command.json",
+      "original_sha256": "466ee6b15c02cfe6f468c7494c56f50af8f91736b6d2dd0b42f19794ca7a418b",
+      "published_sha256": "466ee6b15c02cfe6f468c7494c56f50af8f91736b6d2dd0b42f19794ca7a418b",
+      "bytes": 574,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/warmup-report/config.yaml",
+      "original_sha256": "0d451aab08aac30b3473bffdb280fe472769ed1b16fab2ae5ba21d0098045a46",
+      "published_sha256": "0d451aab08aac30b3473bffdb280fe472769ed1b16fab2ae5ba21d0098045a46",
+      "bytes": 1922,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/warmup-report/events.jsonl",
+      "original_sha256": "a50535cb391f870047c0e168fa712fa261f42285987c0c7d1b0a23adc53df40b",
+      "published_sha256": "a50535cb391f870047c0e168fa712fa261f42285987c0c7d1b0a23adc53df40b",
+      "bytes": 3451,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/warmup-report/metrics/.ready",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/warmup-report/metrics/final_snapshot.json",
+      "original_sha256": "74ea85095af77558b37ce8884353794ca450b37241c20ccef469ba3fc920fb4d",
+      "published_sha256": "74ea85095af77558b37ce8884353794ca450b37241c20ccef469ba3fc920fb4d",
+      "bytes": 22824,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/warmup-report/performance/result_summary.json",
+      "original_sha256": "868a682e256c7014110071e2a8185a714ad920cbc7f9ca34299993a2e13a6274",
+      "published_sha256": "868a682e256c7014110071e2a8185a714ad920cbc7f9ca34299993a2e13a6274",
+      "bytes": 20934,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/warmup-report/report.txt",
+      "original_sha256": "92fb40595502ea0b6e9be7b7ef2208f1cabb254c0f31dee9346d7c1503c952bf",
+      "published_sha256": "92fb40595502ea0b6e9be7b7ef2208f1cabb254c0f31dee9346d7c1503c952bf",
+      "bytes": 8200,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/warmup-report/sample_idx_map.json",
+      "original_sha256": "375c532091ee1eb7b753b16a175cb7cdff945e9d90abe18225d8b93d383924a5",
+      "published_sha256": "375c532091ee1eb7b753b16a175cb7cdff945e9d90abe18225d8b93d383924a5",
+      "bytes": 111,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/warmup.jsonl",
+      "original_sha256": "ca56618c0efaf7fd82e779b8762b6183e9c05fed4b52190bec559af1fac231fa",
+      "published_sha256": "ca56618c0efaf7fd82e779b8762b6183e9c05fed4b52190bec559af1fac231fa",
+      "bytes": 1122,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/worker-provenance.json",
+      "original_sha256": "5645b7e6aaf1c59ab29b8a86090ce3467cbfb801ff312f649a1072a4d2b43daa",
+      "published_sha256": "5645b7e6aaf1c59ab29b8a86090ce3467cbfb801ff312f649a1072a4d2b43daa",
+      "bytes": 78544,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/git-status.txt",
+      "original_sha256": "8d785de2e7577b5dd535a3403b49976120ea6cf4c733642af58b4906fd845598",
+      "published_sha256": "8d785de2e7577b5dd535a3403b49976120ea6cf4c733642af58b4906fd845598",
+      "bytes": 60,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/gpu-before.txt",
+      "original_sha256": "b7ac489d7c5979fb44f6a3f9843c562a445cbead430e51c9d21536e5b2638c16",
+      "published_sha256": "b7ac489d7c5979fb44f6a3f9843c562a445cbead430e51c9d21536e5b2638c16",
+      "bytes": 4265,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/identity.json",
+      "original_sha256": "8598c707bdac4952e2c29867ebc4bae11d9901221bb0055ecccc92540f02084d",
+      "published_sha256": "8598c707bdac4952e2c29867ebc4bae11d9901221bb0055ecccc92540f02084d",
+      "bytes": 7304,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/prompts.jsonl",
+      "original_sha256": "8c29cf021019536cab242291eb0cf1a1b9d6f823ad07b52b0c09401beee4e5cf",
+      "published_sha256": "8c29cf021019536cab242291eb0cf1a1b9d6f823ad07b52b0c09401beee4e5cf",
+      "bytes": 336621,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/runner.py",
+      "original_sha256": "3599ad53990d14f0eab2dfdd9039e7b421a5a8106145150dc299d67eab57e9ed",
+      "published_sha256": "3599ad53990d14f0eab2dfdd9039e7b421a5a8106145150dc299d67eab57e9ed",
+      "bytes": 39122,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/server-recipe.yaml",
+      "original_sha256": "4c528f1c7370f60053a88b42f66716319c17349d44178ef6c91d9c0f182db097",
+      "published_sha256": "4c528f1c7370f60053a88b42f66716319c17349d44178ef6c91d9c0f182db097",
+      "bytes": 4858,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/shutdown.json",
+      "original_sha256": "82ec6eda14492dceaf747dedd061a55d518e250714c13227e14e075039e37103",
+      "published_sha256": "82ec6eda14492dceaf747dedd061a55d518e250714c13227e14e075039e37103",
+      "bytes": 393,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/STOP",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/after.done",
+      "original_sha256": "90125b7b485dc44228e88644cc3f8d5ddc4dbddd6bff670443fedac32f195dca",
+      "published_sha256": "90125b7b485dc44228e88644cc3f8d5ddc4dbddd6bff670443fedac32f195dca",
+      "bytes": 442,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/after.request",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/audit.json",
+      "original_sha256": "da6a21d8a13dcdcea7a6809cbf07b33be6214e69589c769e063676e81afbdc29",
+      "published_sha256": "da6a21d8a13dcdcea7a6809cbf07b33be6214e69589c769e063676e81afbdc29",
+      "bytes": 409,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/before.done",
+      "original_sha256": "7d29a1672081af72de8e7056ecfd690ddddace3bc46180093c7f93606d5d8c9c",
+      "published_sha256": "7d29a1672081af72de8e7056ecfd690ddddace3bc46180093c7f93606d5d8c9c",
+      "bytes": 426,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/before.request",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/context-after.prom",
+      "original_sha256": "11d34686f438ed7445023d6914a0750f5eeaa2dd9b61ae5e1f4c1b3e8bd42287",
+      "published_sha256": "11d34686f438ed7445023d6914a0750f5eeaa2dd9b61ae5e1f4c1b3e8bd42287",
+      "bytes": 16599,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/context-before.prom",
+      "original_sha256": "99faff9447bd6191c2dccc4fec625d17aeed33b4719aedb9f4f9c35d9d3ddc36",
+      "published_sha256": "99faff9447bd6191c2dccc4fec625d17aeed33b4719aedb9f4f9c35d9d3ddc36",
+      "bytes": 16488,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/context-diagnostic.prom",
+      "original_sha256": "11d34686f438ed7445023d6914a0750f5eeaa2dd9b61ae5e1f4c1b3e8bd42287",
+      "published_sha256": "11d34686f438ed7445023d6914a0750f5eeaa2dd9b61ae5e1f4c1b3e8bd42287",
+      "bytes": 16599,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/counters.json",
+      "original_sha256": "647a2efd43ba1ff517e7c88f2c98e8aab7225ca93062b787bbcb69796b254f36",
+      "published_sha256": "647a2efd43ba1ff517e7c88f2c98e8aab7225ca93062b787bbcb69796b254f36",
+      "bytes": 706,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/diagnostic.done",
+      "original_sha256": "90125b7b485dc44228e88644cc3f8d5ddc4dbddd6bff670443fedac32f195dca",
+      "published_sha256": "90125b7b485dc44228e88644cc3f8d5ddc4dbddd6bff670443fedac32f195dca",
+      "bytes": 442,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/diagnostic.request",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/generation-after.prom",
+      "original_sha256": "6b1878070656ef726b4277b8d31b176737dbfee6c96235c3fc3769ec19d32277",
+      "published_sha256": "6b1878070656ef726b4277b8d31b176737dbfee6c96235c3fc3769ec19d32277",
+      "bytes": 23497,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/generation-before.prom",
+      "original_sha256": "8a70649cc7fd1a31f9d5df9764c32c3992cae4de7676827b70b2752e08252a96",
+      "published_sha256": "8a70649cc7fd1a31f9d5df9764c32c3992cae4de7676827b70b2752e08252a96",
+      "bytes": 23348,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/generation-diagnostic.prom",
+      "original_sha256": "6b1878070656ef726b4277b8d31b176737dbfee6c96235c3fc3769ec19d32277",
+      "published_sha256": "6b1878070656ef726b4277b8d31b176737dbfee6c96235c3fc3769ec19d32277",
+      "bytes": 23497,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/launcher.log",
+      "original_sha256": "0232a586f63d14a2dd098b59a721577f24b1895c6c8704bc5710adf611be1416",
+      "published_sha256": "0232a586f63d14a2dd098b59a721577f24b1895c6c8704bc5710adf611be1416",
+      "bytes": 853,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/measured-client.log",
+      "original_sha256": "dd439e0971a552e2cdefd46cced1039476e4f015b0e8cb1654c19c7281e1911d",
+      "published_sha256": "dd439e0971a552e2cdefd46cced1039476e4f015b0e8cb1654c19c7281e1911d",
+      "bytes": 8286,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/measured-client.yaml",
+      "original_sha256": "35a10571350a0c14928565ee9347d396a7101a77b47ee389f3be0072365a4798",
+      "published_sha256": "35a10571350a0c14928565ee9347d396a7101a77b47ee389f3be0072365a4798",
+      "bytes": 1411,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/measured-command.json",
+      "original_sha256": "fdeafdb68eefe763e4429d6a7c89c168621c5019ed00f56e3b061117bd1fbc80",
+      "published_sha256": "fdeafdb68eefe763e4429d6a7c89c168621c5019ed00f56e3b061117bd1fbc80",
+      "bytes": 577,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/measured-report/config.yaml",
+      "original_sha256": "7a4979c4091670929ff2d9380f78dc154f2f9a312a2a758c529e412140f3629b",
+      "published_sha256": "7a4979c4091670929ff2d9380f78dc154f2f9a312a2a758c529e412140f3629b",
+      "bytes": 1930,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/measured-report/events.jsonl",
+      "original_sha256": "d0084a53592c75f7b2e10e75b68c6210eaf531081a2801a23dbf494d6c8f03cf",
+      "published_sha256": "d0084a53592c75f7b2e10e75b68c6210eaf531081a2801a23dbf494d6c8f03cf",
+      "bytes": 14444,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/measured-report/metrics/.ready",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/measured-report/metrics/final_snapshot.json",
+      "original_sha256": "946ea1b79a1ac2b35f28321fa65b6f98f64f30fff33b26c07b746e62dd7efac1",
+      "published_sha256": "946ea1b79a1ac2b35f28321fa65b6f98f64f30fff33b26c07b746e62dd7efac1",
+      "bytes": 22947,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/measured-report/performance/result_summary.json",
+      "original_sha256": "ed136c9d059a32ddc44654bfd9354d2549db9daba8238a1f0dbbe633ff7306b2",
+      "published_sha256": "ed136c9d059a32ddc44654bfd9354d2549db9daba8238a1f0dbbe633ff7306b2",
+      "bytes": 21063,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/measured-report/report.txt",
+      "original_sha256": "7fd92e61e62f086fd5398e1001c17cb0d4906689365e0d02c687b61a65e53a43",
+      "published_sha256": "7fd92e61e62f086fd5398e1001c17cb0d4906689365e0d02c687b61a65e53a43",
+      "bytes": 8446,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/measured-report/sample_idx_map.json",
+      "original_sha256": "1daafc50308af4d6537d5f49be336687138e97840beb99a13649722fa5f1c5d8",
+      "published_sha256": "1daafc50308af4d6537d5f49be336687138e97840beb99a13649722fa5f1c5d8",
+      "bytes": 369,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/measured.jsonl",
+      "original_sha256": "4b0de41e530c1edcd9a00a162ec7d217684916ac39799eabdb2229931e73920b",
+      "published_sha256": "4b0de41e530c1edcd9a00a162ec7d217684916ac39799eabdb2229931e73920b",
+      "bytes": 5240,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/ready.json",
+      "original_sha256": "6a08f16e744f7ad50b1c1556f8260f19624d6123f26b644f10a74bb6abd8f21a",
+      "published_sha256": "6a08f16e744f7ad50b1c1556f8260f19624d6123f26b644f10a74bb6abd8f21a",
+      "bytes": 247,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/recipe.json",
+      "original_sha256": "ce78ac32519d1753683bf67de15ef2bacdbc242faa66da3ede7147aaf721da33",
+      "published_sha256": "ce78ac32519d1753683bf67de15ef2bacdbc242faa66da3ede7147aaf721da33",
+      "bytes": 3481,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/request-audit.csv",
+      "original_sha256": "323ffd33935eb8d0926fda139345a67874bab623f141627a485066b4bf21cdd7",
+      "published_sha256": "323ffd33935eb8d0926fda139345a67874bab623f141627a485066b4bf21cdd7",
+      "bytes": 758,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/server/cluster.json",
+      "original_sha256": "242485e2ab3eb4a13f194628fb9890b3622b0068cd490655605230536b832948",
+      "published_sha256": "242485e2ab3eb4a13f194628fb9890b3622b0068cd490655605230536b832948",
+      "bytes": 647,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/server/context.log",
+      "original_sha256": "a1ca220e8ee26e8434ddb5fe9b9c947bb02aded0e041b967ebf66732563fdc46",
+      "published_sha256": "a1ca220e8ee26e8434ddb5fe9b9c947bb02aded0e041b967ebf66732563fdc46",
+      "bytes": 65515,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/server/context.yaml",
+      "original_sha256": "4a81a2cd1b7c2163d626387cd145d7003ead86355065351d1ae08c1dd17599ae",
+      "published_sha256": "d949e04ae7e7dbc022c837cd073a765c318055323074a0f7a0b6c1448d43c43d",
+      "bytes": 1059,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/server/generation.log",
+      "original_sha256": "90c41b745216e33477dc5f09f1c52fe0c705e586b628b49020c6ec328c00bdc0",
+      "published_sha256": "90c41b745216e33477dc5f09f1c52fe0c705e586b628b49020c6ec328c00bdc0",
+      "bytes": 289628,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/server/generation.yaml",
+      "original_sha256": "4a81a2cd1b7c2163d626387cd145d7003ead86355065351d1ae08c1dd17599ae",
+      "published_sha256": "d949e04ae7e7dbc022c837cd073a765c318055323074a0f7a0b6c1448d43c43d",
+      "bytes": 1059,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/server/router.addr",
+      "original_sha256": "db353c07108e7a02dc75683770f3314fcce2ed55749db0c4c970adb0238611e0",
+      "published_sha256": "db353c07108e7a02dc75683770f3314fcce2ed55749db0c4c970adb0238611e0",
+      "bytes": 16,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/server/router.log",
+      "original_sha256": "ed283c60e8e63b24a4f6b94666d14326baee6aeedf197c298fa1780fbd8b6ccb",
+      "published_sha256": "ed283c60e8e63b24a4f6b94666d14326baee6aeedf197c298fa1780fbd8b6ccb",
+      "bytes": 11144,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/server/router.yaml",
+      "original_sha256": "e61248d1724d4b689127b7aebd9402d835062a645fa319ef5c5e55f21d261d04",
+      "published_sha256": "e0b6791adcd8cbe72bdfeb04d61bb80c6e61cf4de2f5dcc9815874b78bf46dde",
+      "bytes": 392,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/summary.json",
+      "original_sha256": "c38e5f5693ff2b77f25db498f585de91eea127573831d0b82465f41605af1e60",
+      "published_sha256": "c38e5f5693ff2b77f25db498f585de91eea127573831d0b82465f41605af1e60",
+      "bytes": 520,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/validation.json",
+      "original_sha256": "e6aee50a1dc29626683aa6be6fe628ad6dbf7b14b4df2d6a5f57abde58123fd3",
+      "published_sha256": "e6aee50a1dc29626683aa6be6fe628ad6dbf7b14b4df2d6a5f57abde58123fd3",
+      "bytes": 388,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/warmup-client.log",
+      "original_sha256": "afc8867983ecc5b375c4e1508299394b2a1b5700719d9daf036638f917715e27",
+      "published_sha256": "afc8867983ecc5b375c4e1508299394b2a1b5700719d9daf036638f917715e27",
+      "bytes": 7489,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/warmup-client.yaml",
+      "original_sha256": "e2ed5f12a3eb477892972bddf1b0d322ef42b5b0df50faa66472e7001d1670c2",
+      "published_sha256": "e2ed5f12a3eb477892972bddf1b0d322ef42b5b0df50faa66472e7001d1670c2",
+      "bytes": 1405,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/warmup-command.json",
+      "original_sha256": "de8ca311d61278c2037b42d8dba24a6b4c2ad7e057592059a313bc78956e4993",
+      "published_sha256": "de8ca311d61278c2037b42d8dba24a6b4c2ad7e057592059a313bc78956e4993",
+      "bytes": 575,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/warmup-report/config.yaml",
+      "original_sha256": "4cb7f1ce165b0bb6b9c7e76f7227a4385528c3288ccb1300e9c2a2f946d52e61",
+      "published_sha256": "4cb7f1ce165b0bb6b9c7e76f7227a4385528c3288ccb1300e9c2a2f946d52e61",
+      "bytes": 1924,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/warmup-report/events.jsonl",
+      "original_sha256": "afb9df64c220b2bc69146cab213a3dba85e095bb232d08170eb3c48478a05362",
+      "published_sha256": "afb9df64c220b2bc69146cab213a3dba85e095bb232d08170eb3c48478a05362",
+      "bytes": 3451,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/warmup-report/metrics/.ready",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/warmup-report/metrics/final_snapshot.json",
+      "original_sha256": "6df9127bc45d6b8897f79dac334368793e96b75e14f0e7b7e13a12a0f0abc416",
+      "published_sha256": "6df9127bc45d6b8897f79dac334368793e96b75e14f0e7b7e13a12a0f0abc416",
+      "bytes": 22863,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/warmup-report/performance/result_summary.json",
+      "original_sha256": "fa873a7f2a7cb6f5699b718f0b27156ede7c5515f830aff421a95a3c3d68f4a5",
+      "published_sha256": "fa873a7f2a7cb6f5699b718f0b27156ede7c5515f830aff421a95a3c3d68f4a5",
+      "bytes": 20980,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/warmup-report/report.txt",
+      "original_sha256": "0375c9b6e271026f933c3b6be78b29cff49341e8d4c79df23aa9d9e123f6cad9",
+      "published_sha256": "0375c9b6e271026f933c3b6be78b29cff49341e8d4c79df23aa9d9e123f6cad9",
+      "bytes": 8171,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/warmup-report/sample_idx_map.json",
+      "original_sha256": "75c9c6e0d76b10ef58605aa8ef4b4d5b83bcca41b775c9bf4c220348adee3d2d",
+      "published_sha256": "75c9c6e0d76b10ef58605aa8ef4b4d5b83bcca41b775c9bf4c220348adee3d2d",
+      "bytes": 111,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/warmup.jsonl",
+      "original_sha256": "ca56618c0efaf7fd82e779b8762b6183e9c05fed4b52190bec559af1fac231fa",
+      "published_sha256": "ca56618c0efaf7fd82e779b8762b6183e9c05fed4b52190bec559af1fac231fa",
+      "bytes": 1122,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/worker-provenance.json",
+      "original_sha256": "2f7097cb99aaba58974016214eb08e2f831bcdee870274de876643809344c81b",
+      "published_sha256": "2f7097cb99aaba58974016214eb08e2f831bcdee870274de876643809344c81b",
+      "bytes": 63060,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/source.patch",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/summary.csv",
+      "original_sha256": "1cfb326d735d0dc7f43d76a57d448fcca895cc5b22f0095cf29e5e762136b858",
+      "published_sha256": "1cfb326d735d0dc7f43d76a57d448fcca895cc5b22f0095cf29e5e762136b858",
+      "bytes": 631,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-build/AL-counter-implementation.txt",
+      "original_sha256": "4398d0e0c2102949570c1d92210e095577353f301807b5756237c47be9b2301f",
+      "published_sha256": "4398d0e0c2102949570c1d92210e095577353f301807b5756237c47be9b2301f",
+      "bytes": 2097,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-build/CMakeCache.txt",
+      "original_sha256": "5870e971445ccedc38d3cf61dfe01356edf1c84c549c33673802bd42e3274455",
+      "published_sha256": "5870e971445ccedc38d3cf61dfe01356edf1c84c549c33673802bd42e3274455",
+      "bytes": 70276,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-build/applied-modifications.patch",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-build/build-plan.json",
+      "original_sha256": "b7824208bf833b2296605452a7262a2f13cb74949fce714e4d58c18c3e5309b9",
+      "published_sha256": "b7824208bf833b2296605452a7262a2f13cb74949fce714e4d58c18c3e5309b9",
+      "bytes": 461,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-build/build.log",
+      "original_sha256": "622d6c5ee948dc02c6d02b5f7aced04d9b3ae1670c1053db96894097b58635db",
+      "published_sha256": "622d6c5ee948dc02c6d02b5f7aced04d9b3ae1670c1053db96894097b58635db",
+      "bytes": 350800,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-build/context-resolved-args.diff",
+      "original_sha256": "e63a4d80761e5794cec1ed3834353231365f6e0e2886d5924a6fd76b15bae4cf",
+      "published_sha256": "e63a4d80761e5794cec1ed3834353231365f6e0e2886d5924a6fd76b15bae4cf",
+      "bytes": 733,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-build/dependencies.json",
+      "original_sha256": "105ee438c42664348bf4f64957b2d9cbb8f61a7b33390dffe846cd1c5def1de2",
+      "published_sha256": "105ee438c42664348bf4f64957b2d9cbb8f61a7b33390dffe846cd1c5def1de2",
+      "bytes": 3896,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-build/generation-resolved-args.diff",
+      "original_sha256": "e63a4d80761e5794cec1ed3834353231365f6e0e2886d5924a6fd76b15bae4cf",
+      "published_sha256": "e63a4d80761e5794cec1ed3834353231365f6e0e2886d5924a6fd76b15bae4cf",
+      "bytes": 733,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-build/native-manifest.json",
+      "original_sha256": "6c8e7f8b8d0d4c026c51ba17d52336ae815624437b5cfc21e500c469e90e5305",
+      "published_sha256": "6c8e7f8b8d0d4c026c51ba17d52336ae815624437b5cfc21e500c469e90e5305",
+      "bytes": 3406,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-build/native-source-differences.txt",
+      "original_sha256": "66db1cd3b43baeb723e51fc9312f12351f51c81615527efaae6743047ee900b1",
+      "published_sha256": "66db1cd3b43baeb723e51fc9312f12351f51c81615527efaae6743047ee900b1",
+      "bytes": 478281,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-build/runtime.json",
+      "original_sha256": "9b08fee766c96c2be8eafed6488db9b3811528035a3cd22ae9f7c16af7c0038c",
+      "published_sha256": "9b08fee766c96c2be8eafed6488db9b3811528035a3cd22ae9f7c16af7c0038c",
+      "bytes": 14233,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-build/runtime.log",
+      "original_sha256": "86df964244166aa1611e33a154546abc2550bbca7e510495568f4c41807cef46",
+      "published_sha256": "86df964244166aa1611e33a154546abc2550bbca7e510495568f4c41807cef46",
+      "bytes": 14482,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/inspect_workers.py",
+      "original_sha256": "ae8c8adb7c9233e7ceb6dff705260026873bba8760edda988aaf3d68c7f44908",
+      "published_sha256": "ae8c8adb7c9233e7ceb6dff705260026873bba8760edda988aaf3d68c7f44908",
+      "bytes": 2715,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/install_native.py",
+      "original_sha256": "427151045b1047f63d2e371a583e79d06f596a43e5ecca74b84b3a2786d3fe23",
+      "published_sha256": "427151045b1047f63d2e371a583e79d06f596a43e5ecca74b84b3a2786d3fe23",
+      "bytes": 3001,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-build/AL-counter-implementation.txt",
+      "original_sha256": "2c19cbbd4f6bf69c2e78e0a2890fe84d911a559495439130912cb82e4ac2a975",
+      "published_sha256": "2c19cbbd4f6bf69c2e78e0a2890fe84d911a559495439130912cb82e4ac2a975",
+      "bytes": 2937,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-build/CMakeCache.txt",
+      "original_sha256": "5870e971445ccedc38d3cf61dfe01356edf1c84c549c33673802bd42e3274455",
+      "published_sha256": "5870e971445ccedc38d3cf61dfe01356edf1c84c549c33673802bd42e3274455",
+      "bytes": 70276,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-build/applied-modifications.patch",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-build/build.log",
+      "original_sha256": "95a79a9dfdcad8f5d1b6b6211618e3f9636c6c3d6b734b10b1ae88af57847282",
+      "published_sha256": "95a79a9dfdcad8f5d1b6b6211618e3f9636c6c3d6b734b10b1ae88af57847282",
+      "bytes": 577310,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-build/context-resolved-args.diff",
+      "original_sha256": "24b1635fb207cc351aadaa98991aeaae7dcbb4c64675a4511c5547f7906c8845",
+      "published_sha256": "24b1635fb207cc351aadaa98991aeaae7dcbb4c64675a4511c5547f7906c8845",
+      "bytes": 257,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-build/dependencies.json",
+      "original_sha256": "105ee438c42664348bf4f64957b2d9cbb8f61a7b33390dffe846cd1c5def1de2",
+      "published_sha256": "105ee438c42664348bf4f64957b2d9cbb8f61a7b33390dffe846cd1c5def1de2",
+      "bytes": 3896,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-build/generation-resolved-args.diff",
+      "original_sha256": "24b1635fb207cc351aadaa98991aeaae7dcbb4c64675a4511c5547f7906c8845",
+      "published_sha256": "24b1635fb207cc351aadaa98991aeaae7dcbb4c64675a4511c5547f7906c8845",
+      "bytes": 257,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-build/native-manifest.json",
+      "original_sha256": "66c566fb2567ff0b0a0531b659527310d948e0dc9618cfae887829e7541aa3c4",
+      "published_sha256": "66c566fb2567ff0b0a0531b659527310d948e0dc9618cfae887829e7541aa3c4",
+      "bytes": 3407,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-build/native-source-differences.txt",
+      "original_sha256": "15e4a4f653cb5495ffa57eba484d31f4d0babfb41f13eb4a6929545a9b245161",
+      "published_sha256": "15e4a4f653cb5495ffa57eba484d31f4d0babfb41f13eb4a6929545a9b245161",
+      "bytes": 634,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-build/rebuild-reason.patch",
+      "original_sha256": "f56b6e7f22b01578776e76053288c0875ac047929e6b34a3fcd5fe782f3bdb2e",
+      "published_sha256": "f56b6e7f22b01578776e76053288c0875ac047929e6b34a3fcd5fe782f3bdb2e",
+      "bytes": 3823,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-build/runtime.json",
+      "original_sha256": "69e267d481d2eab95ef578e024bd79c63c808d63300e6cf40e76131800df95db",
+      "published_sha256": "69e267d481d2eab95ef578e024bd79c63c808d63300e6cf40e76131800df95db",
+      "bytes": 14232,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-build/runtime.log",
+      "original_sha256": "a6c2e1091bb645ed923dbf3822eb0bdda5e1c4bd2fb01bfc1f3c211c697a0a40",
+      "published_sha256": "a6c2e1091bb645ed923dbf3822eb0bdda5e1c4bd2fb01bfc1f3c211c697a0a40",
+      "bytes": 14480,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/audit.log",
+      "original_sha256": "d735342cb6ab60dcb12ed60a1e6bb4b89e7a80734aecf62bc877eb3cdf4a5082",
+      "published_sha256": "d735342cb6ab60dcb12ed60a1e6bb4b89e7a80734aecf62bc877eb3cdf4a5082",
+      "bytes": 751,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/collector.py",
+      "original_sha256": "2ec9fde61350067b9578aae2bdeda4a8178008b9fd884aa71aa725ad01bb3485",
+      "published_sha256": "2ec9fde61350067b9578aae2bdeda4a8178008b9fd884aa71aa725ad01bb3485",
+      "bytes": 18194,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/STOP",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/after.done",
+      "original_sha256": "2827ee0a3bcabe657f7158384e409b723faed21a6123f216333f524ab9f78819",
+      "published_sha256": "2827ee0a3bcabe657f7158384e409b723faed21a6123f216333f524ab9f78819",
+      "bytes": 493,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/after.request",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/audit.json",
+      "original_sha256": "b4eb53115586f50e0f4d633b540cc3f0b30918eba8d23612f18334385c826ecd",
+      "published_sha256": "b4eb53115586f50e0f4d633b540cc3f0b30918eba8d23612f18334385c826ecd",
+      "bytes": 427,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/before.done",
+      "original_sha256": "eb4174448dafe0dbce2c8e8f774822b53270d050bd97583a4f3fef859479bd9f",
+      "published_sha256": "eb4174448dafe0dbce2c8e8f774822b53270d050bd97583a4f3fef859479bd9f",
+      "bytes": 426,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/before.request",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/context-after.prom",
+      "original_sha256": "d4bdfd7018aa7e96261b5498267249e778c0f54e284a755eab662adda2de684e",
+      "published_sha256": "d4bdfd7018aa7e96261b5498267249e778c0f54e284a755eab662adda2de684e",
+      "bytes": 16846,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/context-before.prom",
+      "original_sha256": "e5bdf96f6f504ae2ae7eca03551a0f6b8f8507e3add5561f1ddd8d9e4ff15173",
+      "published_sha256": "e5bdf96f6f504ae2ae7eca03551a0f6b8f8507e3add5561f1ddd8d9e4ff15173",
+      "bytes": 16487,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/context-diagnostic.prom",
+      "original_sha256": "d4bdfd7018aa7e96261b5498267249e778c0f54e284a755eab662adda2de684e",
+      "published_sha256": "d4bdfd7018aa7e96261b5498267249e778c0f54e284a755eab662adda2de684e",
+      "bytes": 16846,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/counters.json",
+      "original_sha256": "4535f6a62538f34782a0f9ab05c647b1aa6f4be9b5869b5defe5a487770b6370",
+      "published_sha256": "4535f6a62538f34782a0f9ab05c647b1aa6f4be9b5869b5defe5a487770b6370",
+      "bytes": 771,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/diagnostic.done",
+      "original_sha256": "2827ee0a3bcabe657f7158384e409b723faed21a6123f216333f524ab9f78819",
+      "published_sha256": "2827ee0a3bcabe657f7158384e409b723faed21a6123f216333f524ab9f78819",
+      "bytes": 493,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/diagnostic.request",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/generation-after.prom",
+      "original_sha256": "58cacb13e4d0f9a9dbcb4d74b04aca8a38f1ee368d7783e3054ffaf70a316bcc",
+      "published_sha256": "58cacb13e4d0f9a9dbcb4d74b04aca8a38f1ee368d7783e3054ffaf70a316bcc",
+      "bytes": 23941,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/generation-before.prom",
+      "original_sha256": "8cf2a1c6dd43e4ca365ba88e1e3566cb229a8c6a0e4599234e0308fa02bfa2ed",
+      "published_sha256": "8cf2a1c6dd43e4ca365ba88e1e3566cb229a8c6a0e4599234e0308fa02bfa2ed",
+      "bytes": 23342,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/generation-diagnostic.prom",
+      "original_sha256": "58cacb13e4d0f9a9dbcb4d74b04aca8a38f1ee368d7783e3054ffaf70a316bcc",
+      "published_sha256": "58cacb13e4d0f9a9dbcb4d74b04aca8a38f1ee368d7783e3054ffaf70a316bcc",
+      "bytes": 23941,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/launcher.log",
+      "original_sha256": "d0f317365e0e32a613ff700d82584698095d5d4f4a3224b4acd569a029394fa4",
+      "published_sha256": "d0f317365e0e32a613ff700d82584698095d5d4f4a3224b4acd569a029394fa4",
+      "bytes": 713,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/measured-client.log",
+      "original_sha256": "15f09d19cf095254b56cc980be06a118d60354416ac14f0bb35e237813663c97",
+      "published_sha256": "15f09d19cf095254b56cc980be06a118d60354416ac14f0bb35e237813663c97",
+      "bytes": 187284,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/measured-client.yaml",
+      "original_sha256": "b14acfe82f2b100638e411770864a1e1ceb6e1cef6390921abff2d0b3e7ed01a",
+      "published_sha256": "b14acfe82f2b100638e411770864a1e1ceb6e1cef6390921abff2d0b3e7ed01a",
+      "bytes": 1425,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/measured-command.json",
+      "original_sha256": "cac46908ef45317c7cae600ef5b38803cc2333fda301e9154188369dd950db35",
+      "published_sha256": "cac46908ef45317c7cae600ef5b38803cc2333fda301e9154188369dd950db35",
+      "bytes": 581,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/measured-report/config.yaml",
+      "original_sha256": "48eada22bae0dc51f05c1941817a035882ae1503788bced1767254a9d350eae5",
+      "published_sha256": "48eada22bae0dc51f05c1941817a035882ae1503788bced1767254a9d350eae5",
+      "bytes": 1944,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/measured-report/events.jsonl",
+      "original_sha256": "2edb25daabc6e70f81887adc46f0e2076144a48612d2ee07ba88ef048334b63b",
+      "published_sha256": "2edb25daabc6e70f81887adc46f0e2076144a48612d2ee07ba88ef048334b63b",
+      "bytes": 2299345,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/measured-report/metrics/.ready",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/measured-report/metrics/final_snapshot.json",
+      "original_sha256": "541fa28abc4369d55acb9e1a1c1839c50be414ce334c4d8ee64545836a1b88d7",
+      "published_sha256": "541fa28abc4369d55acb9e1a1c1839c50be414ce334c4d8ee64545836a1b88d7",
+      "bytes": 23098,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/measured-report/performance/result_summary.json",
+      "original_sha256": "27b956480618ac9ac50d064d0d0031bccb17a46f27e6101e458fe0d41cd5febd",
+      "published_sha256": "27b956480618ac9ac50d064d0d0031bccb17a46f27e6101e458fe0d41cd5febd",
+      "bytes": 21251,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/measured-report/report.txt",
+      "original_sha256": "d4d962f0ef87e492b8ddc49582f6e95151c1417580bf01e8b0cc648be4b6ad3c",
+      "published_sha256": "d4d962f0ef87e492b8ddc49582f6e95151c1417580bf01e8b0cc648be4b6ad3c",
+      "bytes": 9047,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/measured-report/sample_idx_map.json",
+      "original_sha256": "dd65ac824551c1baf14fbea2ceaccad579b75a06d7585fc6cbf934b7dfaff4d4",
+      "published_sha256": "dd65ac824551c1baf14fbea2ceaccad579b75a06d7585fc6cbf934b7dfaff4d4",
+      "bytes": 59589,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/measured.jsonl",
+      "original_sha256": "a8440421a6ecb992060a7d9bfe3865fe362853e4cfb7fe26c5401fde1b927912",
+      "published_sha256": "a8440421a6ecb992060a7d9bfe3865fe362853e4cfb7fe26c5401fde1b927912",
+      "bytes": 901151,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/ready.json",
+      "original_sha256": "7a95e211717e9b6d82e7d12196e442844e7f8fd0a1fe3423febe1c416f75067d",
+      "published_sha256": "7a95e211717e9b6d82e7d12196e442844e7f8fd0a1fe3423febe1c416f75067d",
+      "bytes": 247,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/recipe.json",
+      "original_sha256": "ce78ac32519d1753683bf67de15ef2bacdbc242faa66da3ede7147aaf721da33",
+      "published_sha256": "ce78ac32519d1753683bf67de15ef2bacdbc242faa66da3ede7147aaf721da33",
+      "bytes": 3481,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/request-audit.csv",
+      "original_sha256": "d38aaa6fc76910e79113724f88cebca39ebf65ee70cf0d5c96f5c9c6d8c9eefe",
+      "published_sha256": "d38aaa6fc76910e79113724f88cebca39ebf65ee70cf0d5c96f5c9c6d8c9eefe",
+      "bytes": 112273,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/server/cluster.json",
+      "original_sha256": "104df25c346b14b37886fb308004a184b7650dfa78f0b55673c5e8974ca3b81a",
+      "published_sha256": "104df25c346b14b37886fb308004a184b7650dfa78f0b55673c5e8974ca3b81a",
+      "bytes": 647,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/server/context.log",
+      "original_sha256": "b4c73e1e69f73d23dcd214bf00a9feb62964fce9b3ab256dfef0992c6d3d9952",
+      "published_sha256": "b4c73e1e69f73d23dcd214bf00a9feb62964fce9b3ab256dfef0992c6d3d9952",
+      "bytes": 1514911,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/server/context.yaml",
+      "original_sha256": "14ade7f777337dd34a69e08cafe19702b0c01a7dc785114aeffd4132e52b8bf2",
+      "published_sha256": "962fd6f3c67cb920922f398934fef384dbee02fdb897eefb25b47cc40d66b34b",
+      "bytes": 1059,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/server/generation.log",
+      "original_sha256": "7c792dc4aa9846e409942ecf64168dfe6531d1494658269b814aa60e9afebb07",
+      "published_sha256": "7c792dc4aa9846e409942ecf64168dfe6531d1494658269b814aa60e9afebb07",
+      "bytes": 36319806,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/server/generation.yaml",
+      "original_sha256": "14ade7f777337dd34a69e08cafe19702b0c01a7dc785114aeffd4132e52b8bf2",
+      "published_sha256": "962fd6f3c67cb920922f398934fef384dbee02fdb897eefb25b47cc40d66b34b",
+      "bytes": 1059,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/server/router.addr",
+      "original_sha256": "69d4a5ca1556d16deeb2c2d2dcefdc912b4d46e23d0d3f4af4c625cd9742db9e",
+      "published_sha256": "69d4a5ca1556d16deeb2c2d2dcefdc912b4d46e23d0d3f4af4c625cd9742db9e",
+      "bytes": 16,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/server/router.log",
+      "original_sha256": "8a1556fcac834892f92aa897c23812af6af839f98f090743dbb9102b9df1e503",
+      "published_sha256": "8a1556fcac834892f92aa897c23812af6af839f98f090743dbb9102b9df1e503",
+      "bytes": 127150,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/server/router.yaml",
+      "original_sha256": "519c59bd3fad72ce31161a75210fc7b347dc3b5c6427494fa1f8c39fda873f24",
+      "published_sha256": "80cd1a10106e04aebcdd7af6b2c52c3e39c3add9915333987ea0562299ac82b2",
+      "bytes": 392,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/summary.json",
+      "original_sha256": "d2ab7448445f6d8006e7d0bc388e9cff7f2044db7510e078a51380212978685b",
+      "published_sha256": "d2ab7448445f6d8006e7d0bc388e9cff7f2044db7510e078a51380212978685b",
+      "bytes": 549,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/validation.json",
+      "original_sha256": "e6aee50a1dc29626683aa6be6fe628ad6dbf7b14b4df2d6a5f57abde58123fd3",
+      "published_sha256": "e6aee50a1dc29626683aa6be6fe628ad6dbf7b14b4df2d6a5f57abde58123fd3",
+      "bytes": 388,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/warmup-client.log",
+      "original_sha256": "82493047dbb066cb37543cf4147429ab1c149734874f3779333401b5d0088976",
+      "published_sha256": "82493047dbb066cb37543cf4147429ab1c149734874f3779333401b5d0088976",
+      "bytes": 7497,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/warmup-client.yaml",
+      "original_sha256": "68866cb7acc8ed8f70d8ffe7380a350767ae4a9c1de5540f75240be05a3cc4e3",
+      "published_sha256": "68866cb7acc8ed8f70d8ffe7380a350767ae4a9c1de5540f75240be05a3cc4e3",
+      "bytes": 1413,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/warmup-command.json",
+      "original_sha256": "99f073a4d6c3ca509424834c3bff1103aecb34803c4f340c1adce992414c9c48",
+      "published_sha256": "99f073a4d6c3ca509424834c3bff1103aecb34803c4f340c1adce992414c9c48",
+      "bytes": 579,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/warmup-report/config.yaml",
+      "original_sha256": "bd67065878760e7acee69c495785be8c4e19b3804563a3cb2508d972ad15e4da",
+      "published_sha256": "bd67065878760e7acee69c495785be8c4e19b3804563a3cb2508d972ad15e4da",
+      "bytes": 1932,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/warmup-report/events.jsonl",
+      "original_sha256": "8b84133fa1062baeb5d5b10417ff9cd819e37d6cb943a0002845841e478ff4ba",
+      "published_sha256": "8b84133fa1062baeb5d5b10417ff9cd819e37d6cb943a0002845841e478ff4ba",
+      "bytes": 3451,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/warmup-report/metrics/.ready",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/warmup-report/metrics/final_snapshot.json",
+      "original_sha256": "0fa424b3577304f0b8fb8f8a90bb0eb4be0b72e2aba9b7c67248ef3f879c202a",
+      "published_sha256": "0fa424b3577304f0b8fb8f8a90bb0eb4be0b72e2aba9b7c67248ef3f879c202a",
+      "bytes": 22927,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/warmup-report/performance/result_summary.json",
+      "original_sha256": "63776b3967de74caa4e03adf808c594945b2944581826346047409926368e0ad",
+      "published_sha256": "63776b3967de74caa4e03adf808c594945b2944581826346047409926368e0ad",
+      "bytes": 21046,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/warmup-report/report.txt",
+      "original_sha256": "6b5846631b00d9116d26fa5e1461e50a1b967a07ece735d6c519bd9eef3d6235",
+      "published_sha256": "6b5846631b00d9116d26fa5e1461e50a1b967a07ece735d6c519bd9eef3d6235",
+      "bytes": 8200,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/warmup-report/sample_idx_map.json",
+      "original_sha256": "47f56286efb9dcb3b685d569bcb731234f13eac4f859ba8738269344403a4afb",
+      "published_sha256": "47f56286efb9dcb3b685d569bcb731234f13eac4f859ba8738269344403a4afb",
+      "bytes": 111,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/warmup.jsonl",
+      "original_sha256": "ca56618c0efaf7fd82e779b8762b6183e9c05fed4b52190bec559af1fac231fa",
+      "published_sha256": "ca56618c0efaf7fd82e779b8762b6183e9c05fed4b52190bec559af1fac231fa",
+      "bytes": 1122,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/worker-provenance.json",
+      "original_sha256": "a76eb1eabbd59bb689b1189f4ad3a84c458524ea8b2d14efb5165f3a261f4a44",
+      "published_sha256": "a76eb1eabbd59bb689b1189f4ad3a84c458524ea8b2d14efb5165f3a261f4a44",
+      "bytes": 78564,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/git-status.txt",
+      "original_sha256": "a9b0df9788855e2f1cd55bd78b091949f8384e8843540e96279672906d81d8d5",
+      "published_sha256": "a9b0df9788855e2f1cd55bd78b091949f8384e8843540e96279672906d81d8d5",
+      "bytes": 75,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/gpu-before.txt",
+      "original_sha256": "ae0e89b7e29bff25ccab430b31654f0379423d798ed0a7e469b18f8ca4cbcebf",
+      "published_sha256": "ae0e89b7e29bff25ccab430b31654f0379423d798ed0a7e469b18f8ca4cbcebf",
+      "bytes": 4265,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/identity.json",
+      "original_sha256": "967cb72bd00200eb0d400e8f1a73a614df909c52aa61e05c85585e5088b12cfe",
+      "published_sha256": "967cb72bd00200eb0d400e8f1a73a614df909c52aa61e05c85585e5088b12cfe",
+      "bytes": 7309,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/prompts.jsonl",
+      "original_sha256": "8c29cf021019536cab242291eb0cf1a1b9d6f823ad07b52b0c09401beee4e5cf",
+      "published_sha256": "8c29cf021019536cab242291eb0cf1a1b9d6f823ad07b52b0c09401beee4e5cf",
+      "bytes": 336621,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/runner.py",
+      "original_sha256": "3599ad53990d14f0eab2dfdd9039e7b421a5a8106145150dc299d67eab57e9ed",
+      "published_sha256": "3599ad53990d14f0eab2dfdd9039e7b421a5a8106145150dc299d67eab57e9ed",
+      "bytes": 39122,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/server-recipe.yaml",
+      "original_sha256": "4c528f1c7370f60053a88b42f66716319c17349d44178ef6c91d9c0f182db097",
+      "published_sha256": "4c528f1c7370f60053a88b42f66716319c17349d44178ef6c91d9c0f182db097",
+      "bytes": 4858,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/shutdown.json",
+      "original_sha256": "d39906b45d409223be233b42ceb1a0990f1880c7508d1ba70b6f6aa0401ff430",
+      "published_sha256": "d39906b45d409223be233b42ceb1a0990f1880c7508d1ba70b6f6aa0401ff430",
+      "bytes": 375,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/STOP",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/after.done",
+      "original_sha256": "e0846230bd1dbfc4a1435553ad844d1f8c9fd669f74947954cad3ba1873f02bc",
+      "published_sha256": "e0846230bd1dbfc4a1435553ad844d1f8c9fd669f74947954cad3ba1873f02bc",
+      "bytes": 442,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/after.request",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/audit.json",
+      "original_sha256": "da6a21d8a13dcdcea7a6809cbf07b33be6214e69589c769e063676e81afbdc29",
+      "published_sha256": "da6a21d8a13dcdcea7a6809cbf07b33be6214e69589c769e063676e81afbdc29",
+      "bytes": 409,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/before.done",
+      "original_sha256": "eb4174448dafe0dbce2c8e8f774822b53270d050bd97583a4f3fef859479bd9f",
+      "published_sha256": "eb4174448dafe0dbce2c8e8f774822b53270d050bd97583a4f3fef859479bd9f",
+      "bytes": 426,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/before.request",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/context-after.prom",
+      "original_sha256": "d479432ab150e318d4e8d75a7e2b7a8635ff053639e01199a251737e98e4be1c",
+      "published_sha256": "d479432ab150e318d4e8d75a7e2b7a8635ff053639e01199a251737e98e4be1c",
+      "bytes": 16603,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/context-before.prom",
+      "original_sha256": "1675a8e55df8ac96d5f2a6f1369ea225f9f2229c517622f80d5b0e9c65a8f60c",
+      "published_sha256": "1675a8e55df8ac96d5f2a6f1369ea225f9f2229c517622f80d5b0e9c65a8f60c",
+      "bytes": 16489,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/context-diagnostic.prom",
+      "original_sha256": "d479432ab150e318d4e8d75a7e2b7a8635ff053639e01199a251737e98e4be1c",
+      "published_sha256": "d479432ab150e318d4e8d75a7e2b7a8635ff053639e01199a251737e98e4be1c",
+      "bytes": 16603,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/counters.json",
+      "original_sha256": "cdada1f41ef6aa0d95a7f6c7bbab9faa9b46cd2e66e86a4e734c80d1b5d41db9",
+      "published_sha256": "cdada1f41ef6aa0d95a7f6c7bbab9faa9b46cd2e66e86a4e734c80d1b5d41db9",
+      "bytes": 706,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/diagnostic.done",
+      "original_sha256": "e0846230bd1dbfc4a1435553ad844d1f8c9fd669f74947954cad3ba1873f02bc",
+      "published_sha256": "e0846230bd1dbfc4a1435553ad844d1f8c9fd669f74947954cad3ba1873f02bc",
+      "bytes": 442,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/diagnostic.request",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/generation-after.prom",
+      "original_sha256": "8834e3c7ba67d2efac91cfaadbacd6c14820a01074f75f2f52741d3f44a805b9",
+      "published_sha256": "8834e3c7ba67d2efac91cfaadbacd6c14820a01074f75f2f52741d3f44a805b9",
+      "bytes": 23500,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/generation-before.prom",
+      "original_sha256": "5fb0d4d0ad929e5720a6dfd0faa596212044db04a8cb1048b67af1cf38617d0d",
+      "published_sha256": "5fb0d4d0ad929e5720a6dfd0faa596212044db04a8cb1048b67af1cf38617d0d",
+      "bytes": 23343,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/generation-diagnostic.prom",
+      "original_sha256": "8834e3c7ba67d2efac91cfaadbacd6c14820a01074f75f2f52741d3f44a805b9",
+      "published_sha256": "8834e3c7ba67d2efac91cfaadbacd6c14820a01074f75f2f52741d3f44a805b9",
+      "bytes": 23500,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/launcher.log",
+      "original_sha256": "aa0b4faba93ab50e96ef7b2baeaba092c405a9a0087921ba4cd90c6f85020e9f",
+      "published_sha256": "aa0b4faba93ab50e96ef7b2baeaba092c405a9a0087921ba4cd90c6f85020e9f",
+      "bytes": 716,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/measured-client.log",
+      "original_sha256": "e011811afaaea9e82aa2bab9e43702aa786585210425f4767768d0099e41817a",
+      "published_sha256": "e011811afaaea9e82aa2bab9e43702aa786585210425f4767768d0099e41817a",
+      "bytes": 8296,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/measured-client.yaml",
+      "original_sha256": "7063501b940aebb1aa245dd5b1f74da21810783573e9e91c390a421b24951cb6",
+      "published_sha256": "7063501b940aebb1aa245dd5b1f74da21810783573e9e91c390a421b24951cb6",
+      "bytes": 1421,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/measured-command.json",
+      "original_sha256": "6b68b905fd977b0f82c5e69ac14a929072c398c33bc34bd0a2f811d9ac3720a0",
+      "published_sha256": "6b68b905fd977b0f82c5e69ac14a929072c398c33bc34bd0a2f811d9ac3720a0",
+      "bytes": 582,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/measured-report/config.yaml",
+      "original_sha256": "4354168d280335cffd60e988da9ba8c07d1fb5ae31005897b2c82d3cc4d43cc7",
+      "published_sha256": "4354168d280335cffd60e988da9ba8c07d1fb5ae31005897b2c82d3cc4d43cc7",
+      "bytes": 1940,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/measured-report/events.jsonl",
+      "original_sha256": "1abaf4be6c2ba7de43d20f9618556f4dfcd5ee0731bc37714eb163b321d959a3",
+      "published_sha256": "1abaf4be6c2ba7de43d20f9618556f4dfcd5ee0731bc37714eb163b321d959a3",
+      "bytes": 14444,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/measured-report/metrics/.ready",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/measured-report/metrics/final_snapshot.json",
+      "original_sha256": "bb89df83ad632a30b8841c8ba5d302eb100ee56ea907fc7c515bd64dc882f844",
+      "published_sha256": "bb89df83ad632a30b8841c8ba5d302eb100ee56ea907fc7c515bd64dc882f844",
+      "bytes": 22945,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/measured-report/performance/result_summary.json",
+      "original_sha256": "20153d220bd99ecf90a1c67c6544f0ce6cf60ec979e94f2852f4dc939805177b",
+      "published_sha256": "20153d220bd99ecf90a1c67c6544f0ce6cf60ec979e94f2852f4dc939805177b",
+      "bytes": 21063,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/measured-report/report.txt",
+      "original_sha256": "5286e51e54f1d064f7d1029c1bd68e6471c7d99762cdc89a8c8ae2ea3d8a987e",
+      "published_sha256": "5286e51e54f1d064f7d1029c1bd68e6471c7d99762cdc89a8c8ae2ea3d8a987e",
+      "bytes": 8479,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/measured-report/sample_idx_map.json",
+      "original_sha256": "91e14748419acc25d767f118b5e18c5a4ac8dd74c2ab82da08809ad7d9ac5ae1",
+      "published_sha256": "91e14748419acc25d767f118b5e18c5a4ac8dd74c2ab82da08809ad7d9ac5ae1",
+      "bytes": 369,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/measured.jsonl",
+      "original_sha256": "4b0de41e530c1edcd9a00a162ec7d217684916ac39799eabdb2229931e73920b",
+      "published_sha256": "4b0de41e530c1edcd9a00a162ec7d217684916ac39799eabdb2229931e73920b",
+      "bytes": 5240,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/ready.json",
+      "original_sha256": "fb3017966eb92787fa21b38c9c59c4b123b1b31f12868e749e69c10ebd3c8e37",
+      "published_sha256": "fb3017966eb92787fa21b38c9c59c4b123b1b31f12868e749e69c10ebd3c8e37",
+      "bytes": 247,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/recipe.json",
+      "original_sha256": "ce78ac32519d1753683bf67de15ef2bacdbc242faa66da3ede7147aaf721da33",
+      "published_sha256": "ce78ac32519d1753683bf67de15ef2bacdbc242faa66da3ede7147aaf721da33",
+      "bytes": 3481,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/request-audit.csv",
+      "original_sha256": "15eb42a9f4bcc0d737bc68bc3d3b2fd289782038af89467c727dfffb7487e365",
+      "published_sha256": "15eb42a9f4bcc0d737bc68bc3d3b2fd289782038af89467c727dfffb7487e365",
+      "bytes": 751,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/server/cluster.json",
+      "original_sha256": "38d0877ecece08a6049e3e32f0bed849aba6d99bf93296eb71ac7b5240d9bb3a",
+      "published_sha256": "38d0877ecece08a6049e3e32f0bed849aba6d99bf93296eb71ac7b5240d9bb3a",
+      "bytes": 647,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/server/context.log",
+      "original_sha256": "e005993b9edfc556f76e7fcdeee714335141c3bc2eb77d3b2c7eb8906103b30f",
+      "published_sha256": "e005993b9edfc556f76e7fcdeee714335141c3bc2eb77d3b2c7eb8906103b30f",
+      "bytes": 68160,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/server/context.yaml",
+      "original_sha256": "8916b53ed33450a12cf5ed42d2d75332b8b2c99ad274a663236a389559439169",
+      "published_sha256": "34369af17f3177b29c4e925135bdcf0b5d102de79f17b1e0aba8cb921e0ef389",
+      "bytes": 1059,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/server/generation.log",
+      "original_sha256": "a62de4dd8abff2020e64f778e1ed448d76024a7171099a5235d31466b98c19c5",
+      "published_sha256": "a62de4dd8abff2020e64f778e1ed448d76024a7171099a5235d31466b98c19c5",
+      "bytes": 321220,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/server/generation.yaml",
+      "original_sha256": "8916b53ed33450a12cf5ed42d2d75332b8b2c99ad274a663236a389559439169",
+      "published_sha256": "34369af17f3177b29c4e925135bdcf0b5d102de79f17b1e0aba8cb921e0ef389",
+      "bytes": 1059,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/server/router.addr",
+      "original_sha256": "5b58f4aa5a288336b49b8dc57acb58cde20bcae3d3435a434dfe9a71a1e605e2",
+      "published_sha256": "5b58f4aa5a288336b49b8dc57acb58cde20bcae3d3435a434dfe9a71a1e605e2",
+      "bytes": 16,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/server/router.log",
+      "original_sha256": "21cc394960e0e47f9bf307bd38b559e94f3ebc070159ea274985bf2ce775b13f",
+      "published_sha256": "21cc394960e0e47f9bf307bd38b559e94f3ebc070159ea274985bf2ce775b13f",
+      "bytes": 15200,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/server/router.yaml",
+      "original_sha256": "a4488dbe134ba9e1bf469c5bdd722ad9e68fc70099eb3a428598a11f9b4f62d3",
+      "published_sha256": "592335e08d02a328621747c3ab505bef0d643e9ccf3d88e0b40293036f1c3556",
+      "bytes": 392,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/summary.json",
+      "original_sha256": "1d919d92e121b5b090d12336fcc5859f7a7d931498174449c2905441e01ecfe4",
+      "published_sha256": "1d919d92e121b5b090d12336fcc5859f7a7d931498174449c2905441e01ecfe4",
+      "bytes": 515,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/validation.json",
+      "original_sha256": "e6aee50a1dc29626683aa6be6fe628ad6dbf7b14b4df2d6a5f57abde58123fd3",
+      "published_sha256": "e6aee50a1dc29626683aa6be6fe628ad6dbf7b14b4df2d6a5f57abde58123fd3",
+      "bytes": 388,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/warmup-client.log",
+      "original_sha256": "882fd2a888ec8767168b0a610a05135f8135f5cf3a7e5c1c74e7d8807255b5f2",
+      "published_sha256": "882fd2a888ec8767168b0a610a05135f8135f5cf3a7e5c1c74e7d8807255b5f2",
+      "bytes": 7499,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/warmup-client.yaml",
+      "original_sha256": "bd49d99f4a8a1d11cf9aeffd40ffedaa404c7ef4199e14d3be7508a7c26ced5e",
+      "published_sha256": "bd49d99f4a8a1d11cf9aeffd40ffedaa404c7ef4199e14d3be7508a7c26ced5e",
+      "bytes": 1415,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/warmup-command.json",
+      "original_sha256": "28056f3a2b5d29de1bc4c7f51a8f972d61414d70728ccfa0e7f3b30f09f1898e",
+      "published_sha256": "28056f3a2b5d29de1bc4c7f51a8f972d61414d70728ccfa0e7f3b30f09f1898e",
+      "bytes": 580,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/warmup-report/config.yaml",
+      "original_sha256": "4163af7a42fe646cda576da6048a16de3a9354dbdbf4c46daf6e26c8a67da937",
+      "published_sha256": "4163af7a42fe646cda576da6048a16de3a9354dbdbf4c46daf6e26c8a67da937",
+      "bytes": 1934,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/warmup-report/events.jsonl",
+      "original_sha256": "7259e108d827fdfc0cda88c9c5b6a1c253c814225ab33e897d5d7e772f730112",
+      "published_sha256": "7259e108d827fdfc0cda88c9c5b6a1c253c814225ab33e897d5d7e772f730112",
+      "bytes": 3451,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/warmup-report/metrics/.ready",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/warmup-report/metrics/final_snapshot.json",
+      "original_sha256": "884150d25c6f3f7415b288cd6fcadcccc3f9ebc8e53a27eca4ed42402d71c354",
+      "published_sha256": "884150d25c6f3f7415b288cd6fcadcccc3f9ebc8e53a27eca4ed42402d71c354",
+      "bytes": 22944,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/warmup-report/performance/result_summary.json",
+      "original_sha256": "b74288efb3b19243803fe882ee65adebd32055e984dd77192a1d567c7da7bbaa",
+      "published_sha256": "b74288efb3b19243803fe882ee65adebd32055e984dd77192a1d567c7da7bbaa",
+      "bytes": 21067,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/warmup-report/report.txt",
+      "original_sha256": "0efc5a2500832007f93dc53bba3777118a608b48cdd9b40940d4de56973aa180",
+      "published_sha256": "0efc5a2500832007f93dc53bba3777118a608b48cdd9b40940d4de56973aa180",
+      "bytes": 8171,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/warmup-report/sample_idx_map.json",
+      "original_sha256": "9a6fad2fb4f1b774c98d7983ccebea1b8bc46b2798087abe49ece09a7135572c",
+      "published_sha256": "9a6fad2fb4f1b774c98d7983ccebea1b8bc46b2798087abe49ece09a7135572c",
+      "bytes": 111,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/warmup.jsonl",
+      "original_sha256": "ca56618c0efaf7fd82e779b8762b6183e9c05fed4b52190bec559af1fac231fa",
+      "published_sha256": "ca56618c0efaf7fd82e779b8762b6183e9c05fed4b52190bec559af1fac231fa",
+      "bytes": 1122,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/worker-provenance.json",
+      "original_sha256": "6b52788aa91afc81b5c7bf969e20bc963dc14f30d605689411629334058360e4",
+      "published_sha256": "6b52788aa91afc81b5c7bf969e20bc963dc14f30d605689411629334058360e4",
+      "bytes": 78568,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/source.patch",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/summary.csv",
+      "original_sha256": "b46e1bb4bd3f71308c0413015ecdef4e3e8b165b6c030530828d26de426584ec",
+      "published_sha256": "b46e1bb4bd3f71308c0413015ecdef4e3e8b165b6c030530828d26de426584ec",
+      "bytes": 628,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/model-revalidation.json",
+      "original_sha256": "669895c5e363a810ec4591e5c4f219eac2c69cf27ff1dd797e59cdf4485fbb75",
+      "published_sha256": "669895c5e363a810ec4591e5c4f219eac2c69cf27ff1dd797e59cdf4485fbb75",
+      "bytes": 628,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/plan.json",
+      "original_sha256": "20b6ea62718861a05e83df415fad190891f18fdc1e03ba4e41e163e58a0ee83c",
+      "published_sha256": "20b6ea62718861a05e83df415fad190891f18fdc1e03ba4e41e163e58a0ee83c",
+      "bytes": 893,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/procedure.json",
+      "original_sha256": "069eadd226cae27ca39efee9583e691fbdfdf0358019d3c9e532eec4abfbc3b3",
+      "published_sha256": "069eadd226cae27ca39efee9583e691fbdfdf0358019d3c9e532eec4abfbc3b3",
+      "bytes": 1641,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/progress.json",
+      "original_sha256": "1ce968251591f0ba72e09804c0cc8401943af3439601c4d227079c5dc1253315",
+      "published_sha256": "1ce968251591f0ba72e09804c0cc8401943af3439601c4d227079c5dc1253315",
+      "bytes": 680,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/replay.sh",
+      "original_sha256": "3be08a7f7692ddacaa0fdbdfd10fe90898dfeabce15d427ade850742e8bd97da",
+      "published_sha256": "3be08a7f7692ddacaa0fdbdfd10fe90898dfeabce15d427ade850742e8bd97da",
+      "bytes": 4260,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/restoration.log",
+      "original_sha256": "5cf1140bd11dd2494d6c06a7e54f46c5e2b81a1fc9f7bdc5778f8a25266ac855",
+      "published_sha256": "5cf1140bd11dd2494d6c06a7e54f46c5e2b81a1fc9f7bdc5778f8a25266ac855",
+      "bytes": 304,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/restore_original.py",
+      "original_sha256": "d1f3c947504ea4a22c5c9f1605fafb21d67de30b0071cbb4448d53b50462fc9f",
+      "published_sha256": "d1f3c947504ea4a22c5c9f1605fafb21d67de30b0071cbb4448d53b50462fc9f",
+      "bytes": 2766,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/restored-runtime.json",
+      "original_sha256": "69e267d481d2eab95ef578e024bd79c63c808d63300e6cf40e76131800df95db",
+      "published_sha256": "69e267d481d2eab95ef578e024bd79c63c808d63300e6cf40e76131800df95db",
+      "bytes": 14232,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/restored-runtime.log",
+      "original_sha256": "a6c2e1091bb645ed923dbf3822eb0bdda5e1c4bd2fb01bfc1f3c211c697a0a40",
+      "published_sha256": "a6c2e1091bb645ed923dbf3822eb0bdda5e1c4bd2fb01bfc1f3c211c697a0a40",
+      "bytes": 14480,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/restored-status.txt",
+      "original_sha256": "8d785de2e7577b5dd535a3403b49976120ea6cf4c733642af58b4906fd845598",
+      "published_sha256": "8d785de2e7577b5dd535a3403b49976120ea6cf4c733642af58b4906fd845598",
+      "bytes": 60,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/revision-differences.json",
+      "original_sha256": "cb0651712969e532c439e9821578f4792feb1a7bec2be6138bd9d3e98e7f5b70",
+      "published_sha256": "cb0651712969e532c439e9821578f4792feb1a7bec2be6138bd9d3e98e7f5b70",
+      "bytes": 524389,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/summary.csv",
+      "original_sha256": "686c7fd4bbfad990b639e5b62e234a3ca754ca9e323370d543b2cc974319d702",
+      "published_sha256": "686c7fd4bbfad990b639e5b62e234a3ca754ca9e323370d543b2cc974319d702",
+      "bytes": 1043,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/verify_runtime.py",
+      "original_sha256": "130ac29ba28aca37f1c4855062545ef5ac9af97302adcb10550aa18d235c9ca8",
+      "published_sha256": "130ac29ba28aca37f1c4855062545ef5ac9af97302adcb10550aa18d235c9ca8",
+      "bytes": 1599,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/collector.py",
+      "original_sha256": "b82a90f24eee5236c9de516b463f928d8ff7ac42bfc504f7bf2142647f7832f1",
+      "published_sha256": "b82a90f24eee5236c9de516b463f928d8ff7ac42bfc504f7bf2142647f7832f1",
+      "bytes": 16299,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/failure.json",
+      "original_sha256": "ad9eb90d5ecbc0f7198e00d082e32d3d75b23147055efe96833e444a4a57f689",
+      "published_sha256": "ad9eb90d5ecbc0f7198e00d082e32d3d75b23147055efe96833e444a4a57f689",
+      "bytes": 378,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/git-status.txt",
+      "original_sha256": "8d785de2e7577b5dd535a3403b49976120ea6cf4c733642af58b4906fd845598",
+      "published_sha256": "8d785de2e7577b5dd535a3403b49976120ea6cf4c733642af58b4906fd845598",
+      "bytes": 60,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/gpu-before.txt",
+      "original_sha256": "c325e5e8d14eee6fd5a99e6fede87b166fe1daa05910eaa11a7c726b64dfe229",
+      "published_sha256": "c325e5e8d14eee6fd5a99e6fede87b166fe1daa05910eaa11a7c726b64dfe229",
+      "bytes": 4265,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/identity.json",
+      "original_sha256": "4bf8b6cb4a0a942b2f8d01a1d4c11ea18c2939bb9a16d1162514737ba45ad4b3",
+      "published_sha256": "4bf8b6cb4a0a942b2f8d01a1d4c11ea18c2939bb9a16d1162514737ba45ad4b3",
+      "bytes": 7293,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/prompts.jsonl",
+      "original_sha256": "8c29cf021019536cab242291eb0cf1a1b9d6f823ad07b52b0c09401beee4e5cf",
+      "published_sha256": "8c29cf021019536cab242291eb0cf1a1b9d6f823ad07b52b0c09401beee4e5cf",
+      "bytes": 336621,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/runner.py",
+      "original_sha256": "3599ad53990d14f0eab2dfdd9039e7b421a5a8106145150dc299d67eab57e9ed",
+      "published_sha256": "3599ad53990d14f0eab2dfdd9039e7b421a5a8106145150dc299d67eab57e9ed",
+      "bytes": 39122,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/server-recipe.yaml",
+      "original_sha256": "4c528f1c7370f60053a88b42f66716319c17349d44178ef6c91d9c0f182db097",
+      "published_sha256": "4c528f1c7370f60053a88b42f66716319c17349d44178ef6c91d9c0f182db097",
+      "bytes": 4858,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/STOP",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/config-validation.yaml",
+      "original_sha256": "84704bf2304c436473ec5e1ff5324c4bdee6b934f5791bdf6b586334615ee479",
+      "published_sha256": "84704bf2304c436473ec5e1ff5324c4bdee6b934f5791bdf6b586334615ee479",
+      "bytes": 1364,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/launcher.log",
+      "original_sha256": "ea3fbfe69c6bb7f7f46cfe38ac1fbff2255c3de9a08abe9147f0653f2b3e9d13",
+      "published_sha256": "ea3fbfe69c6bb7f7f46cfe38ac1fbff2255c3de9a08abe9147f0653f2b3e9d13",
+      "bytes": 948,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/measured.jsonl",
+      "original_sha256": "4b0de41e530c1edcd9a00a162ec7d217684916ac39799eabdb2229931e73920b",
+      "published_sha256": "4b0de41e530c1edcd9a00a162ec7d217684916ac39799eabdb2229931e73920b",
+      "bytes": 5240,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/ready.json",
+      "original_sha256": "9b16661c1ed2a9bf291f92798dae86de2a41308b0f51f282f05d892545d0420d",
+      "published_sha256": "9b16661c1ed2a9bf291f92798dae86de2a41308b0f51f282f05d892545d0420d",
+      "bytes": 247,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/recipe.json",
+      "original_sha256": "ce78ac32519d1753683bf67de15ef2bacdbc242faa66da3ede7147aaf721da33",
+      "published_sha256": "ce78ac32519d1753683bf67de15ef2bacdbc242faa66da3ede7147aaf721da33",
+      "bytes": 3481,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/server/cluster.json",
+      "original_sha256": "ea3bd55d5da6af85a066d98505666e4f6a64301015bcd400d7de5605cd4873d7",
+      "published_sha256": "ea3bd55d5da6af85a066d98505666e4f6a64301015bcd400d7de5605cd4873d7",
+      "bytes": 647,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/server/context.log",
+      "original_sha256": "654546a087f7ca97df43bdb8946f23fc627004b8dc2f3fadac887458ddeeabe4",
+      "published_sha256": "654546a087f7ca97df43bdb8946f23fc627004b8dc2f3fadac887458ddeeabe4",
+      "bytes": 58635,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/server/context.yaml",
+      "original_sha256": "e65d3adc4bf13c0f3776a793977d3ee40d1cb4d009dd3d27c8d4ef27f2d8ea42",
+      "published_sha256": "05fac57b2fd9f8a52f296c0ddbe35de4c84416938578fec5ff1d83ffbd015e38",
+      "bytes": 1059,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/server/generation.log",
+      "original_sha256": "d6c497886c0f4aab28ca0349ba0e746867b7a0b0389c60cc9692abda2880ad44",
+      "published_sha256": "d6c497886c0f4aab28ca0349ba0e746867b7a0b0389c60cc9692abda2880ad44",
+      "bytes": 54313,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/server/generation.yaml",
+      "original_sha256": "e65d3adc4bf13c0f3776a793977d3ee40d1cb4d009dd3d27c8d4ef27f2d8ea42",
+      "published_sha256": "05fac57b2fd9f8a52f296c0ddbe35de4c84416938578fec5ff1d83ffbd015e38",
+      "bytes": 1059,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/server/router.addr",
+      "original_sha256": "a7d021d90f29d01709d2ec22f9e5a9487abdceb6c6f19608d74a651e0f81a3b4",
+      "published_sha256": "a7d021d90f29d01709d2ec22f9e5a9487abdceb6c6f19608d74a651e0f81a3b4",
+      "bytes": 16,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/server/router.log",
+      "original_sha256": "2eeca7e37f2e8108b24ca43c6bebe14d735e9cf2548abfac26f2e6d1931272ff",
+      "published_sha256": "2eeca7e37f2e8108b24ca43c6bebe14d735e9cf2548abfac26f2e6d1931272ff",
+      "bytes": 22641,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/server/router.yaml",
+      "original_sha256": "b65f91411c67f8b4611e0527f953817a3f306699149f99f8450d2d72388ef263",
+      "published_sha256": "a2968496c04634311de2ebc776c7ff2982ef921fbcdf0565b44ddbdce34d2c72",
+      "bytes": 392,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/validation.json",
+      "original_sha256": "e6aee50a1dc29626683aa6be6fe628ad6dbf7b14b4df2d6a5f57abde58123fd3",
+      "published_sha256": "e6aee50a1dc29626683aa6be6fe628ad6dbf7b14b4df2d6a5f57abde58123fd3",
+      "bytes": 388,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/warmup-client.log",
+      "original_sha256": "d75573a9263502127c3eede9a7f1b314ccace2a5f180007cf4b355bb17716d11",
+      "published_sha256": "d75573a9263502127c3eede9a7f1b314ccace2a5f180007cf4b355bb17716d11",
+      "bytes": 7671,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/warmup-client.yaml",
+      "original_sha256": "93ac68582a7e8e00831f70e86b7819b6c5fcdddfdea838663dfee2958374a8eb",
+      "published_sha256": "93ac68582a7e8e00831f70e86b7819b6c5fcdddfdea838663dfee2958374a8eb",
+      "bytes": 1358,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/warmup-command.json",
+      "original_sha256": "511418469785b30cf07ea54a291fd41637b73eaccbf36810aaa7de13f496651e",
+      "published_sha256": "511418469785b30cf07ea54a291fd41637b73eaccbf36810aaa7de13f496651e",
+      "bytes": 564,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/warmup-report/config.yaml",
+      "original_sha256": "78567c493473fb8feb8b67d317b5970107a5710549600c9470d34f2b8eb3f5bb",
+      "published_sha256": "78567c493473fb8feb8b67d317b5970107a5710549600c9470d34f2b8eb3f5bb",
+      "bytes": 1902,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/warmup-report/events.jsonl",
+      "original_sha256": "684492f5136cf04037b648bd8d4d91436afc1782d5c22bfba6fd33ead2f34234",
+      "published_sha256": "684492f5136cf04037b648bd8d4d91436afc1782d5c22bfba6fd33ead2f34234",
+      "bytes": 2671,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/warmup-report/metrics/.ready",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/warmup-report/metrics/final_snapshot.json",
+      "original_sha256": "929fb287cc592c2d057da00671bee18fe43feb7838369cc4fc3298ee9be4201a",
+      "published_sha256": "929fb287cc592c2d057da00671bee18fe43feb7838369cc4fc3298ee9be4201a",
+      "bytes": 11744,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/warmup-report/performance/result_summary.json",
+      "original_sha256": "7bd57c6fe43176be2537916e7a57f60af4166ec9c3ccb379c84c82129259745f",
+      "published_sha256": "7bd57c6fe43176be2537916e7a57f60af4166ec9c3ccb379c84c82129259745f",
+      "bytes": 7679,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/warmup-report/report.txt",
+      "original_sha256": "8df85d2994d7a166a38309ba4616182739e67c409ac478acb811c1c2d1b4d2f6",
+      "published_sha256": "8df85d2994d7a166a38309ba4616182739e67c409ac478acb811c1c2d1b4d2f6",
+      "bytes": 3178,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/warmup-report/sample_idx_map.json",
+      "original_sha256": "dbabad501ec6a81f266d31bdf6ba9952077ae3afe8224a7935b48f248a4a06bf",
+      "published_sha256": "dbabad501ec6a81f266d31bdf6ba9952077ae3afe8224a7935b48f248a4a06bf",
+      "bytes": 111,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/warmup.jsonl",
+      "original_sha256": "ca56618c0efaf7fd82e779b8762b6183e9c05fed4b52190bec559af1fac231fa",
+      "published_sha256": "ca56618c0efaf7fd82e779b8762b6183e9c05fed4b52190bec559af1fac231fa",
+      "bytes": 1122,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/source.patch",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/collector.py",
+      "original_sha256": "2ec9fde61350067b9578aae2bdeda4a8178008b9fd884aa71aa725ad01bb3485",
+      "published_sha256": "2ec9fde61350067b9578aae2bdeda4a8178008b9fd884aa71aa725ad01bb3485",
+      "bytes": 18194,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/STOP",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/after.done",
+      "original_sha256": "1771bfba6d4a77621f78efbd0dfb5a5b9aa421451ea3cc154702fadaf93960ea",
+      "published_sha256": "1771bfba6d4a77621f78efbd0dfb5a5b9aa421451ea3cc154702fadaf93960ea",
+      "bytes": 493,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/after.request",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/audit.json",
+      "original_sha256": "b4eb53115586f50e0f4d633b540cc3f0b30918eba8d23612f18334385c826ecd",
+      "published_sha256": "b4eb53115586f50e0f4d633b540cc3f0b30918eba8d23612f18334385c826ecd",
+      "bytes": 427,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/before.done",
+      "original_sha256": "7d29a1672081af72de8e7056ecfd690ddddace3bc46180093c7f93606d5d8c9c",
+      "published_sha256": "7d29a1672081af72de8e7056ecfd690ddddace3bc46180093c7f93606d5d8c9c",
+      "bytes": 426,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/before.request",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/context-after.prom",
+      "original_sha256": "2b1189fa2f292734d1dfb6a3acf6a23b2fad67328983e7f2f9b28b6b326e51e4",
+      "published_sha256": "2b1189fa2f292734d1dfb6a3acf6a23b2fad67328983e7f2f9b28b6b326e51e4",
+      "bytes": 16844,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/context-before.prom",
+      "original_sha256": "4d1fe86ad62cebc1f8e71cfc9ac378d934cbe1fe2b3b1d1d9671506bd925511d",
+      "published_sha256": "4d1fe86ad62cebc1f8e71cfc9ac378d934cbe1fe2b3b1d1d9671506bd925511d",
+      "bytes": 16490,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/context-diagnostic.prom",
+      "original_sha256": "2b1189fa2f292734d1dfb6a3acf6a23b2fad67328983e7f2f9b28b6b326e51e4",
+      "published_sha256": "2b1189fa2f292734d1dfb6a3acf6a23b2fad67328983e7f2f9b28b6b326e51e4",
+      "bytes": 16844,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/counters.json",
+      "original_sha256": "826bf5b359be854deacaae2f0c3961580d1e1dcb8b3f589864afca3d3c66122b",
+      "published_sha256": "826bf5b359be854deacaae2f0c3961580d1e1dcb8b3f589864afca3d3c66122b",
+      "bytes": 771,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/diagnostic.done",
+      "original_sha256": "1771bfba6d4a77621f78efbd0dfb5a5b9aa421451ea3cc154702fadaf93960ea",
+      "published_sha256": "1771bfba6d4a77621f78efbd0dfb5a5b9aa421451ea3cc154702fadaf93960ea",
+      "bytes": 493,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/diagnostic.request",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/generation-after.prom",
+      "original_sha256": "fec95b71a7a94d9f320a0166de46e99c3b03b42653899788b62a7b6cf76200d5",
+      "published_sha256": "fec95b71a7a94d9f320a0166de46e99c3b03b42653899788b62a7b6cf76200d5",
+      "bytes": 23943,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/generation-before.prom",
+      "original_sha256": "e9d1a6350036732f323c8dc38860f2e815d97f10f701fc815507f4f500e317aa",
+      "published_sha256": "e9d1a6350036732f323c8dc38860f2e815d97f10f701fc815507f4f500e317aa",
+      "bytes": 23342,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/generation-diagnostic.prom",
+      "original_sha256": "fec95b71a7a94d9f320a0166de46e99c3b03b42653899788b62a7b6cf76200d5",
+      "published_sha256": "fec95b71a7a94d9f320a0166de46e99c3b03b42653899788b62a7b6cf76200d5",
+      "bytes": 23943,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/launcher.log",
+      "original_sha256": "92288913e75352add146c7c97388efd3bf74cdaa3ed74931c75c4f82edd7d142",
+      "published_sha256": "92288913e75352add146c7c97388efd3bf74cdaa3ed74931c75c4f82edd7d142",
+      "bytes": 674,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/measured-client.log",
+      "original_sha256": "10d9f655db084eeeff431608ce1a67b87e35e433137184379b0817d00f77d993",
+      "published_sha256": "10d9f655db084eeeff431608ce1a67b87e35e433137184379b0817d00f77d993",
+      "bytes": 98112,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/measured-client.yaml",
+      "original_sha256": "59544d51a904f8283975acae7d0e93da184810c0afbad4c7b24083bc9906df21",
+      "published_sha256": "59544d51a904f8283975acae7d0e93da184810c0afbad4c7b24083bc9906df21",
+      "bytes": 1399,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/measured-command.json",
+      "original_sha256": "6466c7d7c82f3dd2df8a0a066aec2e8a60d8f57897512029ae3b8a268c0434a2",
+      "published_sha256": "6466c7d7c82f3dd2df8a0a066aec2e8a60d8f57897512029ae3b8a268c0434a2",
+      "bytes": 568,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/measured-report/config.yaml",
+      "original_sha256": "c035c83e4da3cf063a5491a2c74ca2066db5cff8da4e5283f85c9d89aa5efb42",
+      "published_sha256": "c035c83e4da3cf063a5491a2c74ca2066db5cff8da4e5283f85c9d89aa5efb42",
+      "bytes": 1918,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/measured-report/events.jsonl",
+      "original_sha256": "82c3744558f4e527145af195933935dbdbf82a2227e09298e5cdc8f5577390d9",
+      "published_sha256": "82c3744558f4e527145af195933935dbdbf82a2227e09298e5cdc8f5577390d9",
+      "bytes": 2299345,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/measured-report/metrics/.ready",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/measured-report/metrics/final_snapshot.json",
+      "original_sha256": "c891bf1b6b0cb4503a1ad66ca6a52b70f566c0e39f3f4ed3b8da8bba8a6bfe28",
+      "published_sha256": "c891bf1b6b0cb4503a1ad66ca6a52b70f566c0e39f3f4ed3b8da8bba8a6bfe28",
+      "bytes": 23084,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/measured-report/performance/result_summary.json",
+      "original_sha256": "80268b2833f9a7c2d419511f07626a19ff5a9f60f4a091fdc764bd88bf9ba58f",
+      "published_sha256": "80268b2833f9a7c2d419511f07626a19ff5a9f60f4a091fdc764bd88bf9ba58f",
+      "bytes": 21232,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/measured-report/report.txt",
+      "original_sha256": "74563a014c7bf7c766cc81950672e687cc44699abd96ab6d3c1441cc1cf1e561",
+      "published_sha256": "74563a014c7bf7c766cc81950672e687cc44699abd96ab6d3c1441cc1cf1e561",
+      "bytes": 9034,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/measured-report/sample_idx_map.json",
+      "original_sha256": "af7337ae9cc0d92abfb2ecc1d24fa24c128d8f0ce9989d4e7a8b1aa81cc0a2b4",
+      "published_sha256": "af7337ae9cc0d92abfb2ecc1d24fa24c128d8f0ce9989d4e7a8b1aa81cc0a2b4",
+      "bytes": 59589,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/measured.jsonl",
+      "original_sha256": "a8440421a6ecb992060a7d9bfe3865fe362853e4cfb7fe26c5401fde1b927912",
+      "published_sha256": "a8440421a6ecb992060a7d9bfe3865fe362853e4cfb7fe26c5401fde1b927912",
+      "bytes": 901151,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/ready.json",
+      "original_sha256": "bdb55d24e065e85cff4542f355a261678a54c1f367142854ff5090c1bbdb0c58",
+      "published_sha256": "bdb55d24e065e85cff4542f355a261678a54c1f367142854ff5090c1bbdb0c58",
+      "bytes": 247,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/recipe.json",
+      "original_sha256": "ce78ac32519d1753683bf67de15ef2bacdbc242faa66da3ede7147aaf721da33",
+      "published_sha256": "ce78ac32519d1753683bf67de15ef2bacdbc242faa66da3ede7147aaf721da33",
+      "bytes": 3481,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/request-audit.csv",
+      "original_sha256": "6677aa3808d86cb095500e6084d0699470b3475d001b60307246b48eddbbc461",
+      "published_sha256": "6677aa3808d86cb095500e6084d0699470b3475d001b60307246b48eddbbc461",
+      "bytes": 111304,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/server/cluster.json",
+      "original_sha256": "2f083c56cbd4712680e4ef32697555556e76278fca97fb519ab5d8ee0f5d0911",
+      "published_sha256": "2f083c56cbd4712680e4ef32697555556e76278fca97fb519ab5d8ee0f5d0911",
+      "bytes": 647,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/server/context.log",
+      "original_sha256": "2424e063a719711daddcc81f7c774097ccd1436c45a914db283a166baf1273b0",
+      "published_sha256": "2424e063a719711daddcc81f7c774097ccd1436c45a914db283a166baf1273b0",
+      "bytes": 1512280,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/server/context.yaml",
+      "original_sha256": "ae424174489f5467d613a7d562be8d7832b98e8f609c175648966e5aa46b51cb",
+      "published_sha256": "e1ebe713dcefcd2f14701791e6b4a11eef51c5c18548d94cce48e5fe3badec23",
+      "bytes": 1059,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/server/generation.log",
+      "original_sha256": "4ecf0a71490523c2f3cf422bca97c1eef5753d50fb6aa0e30bfd8f9999a4e99b",
+      "published_sha256": "4ecf0a71490523c2f3cf422bca97c1eef5753d50fb6aa0e30bfd8f9999a4e99b",
+      "bytes": 31291048,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/server/generation.yaml",
+      "original_sha256": "ae424174489f5467d613a7d562be8d7832b98e8f609c175648966e5aa46b51cb",
+      "published_sha256": "e1ebe713dcefcd2f14701791e6b4a11eef51c5c18548d94cce48e5fe3badec23",
+      "bytes": 1059,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/server/router.addr",
+      "original_sha256": "8c312c82ff8a19abba5d1e0f6e8a5f5980dfd0a06bd4e808e14c690252f405df",
+      "published_sha256": "8c312c82ff8a19abba5d1e0f6e8a5f5980dfd0a06bd4e808e14c690252f405df",
+      "bytes": 16,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/server/router.log",
+      "original_sha256": "92b85dadb54d9efff57e296d9facd9f32bd259b5465f5cd59856699aad097913",
+      "published_sha256": "92b85dadb54d9efff57e296d9facd9f32bd259b5465f5cd59856699aad097913",
+      "bytes": 124719,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/server/router.yaml",
+      "original_sha256": "29c2d31e717df33084ee5b69b99b30f89c7150f96107c1ad70645883ba189b64",
+      "published_sha256": "90e598e5735057a764fa0cb9134aa5a729d0516b2c0a5157098c1f2a6181e368",
+      "bytes": 392,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/summary.json",
+      "original_sha256": "0a628c88817fa71264442c61ead5277259501a2995684010f5f98752670a212e",
+      "published_sha256": "0a628c88817fa71264442c61ead5277259501a2995684010f5f98752670a212e",
+      "bytes": 549,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/validation.json",
+      "original_sha256": "e6aee50a1dc29626683aa6be6fe628ad6dbf7b14b4df2d6a5f57abde58123fd3",
+      "published_sha256": "e6aee50a1dc29626683aa6be6fe628ad6dbf7b14b4df2d6a5f57abde58123fd3",
+      "bytes": 388,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/warmup-client.log",
+      "original_sha256": "29acb950e1ffff77bae85be4e9c756f8d557397f6fbd152469467e49cb7402c0",
+      "published_sha256": "29acb950e1ffff77bae85be4e9c756f8d557397f6fbd152469467e49cb7402c0",
+      "bytes": 7471,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/warmup-client.yaml",
+      "original_sha256": "87efba577f2e7eb0e58de52daa6524b19c8f2899f22bb4ad9ace116c68158d4f",
+      "published_sha256": "87efba577f2e7eb0e58de52daa6524b19c8f2899f22bb4ad9ace116c68158d4f",
+      "bytes": 1387,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/warmup-command.json",
+      "original_sha256": "a0a201b0c4933fbc60658bd8738e57c06c4758c5c81f81c84da6309eecbe1dd8",
+      "published_sha256": "a0a201b0c4933fbc60658bd8738e57c06c4758c5c81f81c84da6309eecbe1dd8",
+      "bytes": 566,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/warmup-report/config.yaml",
+      "original_sha256": "f6e7681cb0830dd1cc179188558a75cef7411a95e9ceba2cf9a3d6ec05331a47",
+      "published_sha256": "f6e7681cb0830dd1cc179188558a75cef7411a95e9ceba2cf9a3d6ec05331a47",
+      "bytes": 1906,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/warmup-report/events.jsonl",
+      "original_sha256": "0080c78877c135029ea2411bee4ee6e3da19085cda0eb53f6bd868b09823423c",
+      "published_sha256": "0080c78877c135029ea2411bee4ee6e3da19085cda0eb53f6bd868b09823423c",
+      "bytes": 3451,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/warmup-report/metrics/.ready",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/warmup-report/metrics/final_snapshot.json",
+      "original_sha256": "63cdfbb4243e5f2d49af0a842709b6b515bce490152a29f5df37d1938a5bffcc",
+      "published_sha256": "63cdfbb4243e5f2d49af0a842709b6b515bce490152a29f5df37d1938a5bffcc",
+      "bytes": 22928,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/warmup-report/performance/result_summary.json",
+      "original_sha256": "621502347527f5be225a74ddf9e490aeb3b601b38429977ea5e6eb0ec6f555fa",
+      "published_sha256": "621502347527f5be225a74ddf9e490aeb3b601b38429977ea5e6eb0ec6f555fa",
+      "bytes": 21048,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/warmup-report/report.txt",
+      "original_sha256": "43de913984241329ed06428f05b63fed866d8cff5d16bae95c1409c6e6709cef",
+      "published_sha256": "43de913984241329ed06428f05b63fed866d8cff5d16bae95c1409c6e6709cef",
+      "bytes": 8140,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/warmup-report/sample_idx_map.json",
+      "original_sha256": "73c384c97cd8f7bea2479151c0b7fbe5d19f73a146922925ce7cf685ff8a392d",
+      "published_sha256": "73c384c97cd8f7bea2479151c0b7fbe5d19f73a146922925ce7cf685ff8a392d",
+      "bytes": 111,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/warmup.jsonl",
+      "original_sha256": "ca56618c0efaf7fd82e779b8762b6183e9c05fed4b52190bec559af1fac231fa",
+      "published_sha256": "ca56618c0efaf7fd82e779b8762b6183e9c05fed4b52190bec559af1fac231fa",
+      "bytes": 1122,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/git-status.txt",
+      "original_sha256": "8d785de2e7577b5dd535a3403b49976120ea6cf4c733642af58b4906fd845598",
+      "published_sha256": "8d785de2e7577b5dd535a3403b49976120ea6cf4c733642af58b4906fd845598",
+      "bytes": 60,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/gpu-before.txt",
+      "original_sha256": "1fa5702e9d341cccff3bfa29b764836d33d21a750b75fed6050cd52daf75d266",
+      "published_sha256": "1fa5702e9d341cccff3bfa29b764836d33d21a750b75fed6050cd52daf75d266",
+      "bytes": 4265,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/identity.json",
+      "original_sha256": "3245c7a69db908e9c68bf4965e362ea21356298e3d9f1f7fc8072b02f95165e0",
+      "published_sha256": "3245c7a69db908e9c68bf4965e362ea21356298e3d9f1f7fc8072b02f95165e0",
+      "bytes": 7296,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/prompts.jsonl",
+      "original_sha256": "8c29cf021019536cab242291eb0cf1a1b9d6f823ad07b52b0c09401beee4e5cf",
+      "published_sha256": "8c29cf021019536cab242291eb0cf1a1b9d6f823ad07b52b0c09401beee4e5cf",
+      "bytes": 336621,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/runner.py",
+      "original_sha256": "3599ad53990d14f0eab2dfdd9039e7b421a5a8106145150dc299d67eab57e9ed",
+      "published_sha256": "3599ad53990d14f0eab2dfdd9039e7b421a5a8106145150dc299d67eab57e9ed",
+      "bytes": 39122,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/server-recipe.yaml",
+      "original_sha256": "4c528f1c7370f60053a88b42f66716319c17349d44178ef6c91d9c0f182db097",
+      "published_sha256": "4c528f1c7370f60053a88b42f66716319c17349d44178ef6c91d9c0f182db097",
+      "bytes": 4858,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/STOP",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/after.done",
+      "original_sha256": "90125b7b485dc44228e88644cc3f8d5ddc4dbddd6bff670443fedac32f195dca",
+      "published_sha256": "90125b7b485dc44228e88644cc3f8d5ddc4dbddd6bff670443fedac32f195dca",
+      "bytes": 442,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/after.request",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/audit.json",
+      "original_sha256": "da6a21d8a13dcdcea7a6809cbf07b33be6214e69589c769e063676e81afbdc29",
+      "published_sha256": "da6a21d8a13dcdcea7a6809cbf07b33be6214e69589c769e063676e81afbdc29",
+      "bytes": 409,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/before.done",
+      "original_sha256": "7d29a1672081af72de8e7056ecfd690ddddace3bc46180093c7f93606d5d8c9c",
+      "published_sha256": "7d29a1672081af72de8e7056ecfd690ddddace3bc46180093c7f93606d5d8c9c",
+      "bytes": 426,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/before.request",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/context-after.prom",
+      "original_sha256": "f2e7996b961993b7993bdb20ab165af367c05b406d5277a0aa0a6f697dbc5183",
+      "published_sha256": "f2e7996b961993b7993bdb20ab165af367c05b406d5277a0aa0a6f697dbc5183",
+      "bytes": 16603,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/context-before.prom",
+      "original_sha256": "19b3b49b8b28d3d14f3c3774d4a220a2cc5645d3bbbf95de4e7cb210dee99112",
+      "published_sha256": "19b3b49b8b28d3d14f3c3774d4a220a2cc5645d3bbbf95de4e7cb210dee99112",
+      "bytes": 16487,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/context-diagnostic.prom",
+      "original_sha256": "f2e7996b961993b7993bdb20ab165af367c05b406d5277a0aa0a6f697dbc5183",
+      "published_sha256": "f2e7996b961993b7993bdb20ab165af367c05b406d5277a0aa0a6f697dbc5183",
+      "bytes": 16603,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/counters.json",
+      "original_sha256": "6078cfe9029e75a15fd83026f84a7502a48a10446776e8678697ed0e1ade4ff6",
+      "published_sha256": "6078cfe9029e75a15fd83026f84a7502a48a10446776e8678697ed0e1ade4ff6",
+      "bytes": 706,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/diagnostic.done",
+      "original_sha256": "90125b7b485dc44228e88644cc3f8d5ddc4dbddd6bff670443fedac32f195dca",
+      "published_sha256": "90125b7b485dc44228e88644cc3f8d5ddc4dbddd6bff670443fedac32f195dca",
+      "bytes": 442,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/diagnostic.request",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/generation-after.prom",
+      "original_sha256": "f44787de59cd3f1e22297a67b4bb8f88fca3791da39ac0b382aa292ff1a06b3f",
+      "published_sha256": "f44787de59cd3f1e22297a67b4bb8f88fca3791da39ac0b382aa292ff1a06b3f",
+      "bytes": 23500,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/generation-before.prom",
+      "original_sha256": "3068d44a97663d487e4b34281f6e295aa9db1b0ccea139850efab3ec3a627488",
+      "published_sha256": "3068d44a97663d487e4b34281f6e295aa9db1b0ccea139850efab3ec3a627488",
+      "bytes": 23341,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/generation-diagnostic.prom",
+      "original_sha256": "f44787de59cd3f1e22297a67b4bb8f88fca3791da39ac0b382aa292ff1a06b3f",
+      "published_sha256": "f44787de59cd3f1e22297a67b4bb8f88fca3791da39ac0b382aa292ff1a06b3f",
+      "bytes": 23500,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/launcher.log",
+      "original_sha256": "9f9ff6a0007e5d384699fb60a157149e7ede9c1adeb8ceaa5984c1c63d378000",
+      "published_sha256": "9f9ff6a0007e5d384699fb60a157149e7ede9c1adeb8ceaa5984c1c63d378000",
+      "bytes": 820,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/measured-client.log",
+      "original_sha256": "deafd3b723e6898a8afb4d5e0d3b9eca00f8df3b13d505ecd46d6ea87a48fa41",
+      "published_sha256": "deafd3b723e6898a8afb4d5e0d3b9eca00f8df3b13d505ecd46d6ea87a48fa41",
+      "bytes": 8271,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/measured-client.yaml",
+      "original_sha256": "508c680e465793ddbeb2fe173dcedad164e063dc8ee6f907f63bce8e3124218a",
+      "published_sha256": "508c680e465793ddbeb2fe173dcedad164e063dc8ee6f907f63bce8e3124218a",
+      "bytes": 1395,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/measured-command.json",
+      "original_sha256": "6245776d34d16d0c8b770c44ab70134a0f7a00431bc8af3752b87e273ef16706",
+      "published_sha256": "6245776d34d16d0c8b770c44ab70134a0f7a00431bc8af3752b87e273ef16706",
+      "bytes": 569,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/measured-report/config.yaml",
+      "original_sha256": "187eb12a4e55fc57dc2332ce72813d16f44b5aa9b7695479a2669e102e5bacae",
+      "published_sha256": "187eb12a4e55fc57dc2332ce72813d16f44b5aa9b7695479a2669e102e5bacae",
+      "bytes": 1914,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/measured-report/events.jsonl",
+      "original_sha256": "ae241b5a20fcf83debbbf83bf04e0729fbdc04c6303c63c344fc662a85e4081e",
+      "published_sha256": "ae241b5a20fcf83debbbf83bf04e0729fbdc04c6303c63c344fc662a85e4081e",
+      "bytes": 14444,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/measured-report/metrics/.ready",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/measured-report/metrics/final_snapshot.json",
+      "original_sha256": "2d360abcb6fc5f95ac1eb03b7bbc30d066d52da24e24f40f4c414b6d314f2787",
+      "published_sha256": "2d360abcb6fc5f95ac1eb03b7bbc30d066d52da24e24f40f4c414b6d314f2787",
+      "bytes": 22948,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/measured-report/performance/result_summary.json",
+      "original_sha256": "2b81fa0920ecd48147766f1394dd8fd01b7b46d15d8e01055f71266cbce82e4c",
+      "published_sha256": "2b81fa0920ecd48147766f1394dd8fd01b7b46d15d8e01055f71266cbce82e4c",
+      "bytes": 21062,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/measured-report/report.txt",
+      "original_sha256": "7bfb23bb7c056ddae24328b8b18d2b00a61783e6dd768e971164475806c1901e",
+      "published_sha256": "7bfb23bb7c056ddae24328b8b18d2b00a61783e6dd768e971164475806c1901e",
+      "bytes": 8346,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/measured-report/sample_idx_map.json",
+      "original_sha256": "13d4451cf669a36662a17ad0f93eef4d9020863e6557d86f83a9dcad09ed527a",
+      "published_sha256": "13d4451cf669a36662a17ad0f93eef4d9020863e6557d86f83a9dcad09ed527a",
+      "bytes": 369,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/measured.jsonl",
+      "original_sha256": "4b0de41e530c1edcd9a00a162ec7d217684916ac39799eabdb2229931e73920b",
+      "published_sha256": "4b0de41e530c1edcd9a00a162ec7d217684916ac39799eabdb2229931e73920b",
+      "bytes": 5240,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/ready.json",
+      "original_sha256": "63b6e1965978e735ecfd88a838b5b0d850721b259c3a8c51b9f613ca48ab831c",
+      "published_sha256": "63b6e1965978e735ecfd88a838b5b0d850721b259c3a8c51b9f613ca48ab831c",
+      "bytes": 247,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/recipe.json",
+      "original_sha256": "ce78ac32519d1753683bf67de15ef2bacdbc242faa66da3ede7147aaf721da33",
+      "published_sha256": "ce78ac32519d1753683bf67de15ef2bacdbc242faa66da3ede7147aaf721da33",
+      "bytes": 3481,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/request-audit.csv",
+      "original_sha256": "baecbaabcc8dc0bc1767a6d3980aac6c621fd265b09c6eb1ae5c53060ba3cd1c",
+      "published_sha256": "baecbaabcc8dc0bc1767a6d3980aac6c621fd265b09c6eb1ae5c53060ba3cd1c",
+      "bytes": 744,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/server/cluster.json",
+      "original_sha256": "29a5810af1ffb207c736de99e0478ced8b9e49fd57df9f635c8b90b7cc1301b9",
+      "published_sha256": "29a5810af1ffb207c736de99e0478ced8b9e49fd57df9f635c8b90b7cc1301b9",
+      "bytes": 647,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/server/context.log",
+      "original_sha256": "6b69e86f0e05665ef9c3d3940b9a0a1f0a2eaad63c67016cb94595d758400eb7",
+      "published_sha256": "6b69e86f0e05665ef9c3d3940b9a0a1f0a2eaad63c67016cb94595d758400eb7",
+      "bytes": 65796,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/server/context.yaml",
+      "original_sha256": "663c8704be4c31084b0fb5fa92a46e3fdda7f9312d731e65230c4d33bc881238",
+      "published_sha256": "fef0e7a8db0ba6f9fd7477abf2f6c4ba697992c87eae348a5524e8facbd0b46b",
+      "bytes": 1059,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/server/generation.log",
+      "original_sha256": "354419d6f993e3553761bf228c9c8763cb82f992b97aa773c5cb2bfaf9af26ab",
+      "published_sha256": "354419d6f993e3553761bf228c9c8763cb82f992b97aa773c5cb2bfaf9af26ab",
+      "bytes": 289377,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/server/generation.yaml",
+      "original_sha256": "663c8704be4c31084b0fb5fa92a46e3fdda7f9312d731e65230c4d33bc881238",
+      "published_sha256": "fef0e7a8db0ba6f9fd7477abf2f6c4ba697992c87eae348a5524e8facbd0b46b",
+      "bytes": 1059,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/server/router.addr",
+      "original_sha256": "7d85201edcedbc958385246fea598d1a720b246189419725f402acf26d405312",
+      "published_sha256": "7d85201edcedbc958385246fea598d1a720b246189419725f402acf26d405312",
+      "bytes": 16,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/server/router.log",
+      "original_sha256": "488f9734c5622a2571e6cd25356dc32341eaf32bf8900de070ee645df97dd2d2",
+      "published_sha256": "488f9734c5622a2571e6cd25356dc32341eaf32bf8900de070ee645df97dd2d2",
+      "bytes": 15550,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/server/router.yaml",
+      "original_sha256": "80dba02b2f2c8d8c4f29cbfb01cc9d4b22367e76c70b2ec62e05810bafa4b471",
+      "published_sha256": "e18cc3ba36b5db06f8558cc3ac7d0951013d4abe449e55f2082f64599a0cfd8e",
+      "bytes": 392,
+      "redacted_ephemeral_key_occurrences": 1
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/summary.json",
+      "original_sha256": "ba5b625e7e6918675fe2703de119bb67ee2b44719e432301d3253cd8a78cdad5",
+      "published_sha256": "ba5b625e7e6918675fe2703de119bb67ee2b44719e432301d3253cd8a78cdad5",
+      "bytes": 521,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/validation.json",
+      "original_sha256": "e6aee50a1dc29626683aa6be6fe628ad6dbf7b14b4df2d6a5f57abde58123fd3",
+      "published_sha256": "e6aee50a1dc29626683aa6be6fe628ad6dbf7b14b4df2d6a5f57abde58123fd3",
+      "bytes": 388,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/warmup-client.log",
+      "original_sha256": "ab834dbfdefcd32387897fba05e5426c39b31c0877713669e8a3b01fba6211f1",
+      "published_sha256": "ab834dbfdefcd32387897fba05e5426c39b31c0877713669e8a3b01fba6211f1",
+      "bytes": 7473,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/warmup-client.yaml",
+      "original_sha256": "303b41812bb2f34b684928381fbe2dbc49cd663967a15c026dfe6c3ebcf1a78a",
+      "published_sha256": "303b41812bb2f34b684928381fbe2dbc49cd663967a15c026dfe6c3ebcf1a78a",
+      "bytes": 1389,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/warmup-command.json",
+      "original_sha256": "30da017bf1f55cae4239646527d0858f238573bba143a9a94e3eb06ee3622350",
+      "published_sha256": "30da017bf1f55cae4239646527d0858f238573bba143a9a94e3eb06ee3622350",
+      "bytes": 567,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/warmup-report/config.yaml",
+      "original_sha256": "591094136b4f1e2a54aaa8369dece161cdead1a819f48702ecce2c86813ff42b",
+      "published_sha256": "591094136b4f1e2a54aaa8369dece161cdead1a819f48702ecce2c86813ff42b",
+      "bytes": 1908,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/warmup-report/events.jsonl",
+      "original_sha256": "f218e9e0689c187c04f5680074bfcdef1704cbb959b2942780aa00382e0e500e",
+      "published_sha256": "f218e9e0689c187c04f5680074bfcdef1704cbb959b2942780aa00382e0e500e",
+      "bytes": 3451,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/warmup-report/metrics/.ready",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/warmup-report/metrics/final_snapshot.json",
+      "original_sha256": "8d93b3dc2c0483a98d34a9516e6d83e577bbefb8669a6b28c1f7894225bf27ef",
+      "published_sha256": "8d93b3dc2c0483a98d34a9516e6d83e577bbefb8669a6b28c1f7894225bf27ef",
+      "bytes": 22926,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/warmup-report/performance/result_summary.json",
+      "original_sha256": "7d2e3e12aa6da9251a82cbfc23bed2ed984d3934acd15928fbea904c4412e465",
+      "published_sha256": "7d2e3e12aa6da9251a82cbfc23bed2ed984d3934acd15928fbea904c4412e465",
+      "bytes": 21043,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/warmup-report/report.txt",
+      "original_sha256": "7891c9d535948394f8e9932280d7a1663ffe6b3982a7dbb43fdb7535d9d3bf33",
+      "published_sha256": "7891c9d535948394f8e9932280d7a1663ffe6b3982a7dbb43fdb7535d9d3bf33",
+      "bytes": 8140,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/warmup-report/sample_idx_map.json",
+      "original_sha256": "b432b9b753a938214f9a96ffd9bfd551891afa2d7b6cf527a6af4dfbf0d9cb22",
+      "published_sha256": "b432b9b753a938214f9a96ffd9bfd551891afa2d7b6cf527a6af4dfbf0d9cb22",
+      "bytes": 111,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/warmup.jsonl",
+      "original_sha256": "ca56618c0efaf7fd82e779b8762b6183e9c05fed4b52190bec559af1fac231fa",
+      "published_sha256": "ca56618c0efaf7fd82e779b8762b6183e9c05fed4b52190bec559af1fac231fa",
+      "bytes": 1122,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/source.patch",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/summary.csv",
+      "original_sha256": "af7bc514b444828706d7c178401cc90bb8aab8a68b34d2b68a23190c27519efe",
+      "published_sha256": "af7bc514b444828706d7c178401cc90bb8aab8a68b34d2b68a23190c27519efe",
+      "bytes": 634,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/metric-provenance.json",
+      "original_sha256": "c84a5b9a8099cc4e3b03f75fe022b34d6cec98ee1353ec0360a823d2e2070d36",
+      "published_sha256": "c84a5b9a8099cc4e3b03f75fe022b34d6cec98ee1353ec0360a823d2e2070d36",
+      "bytes": 2072,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/metric-sources/endpoints/src/inference_endpoint/async_utils/services/metrics_aggregator/metrics_table.py",
+      "original_sha256": "15b458fb70a15ef3c6a35226b646301f347574fca04927f8a8405a24b1e5acbf",
+      "published_sha256": "15b458fb70a15ef3c6a35226b646301f347574fca04927f8a8405a24b1e5acbf",
+      "bytes": 21975,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/metric-sources/endpoints/src/inference_endpoint/async_utils/services/metrics_aggregator/token_metrics.py",
+      "original_sha256": "aec8d00e6875fa3a5bffe3567831c833a14dc9426f428d6b173f7a550c2f5fdd",
+      "published_sha256": "aec8d00e6875fa3a5bffe3567831c833a14dc9426f428d6b173f7a550c2f5fdd",
+      "bytes": 38381,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/metric-sources/endpoints/src/inference_endpoint/commands/benchmark/cli.py",
+      "original_sha256": "97bf485794beb38b9516e44310a92817ea385860b0901d6927838e6427fb1c4e",
+      "published_sha256": "97bf485794beb38b9516e44310a92817ea385860b0901d6927838e6427fb1c4e",
+      "bytes": 6406,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/metric-sources/endpoints/src/inference_endpoint/config/schema.py",
+      "original_sha256": "7e36e0218527428cb7b8894d3c2fb1aae970f7e7a7bce2016d95c7beb1998487",
+      "published_sha256": "7e36e0218527428cb7b8894d3c2fb1aae970f7e7a7bce2016d95c7beb1998487",
+      "bytes": 66433,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/metric-sources/endpoints/src/inference_endpoint/config/templates/concurrency_template_full.yaml",
+      "original_sha256": "8bbe279e1f74b0354478c9eff46a1c82c572dfbfad840c40f33bd6e0bb4ba5a4",
+      "published_sha256": "8bbe279e1f74b0354478c9eff46a1c82c572dfbfad840c40f33bd6e0bb4ba5a4",
+      "bytes": 9671,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/metric-sources/endpoints/src/inference_endpoint/core/types.py",
+      "original_sha256": "41a8f13b02d17817c02d95d98b3819ac68b0706dee6619a49495cab32a81ff65",
+      "published_sha256": "41a8f13b02d17817c02d95d98b3819ac68b0706dee6619a49495cab32a81ff65",
+      "bytes": 21584,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/metric-sources/endpoints/src/inference_endpoint/dataset_manager/transforms.py",
+      "original_sha256": "c8d3e939b9f5764aaf0ffd43b58cdac355bf8523f1d0b64b3b2fcec7d11088e7",
+      "published_sha256": "c8d3e939b9f5764aaf0ffd43b58cdac355bf8523f1d0b64b3b2fcec7d11088e7",
+      "bytes": 16375,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/metric-sources/endpoints/src/inference_endpoint/metrics/report.py",
+      "original_sha256": "ea0fff9dd1e6b5832e6b4cacb8645183f8867bc72581b9f18c1389333dad28e8",
+      "published_sha256": "ea0fff9dd1e6b5832e6b4cacb8645183f8867bc72581b9f18c1389333dad28e8",
+      "bytes": 33019,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/metric-sources/endpoints/src/inference_endpoint/openai/accumulator.py",
+      "original_sha256": "d2acbc8aa99618c304653eb11f6031cbc69a612b52a3f643b1ee04f6f87f5874",
+      "published_sha256": "d2acbc8aa99618c304653eb11f6031cbc69a612b52a3f643b1ee04f6f87f5874",
+      "bytes": 4840,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/metric-sources/endpoints/src/inference_endpoint/openai/completions_adapter.py",
+      "original_sha256": "de667ee47114bae4fe428e768e5d219f8b16bdd89fd67fb66d304ed1a4bd3621",
+      "published_sha256": "de667ee47114bae4fe428e768e5d219f8b16bdd89fd67fb66d304ed1a4bd3621",
+      "bytes": 5049,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/metric-sources/trtllm/tensorrt_llm/_torch/pyexecutor/kv_cache/kv_cache_manager_v2.py",
+      "original_sha256": "0e624708f69cae6336f6c38269f0f5ce6ba8c247d3e8b95a8418bdd692941fc8",
+      "published_sha256": "0e624708f69cae6336f6c38269f0f5ce6ba8c247d3e8b95a8418bdd692941fc8",
+      "bytes": 308380,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/metric-sources/trtllm/tensorrt_llm/_torch/pyexecutor/py_executor.py",
+      "original_sha256": "e8456993e46b9570c51bad4d83aea23bbfc0c73ee9d5c060f50d19b81cbd1fc3",
+      "published_sha256": "e8456993e46b9570c51bad4d83aea23bbfc0c73ee9d5c060f50d19b81cbd1fc3",
+      "bytes": 456097,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/metric-sources/trtllm/tensorrt_llm/_torch/speculative/spec_sampler_base.py",
+      "original_sha256": "00c84b91ce17ccc3f2abe0efbd6705838f040ff01da192a03dd3dab79dd8b116",
+      "published_sha256": "00c84b91ce17ccc3f2abe0efbd6705838f040ff01da192a03dd3dab79dd8b116",
+      "bytes": 23072,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/metric-sources/trtllm/tensorrt_llm/metrics/collector.py",
+      "original_sha256": "a780fb8bb21fede25493b7a0d9917ce88d679e61b7cccce95fc8ba973bc0fb72",
+      "published_sha256": "a780fb8bb21fede25493b7a0d9917ce88d679e61b7cccce95fc8ba973bc0fb72",
+      "bytes": 50044,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/metric-sources/trtllm/tensorrt_llm/runtime/kv_cache_manager_v2/__init__.py",
+      "original_sha256": "66a1ad91daa75a939a5bb8da175fd0af0fa60650272ef6f8d6af1d15b68e4b30",
+      "published_sha256": "66a1ad91daa75a939a5bb8da175fd0af0fa60650272ef6f8d6af1d15b68e4b30",
+      "bytes": 9096,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/metric-sources/trtllm/tensorrt_llm/sampling_params.py",
+      "original_sha256": "34984a5581e5cda7733c884acf8acf8edd69a5e0a6a5f0dc24f2c4cc4a215479",
+      "published_sha256": "34984a5581e5cda7733c884acf8acf8edd69a5e0a6a5f0dc24f2c4cc4a215479",
+      "bytes": 42189,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/model-configs/Qwen3/Qwen3-8B/config.json",
+      "original_sha256": "f7c4eadfbbf522470667b797a3c89be2524832d2d599797248dc304fff447c30",
+      "published_sha256": "f7c4eadfbbf522470667b797a3c89be2524832d2d599797248dc304fff447c30",
+      "bytes": 728,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/model-configs/Qwen3/Qwen3-8B/generation_config.json",
+      "original_sha256": "2325da0f15bb848e018c5ae071b7943332e9f871d6b60e2ed22ca97d4cb993d2",
+      "published_sha256": "2325da0f15bb848e018c5ae071b7943332e9f871d6b60e2ed22ca97d4cb993d2",
+      "bytes": 239,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/model-configs/Qwen3/Qwen3-8B/tokenizer_config.json",
+      "original_sha256": "5a7303fcb1a27ede63134a2cbd61d5282c247ca6d769ce4746d4ffa124aedd63",
+      "published_sha256": "5a7303fcb1a27ede63134a2cbd61d5282c247ca6d769ce4746d4ffa124aedd63",
+      "bytes": 9675,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/model-configs/dspark/dspark_qwen3_8b_block7/config.json",
+      "original_sha256": "e470e70a553616f0dce8f783f42cfd25b7bd7dfdcd57ead680a0623040725611",
+      "published_sha256": "e470e70a553616f0dce8f783f42cfd25b7bd7dfdcd57ead680a0623040725611",
+      "bytes": 1201,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/models.json",
+      "original_sha256": "10f9400621e7e309f65f4b3ef7a40ae070443b375ceb8f9d66680a5a4c466b6a",
+      "published_sha256": "10f9400621e7e309f65f4b3ef7a40ae070443b375ceb8f9d66680a5a4c466b6a",
+      "bytes": 3119,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/procedure.json",
+      "original_sha256": "45f3d7a85bf1827cd5a5a361d88b7563aae9f7812889f85af23e7d145c92dc8b",
+      "published_sha256": "45f3d7a85bf1827cd5a5a361d88b7563aae9f7812889f85af23e7d145c92dc8b",
+      "bytes": 2370,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/prompts.jsonl",
+      "original_sha256": "8c29cf021019536cab242291eb0cf1a1b9d6f823ad07b52b0c09401beee4e5cf",
+      "published_sha256": "8c29cf021019536cab242291eb0cf1a1b9d6f823ad07b52b0c09401beee4e5cf",
+      "bytes": 336621,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/recovered/dspark_acceptance.yaml",
+      "original_sha256": "e8370fc03d859b3da79071f4bcca96aeffb54f50fca5b80f2dfdbf167340bc85",
+      "published_sha256": "e8370fc03d859b3da79071f4bcca96aeffb54f50fca5b80f2dfdbf167340bc85",
+      "bytes": 4207,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/recovered/dspark_acceptance_disagg.yaml",
+      "original_sha256": "4c528f1c7370f60053a88b42f66716319c17349d44178ef6c91d9c0f182db097",
+      "published_sha256": "4c528f1c7370f60053a88b42f66716319c17349d44178ef6c91d9c0f182db097",
+      "bytes": 4858,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/recovered/measure_dspark_acceptance.py",
+      "original_sha256": "cdc9972a5be7082d0e54d59d56fa0ba6cbd67eededa57e461fc6d013f5d4c578",
+      "published_sha256": "cdc9972a5be7082d0e54d59d56fa0ba6cbd67eededa57e461fc6d013f5d4c578",
+      "bytes": 17793,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/recovered/measure_dspark_acceptance_disagg.py",
+      "original_sha256": "3599ad53990d14f0eab2dfdd9039e7b421a5a8106145150dc299d67eab57e9ed",
+      "published_sha256": "3599ad53990d14f0eab2dfdd9039e7b421a5a8106145150dc299d67eab57e9ed",
+      "bytes": 39122,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/recovery.json",
+      "original_sha256": "5700cac799e5c75557a72f7345b66f0ee7eede76954021deed65343eca501c43",
+      "published_sha256": "5700cac799e5c75557a72f7345b66f0ee7eede76954021deed65343eca501c43",
+      "bytes": 197,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/rerun.sh",
+      "original_sha256": "d4fcaac6f69dc7fa0a46138a99bedb9c9a730e155b047f427becee55c2be77e0",
+      "published_sha256": "d4fcaac6f69dc7fa0a46138a99bedb9c9a730e155b047f427becee55c2be77e0",
+      "bytes": 1313,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/server-environment.json",
+      "original_sha256": "aa0e170b893383c1f416b4d29afc9e8dbc29b8f92be547c7e2760ee5a5468d80",
+      "published_sha256": "aa0e170b893383c1f416b4d29afc9e8dbc29b8f92be547c7e2760ee5a5468d80",
+      "bytes": 13927,
+      "redacted_ephemeral_key_occurrences": 0
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/source.patch",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "redacted_ephemeral_key_occurrences": 0
+    }
+  ],
+  "excluded": [
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/__pycache__/audit_reports.cpython-313.pyc",
+      "bytes": 6968,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/checkpoint/git-index",
+      "bytes": 3268194,
+      "reason": "local native recovery archive or Git index"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/checkpoint/native-libraries.tar",
+      "bytes": 1326612480,
+      "reason": "local native recovery archive or Git index"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/__pycache__/inspect_workers.cpython-313.pyc",
+      "bytes": 4529,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/__pycache__/install_native.cpython-313.pyc",
+      "bytes": 3645,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/__pycache__/restore_original.cpython-313.pyc",
+      "bytes": 3938,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/__pycache__/verify_runtime.cpython-313.pyc",
+      "bytes": 1961,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/server/context-prometheus/counter_2019396.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/server/context-prometheus/gauge_all_2019396.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/server/context-prometheus/histogram_2019396.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/server/generation-prometheus/counter_2019397.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/server/generation-prometheus/gauge_all_2019397.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/server/generation-prometheus/histogram_2019397.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/server/router-prometheus/counter_2019263.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/full/server/router-prometheus/histogram_2019263.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/server/context-prometheus/counter_2014836.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/server/context-prometheus/gauge_all_2014836.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/server/context-prometheus/histogram_2014836.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/server/generation-prometheus/counter_2014837.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/server/generation-prometheus/gauge_all_2014837.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/server/generation-prometheus/histogram_2014837.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/server/router-prometheus/counter_2014703.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01/smoke/server/router-prometheus/histogram_2014703.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/server/context-prometheus/counter_1933370.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/server/context-prometheus/gauge_all_1933370.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/server/context-prometheus/histogram_1933370.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/server/generation-prometheus/counter_1933371.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/server/generation-prometheus/gauge_all_1933371.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/server/generation-prometheus/histogram_1933371.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/server/router-prometheus/counter_1933238.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/full/server/router-prometheus/histogram_1933238.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/server/context-prometheus/counter_1928832.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/server/context-prometheus/gauge_all_1928832.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/server/context-prometheus/histogram_1928832.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/server/generation-prometheus/counter_1928833.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/server/generation-prometheus/gauge_all_1928833.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/server/generation-prometheus/histogram_1928833.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/server/router-prometheus/counter_1928700.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01/smoke/server/router-prometheus/histogram_1928700.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/server/context-prometheus/counter_3172600.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/server/context-prometheus/gauge_all_3172600.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/server/generation-prometheus/counter_3172601.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/server/generation-prometheus/gauge_all_3172601.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/server/router-prometheus/counter_3172468.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement/smoke/server/router-prometheus/histogram_3172468.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/server/context-prometheus/counter_3181704.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/server/context-prometheus/gauge_all_3181704.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/server/context-prometheus/histogram_3181704.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/server/generation-prometheus/counter_3181705.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/server/generation-prometheus/gauge_all_3181705.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/server/generation-prometheus/histogram_3181705.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/server/router-prometheus/counter_3181572.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/full/server/router-prometheus/histogram_3181572.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/server/context-prometheus/counter_3177153.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/server/context-prometheus/gauge_all_3177153.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/server/context-prometheus/histogram_3177153.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/server/generation-prometheus/counter_3177154.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/server/generation-prometheus/gauge_all_3177154.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/server/generation-prometheus/histogram_3177154.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/server/router-prometheus/counter_3177021.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/measurement-02/smoke/server/router-prometheus/histogram_3177021.db",
+      "bytes": 65536,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    },
+    {
+      "path": "results/dspark-endpoints-current-20261005T183845Z/recovered/__pycache__/measure_dspark_acceptance_disagg.cpython-312.pyc",
+      "bytes": 51044,
+      "reason": "ephemeral Python/Prometheus runtime cache"
+    }
+  ],
+  "redaction": "Only generated per-run internal router authentication keys are replaced. Raw timing, tokens, metrics, and prompt content are unchanged. Originals remain on the node."
+}

@@ -1,0 +1,158 @@
+{
+  "runs": [
+    {
+      "revision": "current",
+      "source_sha": "ff47bcd68987adb4d148b7110a39cd7797f6ee51",
+      "phase": "full",
+      "AL": 6.333934163571481,
+      "TTFT_ms": 747.1912710409401,
+      "TPOT_ms": 0.9041305031073936,
+      "E2E_interactivity": 266.27103223129706,
+      "Output_TPS_per_GPU": 531.7632895951687,
+      "Mean_OSL": 262.0773313115997,
+      "output_tokens": 345680,
+      "completed_requests": 1319,
+      "failures": 0,
+      "measurement_duration_s": 325.031839132,
+      "accepted_draft_tokens": 292961,
+      "verification_steps": 54924,
+      "TTFT_p50_ms": 718.207328,
+      "TTFT_p95_ms": 1062.298192,
+      "TPOT_p50_ms": 0.8883852666666667,
+      "TPOT_p95_ms": 1.0692904585635359,
+      "directory": "results/dspark-endpoints-current-20261005T183845Z/measurement-02",
+      "implementation_modifications": "none (empty source.patch)",
+      "measurement_tooling": "separate untracked frozen collector; hashes in identity.json"
+    },
+    {
+      "revision": "main",
+      "source_sha": "d27e97f6dece43028c40fb602cb77bb5ab28132d",
+      "phase": "full",
+      "AL": 5.274680128554969,
+      "TTFT_ms": 836.5593205579985,
+      "TPOT_ms": 1.0387068873119722,
+      "E2E_interactivity": 237.13582544940243,
+      "Output_TPS_per_GPU": 473.6007434271396,
+      "Mean_OSL": 262.0773313115997,
+      "output_tokens": 345680,
+      "completed_requests": 1319,
+      "failures": 0,
+      "measurement_duration_s": 364.948751451,
+      "accepted_draft_tokens": 281975,
+      "verification_steps": 65964,
+      "TTFT_p50_ms": 810.971058,
+      "TTFT_p95_ms": 1165.972546,
+      "TPOT_p50_ms": 1.0189876008403362,
+      "TPOT_p95_ms": 1.2807728166089967,
+      "directory": "results/dspark-endpoints-current-20261005T183845Z/comparison/main-d27e97f6-01",
+      "implementation_modifications": "none (empty source.patch)",
+      "measurement_tooling": "separate untracked frozen collector; hashes in identity.json"
+    },
+    {
+      "revision": "ec4ef266",
+      "source_sha": "ec4ef2666d05ef60012c834a43dca62c75509aec",
+      "phase": "full",
+      "AL": 6.333934163571481,
+      "TTFT_ms": 928.0245197869598,
+      "TPOT_ms": 1.1663565408108054,
+      "E2E_interactivity": 212.54169067462445,
+      "Output_TPS_per_GPU": 424.50063328045337,
+      "Mean_OSL": 262.0773313115997,
+      "output_tokens": 345680,
+      "completed_requests": 1319,
+      "failures": 0,
+      "measurement_duration_s": 407.1607589,
+      "accepted_draft_tokens": 292961,
+      "verification_steps": 54924,
+      "TTFT_p50_ms": 893.589347,
+      "TTFT_p95_ms": 1330.949785,
+      "TPOT_p50_ms": 1.1485023452380951,
+      "TPOT_p95_ms": 1.379500805084746,
+      "directory": "results/dspark-endpoints-current-20261005T183845Z/comparison/ec4ef266-01",
+      "implementation_modifications": "none (empty source.patch)",
+      "measurement_tooling": "separate untracked frozen collector; hashes in identity.json"
+    }
+  ],
+  "invariants": {
+    "completed_per_run": 1319,
+    "measured_failures_per_run": 0,
+    "output_tokens_per_run": 345680,
+    "prompt_issue_order_identical": true,
+    "per_prompt_output_lengths_identical": true,
+    "recipe_and_tokenized_datasets_byte_identical": true,
+    "client_configuration_identical_except_paths_and_router_address": true,
+    "serving_GPUs": 2,
+    "GPU_placement": {
+      "prefill": 0,
+      "generation": 1
+    },
+    "DSpark_both_workers": true,
+    "KVCache_V2_backend": "C++ default, explicitly enabled V2, validated binding identity",
+    "warmup": "2 separate streaming requests before each fresh smoke/full phase; excluded from counters and client measurement",
+    "smoke_requests_per_run": 8,
+    "prompt_sha256": "8c29cf021019536cab242291eb0cf1a1b9d6f823ad07b52b0c09401beee4e5cf",
+    "longest_prompt_plus_limit": "200 + 1024 = 1224 < 8192"
+  },
+  "current_vs_comparisons": {
+    "main": {
+      "Output_TPS_per_GPU_improvement_percent": 12.280923747531446,
+      "TTFT_reduction_percent": 10.682810808616471,
+      "TPOT_reduction_percent": 12.95614632467138
+    },
+    "ec4ef266": {
+      "Output_TPS_per_GPU_improvement_percent": 25.267961436432174,
+      "TTFT_reduction_percent": 19.485826601600177,
+      "TPOT_reduction_percent": 22.482493862564745
+    }
+  },
+  "metric_definitions": {
+    "endpoints_commit": "89904fb2b3df484dba75b0ad4039fcc9592a524a",
+    "prompt_sha256": "8c29cf021019536cab242291eb0cf1a1b9d6f823ad07b52b0c09401beee4e5cf",
+    "AL": "1 + sum(generation accepted per-position counter deltas) / generation drafted position-zero delta. _accumulate_spec_dec_stats resets the per-step verified count and increments position zero exactly once for every positive-draft verification. TP1, one frontend, only generation worker, no rank summation.",
+    "TPOT": "Pinned metrics_table.TpotTrigger: (complete timestamp - first content-chunk timestamp) / Qwen tokenization of concatenated text after first content chunk; skip zero-denominator requests.",
+    "E2E": "Pinned report.e2e_avg_interactivity: client output tokens / sum request latency seconds, no failures permitted.",
+    "TPS_GPU": "Pinned output_sequence_lengths.total / (duration_ns/1e9) / 2. Native concurrency measurement tracking window, not container wall-clock.",
+    "OSL": "Pinned client Qwen retokenization of complete output text (special tokens omitted by serving); may differ from internal generated-token count.",
+    "warmup": "Separate two-request streaming Endpoints invocation completes before before-counters snapshot. Client internal warmup disabled. Fresh workers before smoke and full.",
+    "server_settings": "Recovered branch a3246d263a6ef571100683b15f004a714db885ad Qwen common_options; explicit KV V2 and explicit default stream_interval=1; client concurrency=4, server max_batch_size=1.",
+    "sampling": {
+      "temperature": 0.0,
+      "max_tokens": 1024,
+      "min_tokens": 0,
+      "top_p": "unspecified (server default)",
+      "top_k": "unspecified (greedy from temperature=0)",
+      "seed": "unspecified (greedy)",
+      "ignore_eos": false,
+      "skip_special_tokens": true,
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      }
+    },
+    "AL_terminal_semantics": "Accepted draft counters are verification decisions (num_new_tokens - 1), including terminal-step verified tokens even if output is truncated at EOS/length; they are not reconstructed from output length."
+  },
+  "limitations": [
+    "Whole-revision comparison; revisions contain changes beyond the unified draft KV-cache fix. One full measured trial per revision; no run-to-run uncertainty estimate.",
+    "Prompt corpus recovered from fork revision a3246d263a6ef571100683b15f004a714db885ad, results/dspark-agg-reference-11/prompts.jsonl. The deleted reference-1 file was unavailable; equality to that file cannot be proved. All three runs used the same recovered bytes and issue order.",
+    "Current used the existing compatible native binaries (checkpointed and checksum-recorded). Main and ec4ef266 required native rebuilds for KV-cache compatibility, using the same cached environment/build configuration. No Python dependencies were changed. Existing binaries do not provide a verified build-source SHA.",
+    "Main auto-calculated max_gpu_total_bytes is 101400705638 versus 101398189056 for current/ec4ef266; the configured free_gpu_memory_fraction is 0.6 in every run.",
+    "ec4ef266 lacks newer optional fields swa_endpoint_rewind_tokens=0, per_request_spec_decode_stats=False, iter_perf_stats_interval=1. Qwen sliding-window attention is disabled, per-request stats are disabled, and iteration interval remains every iteration. Explicit server recipes are identical.",
+    "Pinned client OSL is Qwen retokenization of streamed text, excluding special tokens. TPOT uses tokens in concatenated text after the first content chunk, as implemented by client 89904fb; it is not (E2E-TTFT)/(OSL-1).",
+    "AL uses real generation verification decisions, including terminal-step acceptance before output truncation. Position-zero drafted counter is validated as one count per verification step; no division by fixed draft length, prefill speculation, or rank duplication.",
+    "Server batch size 1 and client concurrency 4 are preserved. This is a local Qwen comparison, not tuned peak throughput, a Kimi agentic reproduction, or an MLPerf submission.",
+    "An earlier setup attempt had two rejected warmup requests because the pinned client defaulted min_new_tokens to 1. All three reported runs use matched min_new_tokens=0; those failed warmup requests are preserved separately and excluded."
+  ],
+  "restore_status": {
+    "complete": true,
+    "branch": "pr-19441",
+    "source_sha": "ff47bcd68987adb4d148b7110a39cd7797f6ee51",
+    "tracked_diff_empty": true,
+    "uncommitted_collector_restored_and_verified": true,
+    "all_12_checkpointed_native_library_checksums_restored": true,
+    "runtime_import_and_cpp_backend_verified": true,
+    "active_benchmark_servers": 0,
+    "checkpoint_ref": "checkpoint/dspark-metrics-20261005",
+    "build_cache": "Regenerated native build intermediates retained; original installed native libraries restored.",
+    "results": "All prior results retained; comparison outputs in separate directories."
+  },
+  "replay_command": "bash results/dspark-endpoints-current-20261005T183845Z/comparison/replay.sh"
+}

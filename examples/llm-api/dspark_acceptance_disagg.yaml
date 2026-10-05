@@ -1,0 +1,132 @@
+# Copyright (c) 2026, NVIDIA CORPORATION. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Paths are relative to --models-root or LLM_MODELS_ROOT.
+# Each case starts one context worker and one generation worker on disjoint GPUs.
+# Each aggregate_case names its CP1 reference in dspark_acceptance.yaml.
+# The runner applies the same DSpark configuration to both workers.
+# This matrix targets eight B200 GPUs; the 16-GPU Pro recipes are excluded.
+defaults:
+  common_options:
+    max_batch_size: 1
+    max_seq_len: 8192
+    max_num_tokens: 128
+    cuda_graph_config:
+      batch_sizes: [1]
+      max_batch_size: 1
+    enable_chunked_prefill: true
+    disable_overlap_scheduler: false
+    print_iter_log: true
+    kv_cache_config:
+      enable_block_reuse: true
+    cache_transceiver_config:
+      backend: NIXL
+      transceiver_runtime: PYTHON
+      max_tokens_in_buffer: 8192
+  chat_template_kwargs:
+    enable_thinking: false
+
+cases:
+  qwen3-8b: &qwen
+    model: Qwen3/Qwen3-8B
+    drafter: dspark/dspark_qwen3_8b_block7
+    max_draft_len: 7
+    common_options: &qwen_options
+      tensor_parallel_size: 1
+      moe_expert_parallel_size: 1
+      enable_attention_dp: false
+      kv_cache_config: &qwen_cache
+        free_gpu_memory_fraction: 0.6
+        use_kv_cache_manager_v2: true
+    spec_options:
+      attention_backend: VANILLA
+    notes: >-
+      Experimental disaggregated counterpart of TestQwen3_8B.test_dspark.
+      Requires 1 context GPU plus 1 generation GPU. Use chat prompts with
+      thinking disabled. DSpark is enabled on both context and generation;
+      reported AL uses generation-side verification counters only.
+
+  qwen3-8-27b-tp2:
+    model: Qwen3.8-27B
+    drafter: Qwen3.8-27B-DSpark
+    max_draft_len: 7
+    common_options:
+      tensor_parallel_size: 2
+      moe_expert_parallel_size: 1
+      enable_attention_dp: false
+      max_num_tokens: 512
+      kv_cache_config:
+        free_gpu_memory_fraction: 0.6
+        enable_block_reuse: false
+        use_kv_cache_manager_v2: true
+    spec_options:
+      attention_backend: VANILLA
+    aggregate_case: qwen3-8-27b-tp2
+    notes: >-
+      Wrapped Qwen3_5VLModel target with a standalone DSpark drafter. Exercises
+      history snapshots on prefill and history restoration plus VANILLA staging
+      on generation through the inner-model lookup. Compare acceptance against
+      the matched aggregate case using identical prompts. TP2 per worker,
+      four B200s total; unvalidated.
+
+  deepseek-v4-flash-nvfp4: &dsv4
+    model: DeepSeek-V4-Flash-nvfp4-DSpark
+    drafter: DeepSeek-V4-Flash-nvfp4-DSpark
+    max_draft_len: 5
+    common_options: &dsv4_options
+      attn_backend: TRTLLM
+      tensor_parallel_size: 4
+      moe_expert_parallel_size: 4
+      enable_attention_dp: true
+      custom_tokenizer: deepseek_v4
+      moe_config:
+        backend: MEGAMOE_CUTEDSL
+      kv_cache_config: &dsv4_cache
+        free_gpu_memory_fraction: 0.5
+        # Target prefill shares scratch pages; draft history keeps ordinary pages.
+        enable_swa_scratch_reuse: true
+    notes: >-
+      Based on TestDeepSeekV4FlashDSpark.test_gsm8k_1p1d_dep4, with the
+      aggregate measurement's CUDA graphs, batch size, and sequence/token
+      limits, and DSpark enabled on both context and generation. Requires
+      4 context GPUs plus 4 generation GPUs. This runner and its adjusted
+      measurement settings still require GPU validation.
+
+  qwen3-8b-explicit-pools:
+    <<: *qwen
+    common_options:
+      <<: *qwen_options
+      kv_cache_config:
+        <<: *qwen_cache
+        pool_ratio: [1.0]
+    notes: Full-feature Qwen recipe with explicit target pool sizing.
+
+  deepseek-v4-flash-nvfp4-explicit-pools: &dsv4_explicit
+    <<: *dsv4
+    common_options: &dsv4_explicit_options
+      <<: *dsv4_options
+      kv_cache_config: &dsv4_explicit_cache
+        <<: *dsv4_cache
+        # Target groups: SWA, full compressed history, short compressor state.
+        pool_ratio: [0.2, 0.7, 0.1]
+    notes: Full-feature DSV4 recipe with explicit target pool sizing and SWA scratch.
+
+  deepseek-v4-flash-nvfp4-explicit-pools-no-scratch:
+    <<: *dsv4_explicit
+    common_options:
+      <<: *dsv4_explicit_options
+      kv_cache_config:
+        <<: *dsv4_explicit_cache
+        enable_swa_scratch_reuse: false
+    notes: Scratch-off control for the explicit-pool DSV4 recipe.
