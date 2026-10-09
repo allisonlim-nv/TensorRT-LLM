@@ -1,0 +1,73 @@
+# Copyright (c) 2026, NVIDIA CORPORATION. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Paths are relative to --models-root or LLM_MODELS_ROOT.
+# TensorRT-LLM target with the Inferact/vLLM MLA DSpark head.
+# Requires eight GPUs with GB300-class memory; separate from the B200 matrix.
+defaults:
+  environment:
+    # Prefix-sum capture convention used by the vLLM/Inferact head.
+    KIMI_K3_AUX_ATTN_RES_STREAM: "0"
+  llm_options:
+    max_batch_size: 1
+    max_seq_len: 8192
+    # A block-aligned prefill budget; longer prompts use chunked prefill.
+    max_num_tokens: 1024
+    cuda_graph_config:
+      batch_sizes: [1]
+      max_batch_size: 1
+      enable_padding: true
+    enable_chunked_prefill: true
+    disable_overlap_scheduler: false
+    print_iter_log: true
+    kv_cache_config:
+      enable_block_reuse: true
+      use_kv_cache_manager_v2: true
+      dtype: fp8
+      mamba_ssm_cache_dtype: float32
+      tokens_per_block: 64
+      free_gpu_memory_fraction: 0.6
+      mamba_state_config:
+        periodic_snapshot_interval: 0
+        additional_snapshot_offsets_from_end: [0]
+  chat_template_kwargs:
+    enable_thinking: false
+
+cases:
+  kimi-k3-nvfp4-mla:
+    model: Kimi-K3-NVFP4
+    drafter: Kimi-K3-DSpark-MLA
+    max_draft_len: 7
+    llm_options:
+      trust_remote_code: true
+      attn_backend: TRTLLM
+      tensor_parallel_size: 8
+      moe_tensor_parallel_size: 8
+      moe_expert_parallel_size: 1
+      pipeline_parallel_size: 1
+      context_parallel_size: 1
+      enable_attention_dp: false
+      moe_config:
+        # CUTLASS supports the target's NVFP4 SiTu experts with MoE TP.
+        backend: CUTLASS
+        use_low_precision_moe_combine: true
+    spec_options:
+      attention_backend: TRTLLM
+      block_size: 7
+    notes: >-
+      Aggregate Kimi K3 NVFP4 with the standalone Inferact/Kimi-K3-DSpark
+      MLA drafter. Kimi K3 itself is a KDA/MLA hybrid. Requires eight
+      GB300-class GPUs and the MLA DSpark TRTLLM kernel. The batch-one
+      measurement preset, including graphs, chunking, overlap, and cache
+      reuse, still requires GPU validation.

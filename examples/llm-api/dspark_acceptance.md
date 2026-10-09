@@ -61,7 +61,10 @@ python3 examples/llm-api/measure_dspark_acceptance.py \
 ```
 
 Kimi recipes are excluded from this matrix because their existing configurations
-require GB300 memory or 16 GPUs in one NVL72 domain. For a custom configuration
+require GB300 memory or 16 GPUs in one NVL72 domain. Dedicated
+[Kimi K3 NVFP4 + vLLM/Inferact MLA head presets](dspark_acceptance_kimi_k3_mla.md)
+are available for both aggregate and disaggregated measurement with `--config`.
+For a custom configuration
 that spans nodes, `--launcher` accepts a command prefix with `{gpus}` expanded
 to the case's GPU count. The Python environment, script, config, checkpoints,
 and output directory must be accessible at the same paths on the launched nodes.

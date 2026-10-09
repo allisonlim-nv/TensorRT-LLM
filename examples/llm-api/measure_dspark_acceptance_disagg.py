@@ -144,6 +144,15 @@ def _load_cases(args: argparse.Namespace) -> dict[str, dict]:
         if not re.fullmatch(r"[a-zA-Z0-9_-]+", name) or name not in config["cases"]:
             raise ValueError(f"Unknown case {name}; choices: {', '.join(config['cases'])}")
         case = _merge(config.get("defaults", {}), config["cases"][name])
+        environment = case.get("environment", {})
+        if not isinstance(environment, dict) or any(
+            not isinstance(key, str)
+            or not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", key)
+            or not isinstance(value, str)
+            or "\0" in value
+            for key, value in environment.items()
+        ):
+            raise ValueError(f"{name}: environment must map valid variable names to strings")
         case.setdefault("aggregate_case", name)
         for key in ("model", "drafter"):
             case[key] = str((args.models_root / case[key]).resolve())
@@ -470,9 +479,11 @@ def _launch_servers(
         def launch(
             role: str, argv: list[str], gpu_ids: list[str], master_port: int | None = None
         ) -> None:
+            inherited_env = dict(os.environ)
+            inherited_env.update(case.get("environment", {}))
             env = {
                 key: value
-                for key, value in os.environ.items()
+                for key, value in inherited_env.items()
                 if not key.startswith(("OMPI_", "PMI_", "PMIX_"))
                 and key
                 not in (
@@ -758,6 +769,8 @@ def _aggregate_reference(
     ):
         raise ValueError("Aggregate and disaggregate tokenized prompts differ")
     recipe = reference["recipe"]
+    if recipe.get("environment", {}) != case.get("environment", {}):
+        raise ValueError("Aggregate and disaggregate environment settings differ")
     for key in ("model", "drafter", "max_draft_len", "system_prompt", "chat_template_kwargs"):
         if recipe.get(key) != case.get(key):
             raise ValueError(f"Aggregate and disaggregate {key} differ")

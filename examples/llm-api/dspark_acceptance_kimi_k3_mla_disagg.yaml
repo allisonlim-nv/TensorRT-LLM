@@ -1,0 +1,82 @@
+# Copyright (c) 2026, NVIDIA CORPORATION. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Paths are relative to --models-root or LLM_MODELS_ROOT.
+# Matched reference: dspark_acceptance_kimi_k3_mla.yaml.
+# The runner enables the same Inferact MLA DSpark head on both TP8 workers.
+# Requires sixteen GPUs with GB300-class memory, eight per worker.
+defaults:
+  environment:
+    # Must match aggregate; applied before TensorRT-LLM imports in both workers.
+    KIMI_K3_AUX_ATTN_RES_STREAM: "0"
+  common_options:
+    max_batch_size: 1
+    max_seq_len: 8192
+    # Match the aggregate block-aligned prefill budget on both workers.
+    max_num_tokens: 1024
+    cuda_graph_config:
+      batch_sizes: [1]
+      max_batch_size: 1
+      enable_padding: true
+    enable_chunked_prefill: true
+    disable_overlap_scheduler: false
+    print_iter_log: true
+    kv_cache_config:
+      enable_block_reuse: true
+      use_kv_cache_manager_v2: true
+      dtype: fp8
+      mamba_ssm_cache_dtype: float32
+      tokens_per_block: 64
+      free_gpu_memory_fraction: 0.6
+      mamba_state_config:
+        periodic_snapshot_interval: 0
+        additional_snapshot_offsets_from_end: [0]
+    cache_transceiver_config:
+      backend: NIXL
+      transceiver_runtime: PYTHON
+      max_tokens_in_buffer: 8192
+  chat_template_kwargs:
+    enable_thinking: false
+
+cases:
+  kimi-k3-nvfp4-mla:
+    model: Kimi-K3-NVFP4
+    drafter: Kimi-K3-DSpark-MLA
+    max_draft_len: 7
+    aggregate_case: kimi-k3-nvfp4-mla
+    common_options:
+      trust_remote_code: true
+      attn_backend: TRTLLM
+      tensor_parallel_size: 8
+      moe_tensor_parallel_size: 8
+      moe_expert_parallel_size: 1
+      pipeline_parallel_size: 1
+      context_parallel_size: 1
+      enable_attention_dp: false
+      moe_config:
+        # CUTLASS supports the target's NVFP4 SiTu experts with MoE TP.
+        backend: CUTLASS
+        use_low_precision_moe_combine: true
+    spec_options:
+      attention_backend: TRTLLM
+      block_size: 7
+    notes: >-
+      Disaggregated Kimi K3 NVFP4 with the standalone Inferact/Kimi-K3-DSpark
+      MLA drafter. Both workers match the aggregate TP8/EP1/CP1 settings;
+      the Python NIXL transceiver moves the hybrid target cache. Standalone
+      drafter prompt history is not transferred; generation starts without
+      that history, so aggregate AL parity is not expected. Requires sixteen
+      locally visible GB300-class GPUs and the MLA DSpark TRTLLM
+      kernel. Reported AL uses generation-side verification counters only.
+      This measurement preset still requires GPU validation.

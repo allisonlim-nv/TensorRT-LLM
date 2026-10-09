@@ -123,6 +123,15 @@ def _load_cases(args: argparse.Namespace) -> dict[str, dict]:
                 f"Unknown or invalid case {name!r}; choices: {', '.join(config['cases'])}"
             )
         case = _merge(config.get("defaults", {}), config["cases"][name])
+        environment = case.get("environment", {})
+        if not isinstance(environment, dict) or any(
+            not isinstance(key, str)
+            or not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", key)
+            or not isinstance(value, str)
+            or "\0" in value
+            for key, value in environment.items()
+        ):
+            raise ValueError(f"{name}: environment must map valid variable names to strings")
         for key in ("model", "drafter"):
             case[key] = str((args.models_root / case[key]).resolve())
         options = case.setdefault("llm_options", {})
@@ -256,6 +265,8 @@ def _write_json(path: Path, value: dict) -> None:
 
 
 def _run_worker(args: argparse.Namespace, name: str, case: dict) -> None:
+    # Model-specific flags can be read at import time. Also cover direct --worker runs.
+    os.environ.update(case.get("environment", {}))
     from tensorrt_llm import LLM, SamplingParams
 
     prompts = _load_prompts(args)
@@ -383,8 +394,10 @@ def _run_cases(args: argparse.Namespace, cases: dict[str, dict]) -> int:
         },
     )
     rows = []
-    child_env = dict(os.environ, LLM_MODELS_ROOT=str(args.models_root))
     for name, case in cases.items():
+        child_env = dict(os.environ)
+        child_env.update(case.get("environment", {}))
+        child_env["LLM_MODELS_ROOT"] = str(args.models_root)
         log = args.output_dir / f"{name}.log"
         row = {"case": name, "status": "failed", "log": str(log)}
         missing = [

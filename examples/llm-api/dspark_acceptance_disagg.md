@@ -45,6 +45,10 @@ GPU count alone is not a model-fit guarantee. Both roles now load the drafter,
 so context-side memory usage can increase compared with generation-only
 speculation. This launcher is single-node only.
 
+For the vLLM/Inferact MLA DSpark head on Kimi K3 NVFP4, use the dedicated
+[Kimi K3 presets and commands](dspark_acceptance_kimi_k3_mla.md). That pair uses
+TP8 per worker and requires 16 locally visible GPUs for disaggregation.
+
 All cases use the corresponding target/drafter paths and draft lengths from
 [`dspark_acceptance.yaml`](dspark_acceptance.yaml). DeepSeek targets contain their
 embedded drafter weights in the same checkpoint; Qwen has a separate drafter

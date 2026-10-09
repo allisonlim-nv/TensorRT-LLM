@@ -16,6 +16,7 @@
 from __future__ import annotations
 
 import argparse
+import builtins
 import copy
 import hashlib
 import importlib.util
@@ -258,6 +259,182 @@ class TestCounterMeasurement(unittest.TestCase):
         self.assertEqual(result["acceptance_length"], 1.5)
 
 
+class TestKimiK3MLAPresets(unittest.TestCase):
+    def setUp(self) -> None:
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        self.args = _arguments(self.root / "output")
+        self.args.config = _EXAMPLES / "dspark_acceptance_kimi_k3_mla_disagg.yaml"
+        self.name = "kimi-k3-nvfp4-mla"
+        self.disagg = _RUNNER._load_cases(self.args)
+        spec = importlib.util.spec_from_file_location(
+            "kimi_k3_aggregate_runner", _EXAMPLES / "measure_dspark_acceptance.py"
+        )
+        assert spec is not None and spec.loader is not None
+        aggregate = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(aggregate)
+        self.aggregate_runner = aggregate
+        aggregate_args = copy.copy(self.args)
+        aggregate_args.config = _EXAMPLES / "dspark_acceptance_kimi_k3_mla.yaml"
+        self.agg = aggregate._load_cases(aggregate_args)
+
+    def test_standalone_inferact_head_is_resolved_for_all_workers(self) -> None:
+        self.assertEqual(set(self.agg), {self.name})
+        self.assertEqual(set(self.disagg), {self.name})
+        target = str((self.args.models_root / "Kimi-K3-NVFP4").resolve())
+        drafter = str((self.args.models_root / "Kimi-K3-DSpark-MLA").resolve())
+        for case in (self.agg[self.name], self.disagg[self.name]):
+            self.assertEqual(case["model"], target)
+            self.assertEqual(case["drafter"], drafter)
+            self.assertNotEqual(case["model"], case["drafter"])
+        aggregate_spec = self.agg[self.name]["spec_options"]
+        self.assertEqual(aggregate_spec["decoding_type"], "DSpark")
+        self.assertEqual(aggregate_spec["speculative_model"], drafter)
+        self.assertEqual(aggregate_spec["max_draft_len"], 7)
+        self.assertEqual(aggregate_spec["attention_backend"], "TRTLLM")
+        for role in ("context", "generation"):
+            options = self.disagg[self.name][f"{role}_options"]
+            self.assertEqual(options["speculative_config"], aggregate_spec)
+            self.assertEqual(options["cache_transceiver_config"]["backend"], "NIXL")
+            self.assertEqual(options["cache_transceiver_config"]["transceiver_runtime"], "PYTHON")
+
+    def test_gpu_budget_requires_two_eight_gpu_workers(self) -> None:
+        aggregate = self.agg[self.name]["llm_options"]
+        case = self.disagg[self.name]
+        self.assertEqual(_RUNNER._gpu_count(aggregate), 8)
+        self.assertEqual(case["required_gpus"], 16)
+        for options in (
+            aggregate,
+            case["context_options"],
+            case["generation_options"],
+        ):
+            self.assertEqual(options["tensor_parallel_size"], 8)
+            self.assertEqual(options["moe_tensor_parallel_size"], 8)
+            self.assertEqual(options["moe_expert_parallel_size"], 1)
+            self.assertFalse(options["enable_attention_dp"])
+        self.args.dry_run = True
+        output = io.StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(
+                _RUNNER._run_cases(self.args, self.disagg, list(map(str, range(8)))), 0
+            )
+        self.assertIn("needs 16 GPUs", output.getvalue())
+        self.assertIn("SKIP: only 8 GPUs visible", output.getvalue())
+        self.assertFalse(self.args.output_dir.exists())
+
+    def test_k3_cache_and_prompt_end_snapshots_are_enabled_on_all_workers(self) -> None:
+        case = self.disagg[self.name]
+        for options in (
+            self.agg[self.name]["llm_options"],
+            case["context_options"],
+            case["generation_options"],
+        ):
+            cache = options["kv_cache_config"]
+            self.assertTrue(cache["use_kv_cache_manager_v2"])
+            self.assertTrue(cache["enable_block_reuse"])
+            self.assertEqual(cache["dtype"], "fp8")
+            self.assertEqual(cache["mamba_ssm_cache_dtype"], "float32")
+            self.assertEqual(cache["tokens_per_block"], 64)
+            state = cache["mamba_state_config"]
+            self.assertEqual(state["periodic_snapshot_interval"], 0)
+            self.assertEqual(state["additional_snapshot_offsets_from_end"], [0])
+            self.assertTrue(options["enable_chunked_prefill"])
+            self.assertFalse(options["disable_overlap_scheduler"])
+            self.assertEqual(options["moe_config"]["backend"], "CUTLASS")
+            self.assertEqual(options["cuda_graph_config"]["batch_sizes"], [1])
+
+    def test_invalid_case_environment_is_rejected_by_both_loaders(self) -> None:
+        import yaml
+
+        for config_name, runner in (
+            ("dspark_acceptance_kimi_k3_mla.yaml", self.aggregate_runner),
+            ("dspark_acceptance_kimi_k3_mla_disagg.yaml", _RUNNER),
+        ):
+            config = yaml.safe_load((_EXAMPLES / config_name).read_text())
+            for environment in ({"KIMI_K3_AUX_ATTN_RES_STREAM": 0}, {"BAD=NAME": "0"}, ["X=0"]):
+                config["cases"][self.name]["environment"] = environment
+                path = self.root / config_name
+                path.write_text(yaml.safe_dump(config))
+                args = copy.copy(self.args)
+                args.config = path
+                with self.subTest(config=config_name, environment=environment):
+                    with self.assertRaisesRegex(ValueError, "environment"):
+                        runner._load_cases(args)
+
+    def test_aggregate_worker_applies_environment_before_importing_trt(self) -> None:
+        original_import = builtins.__import__
+
+        def intercept_import(name: str, *args, **kwargs) -> object:
+            if name == "tensorrt_llm":
+                self.assertEqual(os.environ["KIMI_K3_AUX_ATTN_RES_STREAM"], "0")
+                raise RuntimeError("intercepted TRT import")
+            return original_import(name, *args, **kwargs)
+
+        with (
+            patch.dict(os.environ, {"KIMI_K3_AUX_ATTN_RES_STREAM": "1"}),
+            patch.object(builtins, "__import__", side_effect=intercept_import),
+            self.assertRaisesRegex(RuntimeError, "intercepted TRT import"),
+        ):
+            self.aggregate_runner._run_worker(self.args, self.name, self.agg[self.name])
+
+    def test_aggregate_child_environment_does_not_leak_between_cases(self) -> None:
+        self.args.launcher = ""
+        self.args.config = _EXAMPLES / "dspark_acceptance_kimi_k3_mla.yaml"
+        inherited = copy.deepcopy(self.agg[self.name])
+        inherited.pop("environment", None)
+
+        def run_child(command: list[str], **kwargs) -> MagicMock:
+            name = command[command.index("--case") + 1]
+            expected = "0" if name == self.name else "1"
+            self.assertEqual(kwargs["env"]["KIMI_K3_AUX_ATTN_RES_STREAM"], expected)
+            (self.args.output_dir / f"{name}.json").write_text(json.dumps({"status": "ok"}))
+            return MagicMock(returncode=0)
+
+        with (
+            patch.dict(os.environ, {"KIMI_K3_AUX_ATTN_RES_STREAM": "1"}),
+            patch.object(self.aggregate_runner, "_load_prompts", return_value=["one", "two"]),
+            patch.object(self.aggregate_runner.subprocess, "run", side_effect=run_child),
+            patch.object(Path, "is_file", return_value=True),
+            redirect_stdout(io.StringIO()),
+        ):
+            self.assertEqual(
+                self.aggregate_runner._run_cases(self.args, {**self.agg, "inherited": inherited}),
+                0,
+            )
+
+    def test_actual_presets_produce_matching_aggregate_reference(self) -> None:
+        self.args.aggregate_results = self.root
+        case = self.disagg[self.name]
+        self.assertEqual(case["aggregate_case"], self.name)
+        prompts, tokens = ["one", "two"], [[1], [2]]
+        corpus = "".join(json.dumps({"prompt": prompt}) + "\n" for prompt in prompts)
+        manifest = {
+            "mode": "agg",
+            "num_prompts": len(prompts),
+            "prompt_sha256": hashlib.sha256(corpus.encode()).hexdigest(),
+            "prompt_format": self.args.prompt_format,
+            "max_tokens": self.args.max_tokens,
+            "warmup_prompts": self.args.warmup_prompts,
+        }
+        result = {
+            "status": "ok",
+            "acceptance_length": 5.0,
+            "recipe": self.agg[self.name],
+            "prompt_token_ids_sha256": hashlib.sha256(json.dumps(tokens).encode()).hexdigest(),
+        }
+        (self.root / "manifest.json").write_text(json.dumps(manifest))
+        (self.root / f"{self.name}.json").write_text(json.dumps(result))
+        self.assertEqual(_RUNNER._aggregate_reference(self.args, case, prompts, tokens), result)
+        case["environment"] = {"KIMI_K3_AUX_ATTN_RES_STREAM": "1"}
+        with self.assertRaisesRegex(ValueError, "environment"):
+            _RUNNER._aggregate_reference(self.args, case, prompts, tokens)
+        case["environment"] = {"KIMI_K3_AUX_ATTN_RES_STREAM": "0"}
+        case["generation_options"]["enable_attention_dp"] = True
+        with self.assertRaisesRegex(ValueError, "engine settings"):
+            _RUNNER._aggregate_reference(self.args, case, prompts, tokens)
+
+
 class TestRecipesAndPrompts(unittest.TestCase):
     def test_expanded_matrix_preserves_features_and_has_matched_aggregate_references(self) -> None:
         args = _arguments(Path("/tmp/dspark-test-unused-output"))
@@ -272,6 +449,7 @@ class TestRecipesAndPrompts(unittest.TestCase):
         references = aggregate._load_cases(aggregate_args)
         expected_cases = {
             "qwen3-8b",
+            "qwen3-8-27b-tp2",
             "qwen3-8b-explicit-pools",
             "deepseek-v4-flash-nvfp4",
             "deepseek-v4-flash-nvfp4-explicit-pools",
@@ -289,9 +467,10 @@ class TestRecipesAndPrompts(unittest.TestCase):
                     self.assertTrue(options["cuda_graph_config"])
                     self.assertTrue(options["enable_chunked_prefill"])
                     self.assertFalse(options["disable_overlap_scheduler"])
-                    self.assertEqual(options["max_num_tokens"], 128)
+                    wrapped_qwen = name == "qwen3-8-27b-tp2"
+                    self.assertEqual(options["max_num_tokens"], 512 if wrapped_qwen else 128)
                     cache = options["kv_cache_config"]
-                    self.assertTrue(cache["enable_block_reuse"])
+                    self.assertEqual(cache["enable_block_reuse"], not wrapped_qwen)
                     expected_ratio = None
                     if "explicit-pools" in name:
                         expected_ratio = [0.2, 0.7, 0.1] if name.startswith("deepseek") else [1.0]
@@ -360,6 +539,7 @@ class TestRecipesAndPrompts(unittest.TestCase):
         cases = _RUNNER._load_cases(_arguments(Path("/tmp/dspark-test-unused-output")))
         expected = {
             "qwen3-8b": (2, 1, 7),
+            "qwen3-8-27b-tp2": (4, 2, 7),
             "deepseek-v4-flash-nvfp4": (8, 4, 5),
         }
         self.assertTrue(set(expected).issubset(cases))
@@ -380,14 +560,19 @@ class TestRecipesAndPrompts(unittest.TestCase):
                     options = case[f"{role}_options"]
                     self.assertEqual(options["speculative_config"], expected_spec)
                     self.assertEqual(options["tensor_parallel_size"], per_worker)
-                    self.assertEqual(options["moe_expert_parallel_size"], per_worker)
+                    self.assertEqual(
+                        options["moe_expert_parallel_size"],
+                        1 if name == "qwen3-8-27b-tp2" else per_worker,
+                    )
                     self.assertEqual(options["num_postprocess_workers"], 0)
                     self.assertEqual(options["num_serve_frontends"], 1)
                     self.assertTrue(options["return_perf_metrics"])
                     self.assertEqual(options["max_batch_size"], 1)
                     self.assertFalse(options["disable_overlap_scheduler"])
                     self.assertTrue(options["enable_chunked_prefill"])
-                    self.assertEqual(options["max_num_tokens"], 128)
+                    self.assertEqual(
+                        options["max_num_tokens"], 512 if name == "qwen3-8-27b-tp2" else 128
+                    )
                     self.assertTrue(options["print_iter_log"])
                     self.assertEqual(options["max_seq_len"], 8192)
                     self.assertEqual(options["cache_transceiver_config"]["backend"], "NIXL")
@@ -640,10 +825,13 @@ class TestRunnerOrchestration(unittest.TestCase):
                 for case in self.cases.values()
             ],
         )
-        skipped = summary["results"][1]
-        self.assertEqual(skipped["case"], "deepseek-v4-flash-nvfp4")
-        self.assertEqual(skipped["required_gpus"], 8)
-        self.assertNotIn("acceptance_length", skipped)
+        skipped = {
+            row["case"]: row for row in summary["results"] if row["status"].startswith("skipped")
+        }
+        self.assertEqual(skipped["qwen3-8-27b-tp2"]["required_gpus"], 4)
+        self.assertEqual(skipped["deepseek-v4-flash-nvfp4"]["required_gpus"], 8)
+        for row in skipped.values():
+            self.assertNotIn("acceptance_length", row)
 
     def test_all_hardware_skips_do_not_load_dataset_or_start_workers(self) -> None:
         with (
@@ -739,12 +927,20 @@ class TestRunnerOrchestration(unittest.TestCase):
         processes = [MagicMock(pid=20000 + index) for index in range(3)]
         for process in processes:
             process.poll.return_value = None
+        self.cases["qwen3-8b"]["environment"] = {"KIMI_K3_AUX_ATTN_RES_STREAM": "0"}
         with (
             patch.object(_RUNNER.subprocess, "Popen", side_effect=processes) as popen,
             patch.object(_RUNNER.socket, "socket", side_effect=sockets),
             patch.object(_RUNNER, "_http", return_value=json.dumps(cluster)),
             patch.object(_RUNNER, "_stop_processes") as stop,
-            patch.dict(os.environ, {"OMPI_COMM_WORLD_RANK": "4", "MASTER_PORT": "9999"}),
+            patch.dict(
+                os.environ,
+                {
+                    "OMPI_COMM_WORLD_RANK": "4",
+                    "MASTER_PORT": "9999",
+                    "KIMI_K3_AUX_ATTN_RES_STREAM": "1",
+                },
+            ),
         ):
             with _RUNNER._launch_servers(
                 self.args, self.cases["qwen3-8b"], ["0", "1"], case_dir
@@ -764,6 +960,7 @@ class TestRunnerOrchestration(unittest.TestCase):
         for call in popen.call_args_list:
             self.assertTrue(call.kwargs["start_new_session"])
             self.assertNotIn("OMPI_COMM_WORLD_RANK", call.kwargs["env"])
+            self.assertEqual(call.kwargs["env"]["KIMI_K3_AUX_ATTN_RES_STREAM"], "0")
         self.assertNotEqual(
             popen.call_args_list[1].kwargs["env"]["MASTER_PORT"],
             popen.call_args_list[2].kwargs["env"]["MASTER_PORT"],
