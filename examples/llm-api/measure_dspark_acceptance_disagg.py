@@ -35,6 +35,7 @@ import subprocess
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from contextlib import ExitStack, contextmanager
@@ -53,6 +54,29 @@ def _positive_int(value: str) -> int:
     return number
 
 
+def _server_origin(value: str) -> str:
+    try:
+        parsed = urllib.parse.urlsplit(value)
+        port = parsed.port
+    except ValueError as error:
+        raise argparse.ArgumentTypeError("server URL must be an HTTP(S) origin") from error
+    if (
+        parsed.scheme not in ("http", "https")
+        or not parsed.hostname
+        or parsed.path not in ("", "/")
+        or parsed.username is not None
+        or parsed.password is not None
+        or parsed.query
+        or parsed.fragment
+        or any(character.isspace() for character in value)
+        or port == 0
+    ):
+        raise argparse.ArgumentTypeError(
+            "server URL must be an HTTP(S) origin without credentials or paths"
+        )
+    return value.rstrip("/")
+
+
 def _parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -64,6 +88,15 @@ def _parse_arguments() -> argparse.Namespace:
     parser.add_argument(
         "--devices", help="Local GPU IDs/UUIDs; defaults to CUDA_VISIBLE_DEVICES or nvidia-smi."
     )
+    for role in ("router", "context", "generation"):
+        parser.add_argument(
+            f"--{role}-url",
+            type=_server_origin,
+            help=(
+                f"Existing dedicated {role} HTTP(S) origin. Supply all three URLs for one case; "
+                "the caller must deploy servers matching the recipe. No local servers are launched."
+            ),
+        )
     parser.add_argument("--num-prompts", type=_positive_int, default=64)
     parser.add_argument("--max-tokens", type=_positive_int, default=256)
     parser.add_argument(
@@ -92,6 +125,10 @@ def _parse_arguments() -> argparse.Namespace:
         help="Print resolved recipes and GPU allocation; do not start servers.",
     )
     args = parser.parse_args()
+    urls = (args.router_url, args.context_url, args.generation_url)
+    if any(urls) and not all(urls):
+        parser.error("provide --router-url, --context-url and --generation-url together")
+    args.external_urls = urls if all(urls) else None
     if args.models_root is None:
         parser.error("set LLM_MODELS_ROOT or pass --models-root")
     if args.warmup_prompts < 0:
@@ -316,8 +353,7 @@ def _http(url: str, timeout: int, payload: dict | None = None) -> str:
     data = json.dumps(payload).encode() if payload is not None else None
     request = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
     try:
-        # All endpoints belong to this local benchmark; never send them through
-        # an inherited HTTP proxy.
+        # Benchmark endpoints may be private allocation hosts; bypass inherited proxies.
         opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
         with opener.open(request, timeout=timeout) as response:
             return response.read().decode()
@@ -443,6 +479,26 @@ def _stop_processes(processes: list[subprocess.Popen]) -> None:
 def _launch_servers(
     args: argparse.Namespace, case: dict, devices: list[str], directory: Path
 ) -> Iterator[tuple[str, str, str, list[subprocess.Popen]]]:
+    external = getattr(args, "external_urls", None)
+    if external:
+        deadline = time.monotonic() + args.startup_timeout
+        while time.monotonic() < deadline:
+            try:
+                for url in external:
+                    _http(f"{url}/health", 10)
+                for url in external[1:]:
+                    _parse_metrics(_http(f"{url}/prometheus/metrics", 10))
+            except (OSError, RuntimeError):
+                time.sleep(1)
+                continue
+            _write_json(
+                directory / "external_servers.json",
+                dict(zip(("router", "context", "generation"), external)),
+            )
+            yield external[0], external[1], external[2], []
+            return
+        raise TimeoutError("External disaggregated servers or metrics did not become ready")
+
     import yaml
 
     processes: list[subprocess.Popen] = []
@@ -658,7 +714,8 @@ def _workload(
         except (RuntimeError, ValueError, OSError, KeyboardInterrupt):
             for future in futures:
                 future.cancel()
-            _stop_processes(processes)
+            if processes:
+                _stop_processes(processes)
             raise
     return sorted(rows, key=lambda row: row["index"])
 
@@ -849,11 +906,16 @@ def _write_summary(output_dir: Path, rows: list[dict], total_cases: int) -> None
 
 
 def _run_cases(args: argparse.Namespace, cases: dict[str, dict], devices: list[str]) -> int:
+    external = getattr(args, "external_urls", None)
+    if external and len(cases) != 1:
+        raise ValueError("External servers require exactly one selected case")
     for name, case in cases.items():
         ctx_count = _gpu_count(case["context_options"])
-        runnable = len(devices) >= case["required_gpus"]
+        runnable = bool(external) or len(devices) >= case["required_gpus"]
         print(
-            f"{name}: DSpark disagg, needs {case['required_gpus']} GPUs; "
+            f"{name}: DSpark disagg; external router={external[0]}"
+            if external
+            else f"{name}: DSpark disagg, needs {case['required_gpus']} GPUs; "
             + (
                 f"context={devices[:ctx_count]}, generation={devices[ctx_count : case['required_gpus']]}"
                 if runnable
@@ -866,7 +928,9 @@ def _run_cases(args: argparse.Namespace, cases: dict[str, dict], devices: list[s
     if args.dry_run:
         return 0
     args.output_dir.mkdir(parents=True, exist_ok=False)
-    runnable = any(len(devices) >= case["required_gpus"] for case in cases.values())
+    runnable = bool(external) or any(
+        len(devices) >= case["required_gpus"] for case in cases.values()
+    )
     prompts = _load_prompts(args) if runnable else []
     corpus = "".join(json.dumps({"prompt": prompt}) + "\n" for prompt in prompts)
     (args.output_dir / "prompts.jsonl").write_text(corpus, encoding="utf-8")
@@ -876,6 +940,9 @@ def _run_cases(args: argparse.Namespace, cases: dict[str, dict], devices: list[s
             "mode": "disagg",
             "cases": cases,
             "devices": devices,
+            "external_servers": dict(zip(("router", "context", "generation"), external))
+            if external
+            else None,
             "num_prompts": len(prompts),
             "prompt_source": str(args.prompt_file)
             if args.prompt_file
@@ -899,7 +966,7 @@ def _run_cases(args: argparse.Namespace, cases: dict[str, dict], devices: list[s
             "required_gpus": case["required_gpus"],
             "log": str(args.output_dir / name),
         }
-        if len(devices) < case["required_gpus"]:
+        if not external and len(devices) < case["required_gpus"]:
             row.update(
                 status="skipped_insufficient_gpus",
                 error=f"Requires {case['required_gpus']} local GPUs; only {len(devices)} visible",
@@ -954,7 +1021,9 @@ def _handle_termination(signum: int, frame) -> None:
 def _main() -> int:
     args = _parse_arguments()
     signal.signal(signal.SIGTERM, _handle_termination)
-    return _run_cases(args, _load_cases(args), _get_devices(args.devices))
+    cases = _load_cases(args)
+    devices = [] if getattr(args, "external_urls", None) else _get_devices(args.devices)
+    return _run_cases(args, cases, devices)
 
 
 if __name__ == "__main__":

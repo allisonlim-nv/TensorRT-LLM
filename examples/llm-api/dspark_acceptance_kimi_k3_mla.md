@@ -63,9 +63,11 @@ Use the same target and drafter revisions for both runs. The RadixArk/SGLang
 GQA head is a different checkpoint.
 
 Plan for GPUs with GB300-class memory; GPU count alone does not guarantee model
-fit. The disaggregated launcher requires all 16 GPUs to be visible on **one
-host**. It does not combine GPUs across Slurm nodes. A four-GPU-per-node
-allocation needs a separate cluster serving launcher. The aggregate runner
+fit. The built-in disaggregated launcher requires all 16 GPUs to be visible on
+**one host**. A four-GPU-per-node allocation needs a separate cluster serving
+launcher. Connect the measurement client to that deployment using
+[`--router-url`, `--context-url`, and `--generation-url`](dspark_acceptance_disagg.md#externally-managed-servers),
+with `--case kimi-k3-nvfp4-mla` and the disaggregated preset. The aggregate runner
 can use its existing `--launcher` option for a multi-node allocation; see the
 [aggregate launcher instructions](dspark_acceptance.md).
 
@@ -124,8 +126,10 @@ update both YAMLs and regenerate the aggregate reference.
 Both presets explicitly set `KIMI_K3_AUX_ATTN_RES_STREAM: "0"` through the
 recipe's `environment` mapping. This selects the prefix-sum hidden-state capture
 convention associated with Inferact's vLLM lineage. The runner applies these
-strings before TensorRT-LLM imports and overrides inherited values. The mapping
-is recorded in the recipe and checked during aggregate comparison. It is a
+strings before TensorRT-LLM imports in the workers it launches and overrides
+inherited values. For external servers, their launcher must apply the same
+environment before starting either worker. The mapping is recorded in the
+recipe and checked during aggregate comparison. It is a
 checkpoint convention, not a performance tuning knob; it does not establish
 answer accuracy.
 

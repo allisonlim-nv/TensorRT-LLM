@@ -23,9 +23,10 @@ import importlib.util
 import io
 import json
 import os
+import sys
 import tempfile
 import unittest
-from contextlib import nullcontext, redirect_stdout
+from contextlib import nullcontext, redirect_stderr, redirect_stdout
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -673,6 +674,138 @@ class TestRecipesAndPrompts(unittest.TestCase):
         ):
             with self.subTest(devices=devices), self.assertRaises(ValueError):
                 _RUNNER._get_devices(devices)
+
+
+class TestExternalServers(unittest.TestCase):
+    def setUp(self) -> None:
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        self.args = _arguments(self.root / "output")
+        self.args.external_urls = (
+            "http://router.private:8000",
+            "http://prefill.private:8001",
+            "http://decode.private:8002",
+        )
+        self.args.case = ["qwen3-8b"]
+
+    def test_external_flags_require_complete_origin_urls(self) -> None:
+        base = ["runner", "--models-root", str(self.root)]
+        flags = [
+            "--router-url",
+            self.args.external_urls[0] + "/",
+            "--context-url",
+            self.args.external_urls[1],
+            "--generation-url",
+            self.args.external_urls[2],
+        ]
+        with patch.object(sys, "argv", base + flags):
+            parsed = _RUNNER._parse_arguments()
+        self.assertEqual(parsed.external_urls, self.args.external_urls)
+        invalid = [flags[:2], flags[:4]]
+        invalid += [
+            ["--router-url", url, *flags[2:]]
+            for url in (
+                "ftp://host",
+                "http://host/v1",
+                "http://user:password@host",
+                "http://host?token=x",
+                "http://host#fragment",
+                "http://host:0",
+                "http://host:65536",
+                "http://bad host",
+            )
+        ]
+        for values in invalid:
+            with self.subTest(values=values), patch.object(sys, "argv", base + values):
+                with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                    _RUNNER._parse_arguments()
+
+    def test_external_mode_rejects_multiple_cases_before_writes(self) -> None:
+        self.args.case = None
+        cases = _RUNNER._load_cases(self.args)
+        with self.assertRaisesRegex(ValueError, "exactly one selected case"):
+            _RUNNER._run_cases(self.args, cases, [])
+        self.assertFalse(self.args.output_dir.exists())
+
+    def test_external_startup_failure_does_not_touch_processes(self) -> None:
+        self.args.startup_timeout = 1
+        with (
+            patch.object(_RUNNER, "_http", side_effect=RuntimeError("not ready")),
+            patch.object(_RUNNER.time, "monotonic", side_effect=[0, 0, 2]),
+            patch.object(_RUNNER.time, "sleep"),
+            patch.object(_RUNNER.subprocess, "Popen") as launch,
+            patch.object(_RUNNER, "_stop_processes") as stop,
+            self.assertRaisesRegex(TimeoutError, "External disaggregated"),
+        ):
+            with _RUNNER._launch_servers(self.args, {}, [], self.root):
+                self.fail("Unhealthy external servers must not be used")
+        launch.assert_not_called()
+        stop.assert_not_called()
+
+    def test_external_request_failure_does_not_stop_servers(self) -> None:
+        with (
+            patch.object(_RUNNER, "_http", side_effect=RuntimeError("request failed")),
+            patch.object(_RUNNER, "_stop_processes") as stop,
+            self.assertRaisesRegex(RuntimeError, "request failed"),
+        ):
+            _RUNNER._workload(self.args, self.args.external_urls[0], "model", [[1]], 8, [])
+        stop.assert_not_called()
+
+    @unittest.skipUnless(
+        importlib.util.find_spec("prometheus_client"), "requires prometheus_client"
+    )
+    def test_external_measurement_bypasses_local_gpu_discovery_and_launch(self) -> None:
+        completed = 0
+        self.args.warmup_prompts = 1
+
+        def http(url: str, timeout: int, payload: dict | None = None) -> str:
+            nonlocal completed
+            if url.endswith("/health"):
+                return "ok"
+            if url.endswith("/v1/completions"):
+                self.assertEqual(url, self.args.external_urls[0] + "/v1/completions")
+                completed += 1
+                return json.dumps({"choices": [{"finish_reason": "length"}]})
+            self.assertTrue(url.endswith("/prometheus/metrics"))
+            if url.startswith(self.args.external_urls[1]):
+                return (
+                    f'trtllm_request_success_total{{finished_reason="not_finished"}} {completed}\n'
+                )
+            lines = [f'trtllm_request_success_total{{finished_reason="length"}} {completed}']
+            for position in range(2):
+                lines += [
+                    f'trtllm_spec_decode_drafted_tokens_total{{token_position="{position}"}} {2 * completed}',
+                    f'trtllm_spec_decode_accepted_tokens_total{{token_position="{position}"}} {completed}',
+                ]
+            return "\n".join(lines) + "\n"
+
+        with (
+            patch.object(_RUNNER, "_parse_arguments", return_value=self.args),
+            patch.object(_RUNNER.signal, "signal"),
+            patch.object(_RUNNER, "_get_devices") as gpu_discovery,
+            patch.object(_RUNNER.subprocess, "Popen") as launch,
+            patch.object(_RUNNER, "_stop_processes") as stop,
+            patch.object(_RUNNER, "_load_prompts", return_value=["one", "two"]),
+            patch.object(_RUNNER, "_tokenize", return_value=[[1], [2]]),
+            patch.object(_RUNNER, "_http", side_effect=http),
+            patch.object(Path, "is_file", return_value=True),
+            redirect_stdout(io.StringIO()),
+        ):
+            self.assertEqual(_RUNNER._main(), 0)
+        gpu_discovery.assert_not_called()
+        launch.assert_not_called()
+        stop.assert_not_called()
+        self.assertEqual(completed, 3)
+        summary = json.loads((self.args.output_dir / "summary.json").read_text())
+        result = summary["results"][0]
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["num_requests"], 2)
+        self.assertEqual(result["verification_steps"], 4)
+        self.assertEqual(result["acceptance_length"], 2.0)
+        manifest = json.loads((self.args.output_dir / "manifest.json").read_text())
+        self.assertEqual(manifest["external_servers"]["router"], self.args.external_urls[0])
+        self.assertEqual(manifest["devices"], [])
 
 
 class TestRunnerOrchestration(unittest.TestCase):

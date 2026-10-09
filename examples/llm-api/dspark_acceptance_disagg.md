@@ -17,8 +17,8 @@ limitations under the License.
 # DSpark acceptance length on disaggregated inference
 
 `measure_dspark_acceptance_disagg.py` is a separate counterpart of the aggregate
-measurement script. It starts one context server, one generation server, and a
-disaggregated proxy for each selected case. Context and generation use disjoint
+measurement script. By default it starts one context server, one generation
+server, and a disaggregated proxy for each selected case. Context and generation use disjoint
 GPU sets, with the same DSpark configuration enabled on both servers. Neither the
 aggregate script nor its configuration needs to be modified.
 
@@ -43,11 +43,14 @@ Both DeepSeek-V4-Pro variants are excluded because preserving TP8/EP8 for each
 role would require 16 GPUs. The runner does not reduce TP to make a case fit.
 GPU count alone is not a model-fit guarantee. Both roles now load the drafter,
 so context-side memory usage can increase compared with generation-only
-speculation. This launcher is single-node only.
+speculation. The built-in server launcher is single-node only; the
+[external-server mode](#externally-managed-servers) can measure a separately
+launched multi-node deployment.
 
 For the vLLM/Inferact MLA DSpark head on Kimi K3 NVFP4, use the dedicated
 [Kimi K3 presets and commands](dspark_acceptance_kimi_k3_mla.md). That pair uses
-TP8 per worker and requires 16 locally visible GPUs for disaggregation.
+TP8 per worker and requires 16 GPUs total. The built-in launcher requires all
+16 GPUs to be locally visible.
 
 All cases use the corresponding target/drafter paths and draft lengths from
 [`dspark_acceptance.yaml`](dspark_acceptance.yaml). DeepSeek targets contain their
@@ -155,6 +158,44 @@ draft KV-cache transfer works or that prefill drafter state reaches generation.
 Changes to role topology, batching, cache settings, or the prompt protocol
 define a different comparison.
 
+## Externally managed servers
+
+For a deployment launched separately, supply all three server origins and
+select exactly one case. Each URL must use HTTP or HTTPS with no credentials,
+path, query, or fragment. The following example uses placeholder hostnames;
+replace them with the origins of your dedicated deployment:
+
+```bash
+python3 examples/llm-api/measure_dspark_acceptance_disagg.py \
+  --config examples/llm-api/dspark_acceptance_disagg.yaml \
+  --models-root /models --case qwen3-8b \
+  --router-url http://router.example:8000 \
+  --context-url http://context.example:8001 \
+  --generation-url http://generation.example:8002 \
+  --output-dir results/dspark-disagg-external \
+  --prompt-file results/dspark-agg-reference/prompts.jsonl \
+  --aggregate-results results/dspark-agg-reference \
+  --num-prompts 64 --max-tokens 256 --concurrency 1
+```
+
+The caller must configure both workers to match the selected recipe, including
+its target, drafter, DSpark settings, parallelism, cache settings, and
+`environment` values. Both workers need `return_perf_metrics: true`,
+`num_postprocess_workers: 0`, and `num_serve_frontends: 1`. Keep their
+Prometheus multi-process directories separate. Use a dedicated deployment with
+no other request traffic during warmup and measurement. Aggregate comparison
+checks the declared recipe and corpus; it does not inspect the deployed engine
+configuration.
+
+The client still needs TensorRT-LLM's tokenizer dependencies and access to the
+declared checkpoint paths. It skips local GPU discovery and GPU-count checks,
+waits for all three `/health` endpoints and both worker metrics endpoints, and
+then runs the same warmup, counter measurement, and aggregate comparison. It
+never starts or stops these servers, including on failure; their owner handles
+cleanup. External URLs are recorded in `manifest.json` and
+`<case>/external_servers.json`. Server configs and logs remain with the external
+deployment.
+
 ## Measurement and comparison with aggregate inference
 
 The runner takes snapshots of the generation server's request-derived
@@ -191,10 +232,11 @@ disaggregated AL threshold automatically.
 
 The output directory contains `manifest.json`, frozen `prompts.jsonl`,
 `summary.json`, `summary.csv`, and `<case>.json` for each successful case. Each
-`<case>/` directory contains server logs, tokenized prompts, server configs,
-and raw `context-before.prom`, `context-after.prom`, `generation-before.prom`,
+`<case>/` directory contains tokenized prompts and raw
+`context-before.prom`, `context-after.prom`, `generation-before.prom`,
 and `generation-after.prom` snapshots. Keep these artifacts for comparison.
-The generated `router.yaml`, `context.yaml`, and `generation.yaml` configs have
+Locally managed runs also save server logs and configs. The generated
+`router.yaml`, `context.yaml`, and `generation.yaml` configs have
 mode `0600` and contain a private handoff authentication key; do not publish
 them without redacting the key.
 
