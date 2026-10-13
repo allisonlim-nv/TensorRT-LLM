@@ -40,6 +40,7 @@ from tensorrt_llm._torch.peft.lora.manager import (load_torch_lora,
 from tensorrt_llm.logger import logger
 from tensorrt_llm.mapping import CpType, Mapping
 from tensorrt_llm.quantization import QuantAlgo
+from tensorrt_llm.runtime.kv_cache_manager_v2 import AttentionReusePolicy
 
 from ..attention.backends import get_sparse_attn_kv_cache_manager
 from ..disaggregation.kv_cache_transceiver import (
@@ -63,7 +64,9 @@ from .config_utils import (MambaKVCacheParams, _is_sliding_attention_layer,
 from .connectors.kv_cache_connector import KvCacheConnectorManager
 from .dwdp import DwdpManager
 from .guided_decoder import GuidedDecoder
-from .kv_cache.kv_cache_manager_v2 import KVCacheManagerV2
+from .kv_cache.kv_cache_manager_v2 import (KVCacheLayerOwner, KVCacheLayerSpec,
+                                           KVCacheManagerV2, Role,
+                                           _resolve_v2_max_attention_window_vec)
 from .kv_cache.mamba_cache_manager import (BaseMambaCacheManager,
                                            CppMambaHybridCacheManager,
                                            MambaHybridCacheManagerV2,
@@ -1030,6 +1033,11 @@ class KvCacheCreator:
                                 **extra_kwargs) -> CacheCost:
         kv_cache_config = (kv_cache_config if kv_cache_config is not None else
                            self._kv_cache_config)
+        if not is_draft and self._should_unify_dflash_kv_cache():
+            extra_kwargs = dict(extra_kwargs)
+            extra_kwargs[
+                "layer_specs"] = self._build_unified_dflash_layer_specs(
+                    kv_cache_config)
         if not is_draft:
             derived_windows = _derive_v2_layer_type_attention_windows(
                 kv_cache_config, manager_cls, model_config, self._max_seq_len)
@@ -1964,6 +1972,8 @@ class KvCacheCreator:
             self._llm_args.kv_cache_config.kv_events_config,
             cold_page_codec_provider=cold_page_codec_provider,
             joint_kv_cache_reuse=self._joint_kv_cache_reuse,
+            layer_specs=(self._build_unified_dflash_layer_specs(kv_cache_config)
+                         if self._should_unify_dflash_kv_cache() else None),
         )
 
         if not self._skip_est:
@@ -2003,6 +2013,8 @@ class KvCacheCreator:
         if self._speculative_config is None:
             # No drafter at all, so there is nothing to give a manager to.
             return False
+        if self._should_unify_dflash_kv_cache():
+            return False
         # Narrower than is_external_drafter(): PARD and DRAFT_TARGET_ONE_MODEL
         # never reach the arena this carve-out exists for.
         spec_dec_mode = self._speculative_config.spec_dec_mode
@@ -2027,6 +2039,142 @@ class KvCacheCreator:
                 self._mapping.pp_size)
             return False
         return should_use_separate_draft_kv_cache(self._speculative_config)
+
+    def _should_unify_dflash_kv_cache(self) -> bool:
+        """Whether this run can place target and DFlash layers in one V2 manager."""
+        spec_config = self._speculative_config
+        if (spec_config is None or not spec_config.spec_dec_mode.is_dflash()
+                or spec_config.attention_backend != "TRTLLM"
+                or not spec_config._allow_separate_draft_kv_cache
+                or spec_config.draft_len_schedule is not None
+                or self._draft_model_engine is not None
+                or self._draft_config is None or self._mapping.pp_size != 1
+                or self._mapping.cp_size != 1 or self._is_disagg
+                or self._llm_args.attn_backend != "TRTLLM" or is_gemma4_hybrid(
+                    self._model_engine.model.model_config.pretrained_config)
+                or self._llm_args.kv_cache_compression_config is not None):
+            return False
+        # Specialized managers add cache roles and lifecycle protocols that an
+        # external drafter cannot yet describe. Keep their existing fallback.
+        return self._kv_cache_manager_cls is KVCacheManagerV2
+
+    @staticmethod
+    def _layer_spec_dtype(model_config: ModelConfig, fallback_dtype) -> object:
+        quant_config = model_config.quant_config
+        if quant_config is not None and quant_config.quant_mode.has_fp8_kv_cache(
+        ):
+            return tensorrt_llm.bindings.DataType.FP8
+        if quant_config is not None and quant_config.quant_mode.has_fp4_kv_cache(
+        ):
+            return tensorrt_llm.bindings.DataType.NVFP4
+        return str_dtype_to_binding(torch_dtype_to_str(fallback_dtype))
+
+    @staticmethod
+    def _layer_spec_roles(dtype, *, k_only: bool) -> tuple:
+        roles = [Role.KEY]
+        if not k_only:
+            roles.append(Role.VALUE)
+        if dtype == tensorrt_llm.bindings.DataType.NVFP4:
+            roles.append(Role.KEY_BLOCK_SCALE)
+            if not k_only:
+                roles.append(Role.VALUE_BLOCK_SCALE)
+        return tuple(roles)
+
+    def _build_unified_dflash_layer_specs(
+            self,
+            kv_cache_config: KvCacheConfig) -> tuple[KVCacheLayerSpec, ...]:
+        """Build the rank-local target+DFlash storage layout used by cost and allocation."""
+        if not self._should_unify_dflash_kv_cache():
+            return ()
+
+        target_model_config = self._model_engine.model.model_config
+        target_config = target_model_config.pretrained_config
+        target_layers = int(target_config.num_hidden_layers)
+        target_local_ids = list(self._mapping.pp_layers(target_layers))
+        target_dtype = self._layer_spec_dtype(target_model_config,
+                                              self._model_engine.dtype)
+        target_k_only = is_mla(target_config)
+        target_tp_size = 1 if self._mapping.enable_attention_dp else self._mapping.tp_size
+        target_heads = 1 if target_k_only else getattr(
+            target_config, "num_key_value_heads",
+            target_config.num_attention_heads)
+        if not isinstance(target_heads, int):
+            raise NotImplementedError(
+                "unified DFlash currently requires a uniform target KV-head count"
+            )
+        target_heads = ceil_div(target_heads, target_tp_size)
+        target_head_dim = (target_config.kv_lora_rank +
+                           target_config.qk_rope_head_dim if target_k_only else
+                           getattr(target_config, "head_dim", None))
+        if not isinstance(target_head_dim, int):
+            target_head_dim = target_config.hidden_size // target_config.num_attention_heads
+        target_window_config = kv_cache_config.max_attention_window
+        if target_window_config is None:
+            target_window_config = _derive_v2_layer_type_attention_windows(
+                kv_cache_config,
+                self._kv_cache_manager_cls,
+                target_model_config,
+                self._max_seq_len,
+            )
+        target_windows = _resolve_v2_max_attention_window_vec(
+            target_window_config,
+            self._max_seq_len,
+            target_local_ids,
+        )
+
+        draft_model_config = self._get_draft_kv_model_config()
+        draft_config = draft_model_config.pretrained_config
+        draft_layers = int(draft_config.num_hidden_layers)
+        draft_local_ids = list(self._mapping.pp_layers(draft_layers))
+        draft_dtype = self._layer_spec_dtype(draft_model_config,
+                                             draft_config.torch_dtype)
+        draft_k_only = is_mla(draft_config)
+        draft_heads = 1 if draft_k_only else getattr(
+            draft_config, "num_key_value_heads",
+            draft_config.num_attention_heads)
+        if not isinstance(draft_heads, int):
+            raise NotImplementedError(
+                "unified DFlash currently requires a uniform draft KV-head count"
+            )
+        draft_heads = ceil_div(draft_heads, target_tp_size)
+        draft_head_dim = (draft_config.kv_lora_rank +
+                          draft_config.qk_rope_head_dim if draft_k_only else
+                          getattr(draft_config, "head_dim", None))
+        if not isinstance(draft_head_dim, int):
+            draft_head_dim = draft_config.hidden_size // draft_config.num_attention_heads
+        draft_windows = _resolve_v2_max_attention_window_vec(
+            self._get_draft_max_attention_window(self._max_seq_len,
+                                                 kv_cache_config),
+            self._max_seq_len,
+            draft_local_ids,
+        )
+
+        specs = [
+            KVCacheLayerSpec(
+                global_layer_id=layer_id,
+                owner=KVCacheLayerOwner.TARGET,
+                dtype=target_dtype,
+                num_kv_heads=target_heads,
+                head_dim=target_head_dim,
+                buffer_roles=self._layer_spec_roles(target_dtype,
+                                                    k_only=target_k_only),
+                sliding_window_size=window,
+                reuse_policy=AttentionReusePolicy.REQUIRED,
+            ) for layer_id, window in zip(target_local_ids, target_windows)
+        ]
+        specs.extend(
+            KVCacheLayerSpec(
+                global_layer_id=target_layers + layer_id,
+                owner=KVCacheLayerOwner.DRAFT,
+                dtype=draft_dtype,
+                num_kv_heads=draft_heads,
+                head_dim=draft_head_dim,
+                buffer_roles=self._layer_spec_roles(draft_dtype,
+                                                    k_only=draft_k_only),
+                sliding_window_size=window,
+                reuse_policy=AttentionReusePolicy.REQUIRED,
+            ) for layer_id, window in zip(draft_local_ids, draft_windows))
+        return tuple(specs)
 
     def _joint_reuse_supported(self) -> bool:
         """Span half of the pairing decision; ``build_managers`` ANDs it with
@@ -2089,12 +2237,12 @@ class KvCacheCreator:
         if not (spec_dec_mode.is_dflash() or spec_dec_mode.is_dspark()):
             return effective_draft_config
         quant_config = getattr(effective_draft_config, "quant_config", None)
-        if quant_config is None or not quant_config.quant_mode.has_fp8_kv_cache(
+        if quant_config is None or not quant_config.quant_mode.has_kv_cache_quant(
         ):
             return effective_draft_config
         logger.info(
             "External drafter KV pool keeps the drafter dtype; dropping "
-            "the fp8 KV quant algo inherited from the target.")
+            "the KV quantization inherited from the target.")
         neutral_quant = copy.copy(quant_config)
         neutral_quant.kv_cache_quant_algo = None
         # QuantConfig.quant_mode and .layer_quant_mode are both cached_property
@@ -3075,7 +3223,9 @@ def _create_kv_cache_manager(
         cold_page_codec_provider: Optional[object] = None,
         kv_events_config: Optional[KVEventsConfig] = None,
         joint_kv_cache_reuse: bool = False,
-        max_cuda_graph_batch_size: Optional[int] = None) -> KVCacheManager:
+        max_cuda_graph_batch_size: Optional[int] = None,
+        layer_specs: Optional[Sequence[KVCacheLayerSpec]] = None
+) -> KVCacheManager:
     """
     Returns:
         A KVCacheManager instance for the given model engine or model config
@@ -3250,6 +3400,7 @@ def _create_kv_cache_manager(
         manager_extra_kwargs["joint_kv_cache_reuse"] = joint_kv_cache_reuse
         manager_extra_kwargs[
             "disable_overlap_scheduler"] = disable_overlap_scheduler
+        manager_extra_kwargs["layer_specs"] = layer_specs
         # Vocab size also enables multimodal event decoding and its per-block
         # digest scan. Leave it unset for text-only engines. Without an engine
         # (e.g. separate one-model draft caches), preserve config resolution:
