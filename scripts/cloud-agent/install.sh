@@ -48,3 +48,11 @@ python -m pip install \
 if [[ -z "$(git config --get core.hooksPath 2>/dev/null || true)" ]]; then
   pre-commit install --install-hooks
 fi
+
+# Optional Cloud Agent secret (configure in Environment → Secrets).
+# Used for NVCR/OCI auth and NVIDIA cloud APIs (e.g. integrate.api.nvidia.com).
+if [[ -n "${NVIDIA_API_KEY:-}" ]]; then
+  if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
+    echo "$NVIDIA_API_KEY" | docker login nvcr.io -u '$oauthtoken' --password-stdin 2>/dev/null || true
+  fi
+fi
